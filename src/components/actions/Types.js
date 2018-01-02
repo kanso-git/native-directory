@@ -1,10 +1,14 @@
 // Auth
 const REGISTER = 'register';
 const STORE_SECRET = 'store_secret';
-const SEARCH_CHANGE = 'search_change';
+const SET_RESULT = 'set_result';
+const RETRY = 'retry';
+const RESET = 'reset';
 
 export {
   REGISTER,
   STORE_SECRET,
-  SEARCH_CHANGE,
+  SET_RESULT,
+  RETRY,
+  RESET,
 };

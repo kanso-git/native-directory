@@ -1,5 +1,6 @@
 {
   "presets": ["react-native","react-native-dotenv"],
+  "sourceMaps": true,
   "plugins": [
     "transform-class-properties",
     "transform-object-rest-spread"

@@ -6,9 +6,13 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
+  console.log(`search reducer ${action}`);
   switch (action.type) {
-    case types.SEARCH_CHANGE:
-      return { searchQuery: action.payload.searchQuery };
+    case types.SET_RESULT:
+      return {
+        searchQuery: action.payload.searchQuery,
+        searchResult: action.payload.data.map(item => ({ ...item, key: item.id })),
+      };
     default:
       return state;
   }
