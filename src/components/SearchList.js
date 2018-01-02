@@ -17,7 +17,7 @@ class SearchList extends Component {
     <SearchItem item={item} pressFn={this.onPressItem} />
   );
   render() {
-    console.log(this.props.directory);
+    console.log(JSON.stringify(this.props.directory.searchResult,null,5));
     return (
       <FlatList
         data={this.props.directory.searchResult}

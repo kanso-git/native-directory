@@ -1,0 +1,105 @@
+[
+    {
+        "type": "PERSON",
+        "id": 3110,
+        "lastName": "BOUZELBOUDJEN",
+        "firstName": "Mahmoud",
+        "email": "mahmoud.bouzelboudjen@unine.ch",
+        "phones": [
+             {
+                  "internal": "82028",
+                  "external": "+41327182028"
+             }
+        ],
+        "positions": [
+             {
+                  "positionName": "Responsable GIS, formation, logiciels",
+                  "positionType": "function",
+                  "organizationalUnit": {
+                       "id": 103000,
+                       "shortName": "SITEL",
+                       "name": "Service informatique et télématique"
+                  }
+             }
+        ],
+        "key": 3110
+    },
+    {
+         "type": "PERSON",
+         "id": 38784,
+         "lastName": "KANSO",
+         "firstName": "Abdallah",
+         "email": "abdallah.kanso@unine.ch",
+         "phones": [
+              {
+                   "internal": "82062",
+                   "external": "+41327182062"
+              }
+         ],
+         "positions": [
+              {
+                   "positionName": "Ingénieur développement web",
+                   "positionType": "function",
+                   "organizationalUnit": {
+                        "id": 103000,
+                        "shortName": "SITEL",
+                        "name": "Service informatique et télématique"
+                   }
+              }
+         ],
+         "key": 38784
+    },
+    {
+        "type": "PERSON",
+        "id": 3518,
+        "lastName": "MOKEDDEM",
+        "firstName": "Abdelatif",
+        "email": "abdelatif.mokeddem@unine.ch",
+        "phones": [
+             {
+                  "internal": "81018",
+                  "external": "+41327181018"
+             },
+             {
+                  "internal": "82004",
+                  "external": "+41327182004"
+             }
+        ],
+        "positions": [
+             {
+                  "positionName": "Directeur/trice",
+                  "positionType": "function",
+                  "organizationalUnit": {
+                       "id": 125000,
+                       "shortName": "CDC",
+                       "name": "Coordination du domaine central"
+                  }
+             }
+        ],
+        "key": 3518
+   },
+   {
+        "type": "PERSON",
+        "id": 36547,
+        "lastName": "MOKEDDEM",
+        "firstName": "Louisa",
+        "email": "louisa.mokeddem@unine.ch",
+        "phones": [
+             {
+                  "internal": "81496",
+                  "external": "+41327181496"
+             }
+        ],
+        "positions": [
+             {
+                  "positionName": "Assistant/e doctorant/e",
+                  "positionType": "function",
+                  "organizationalUnit": {
+                       "id": 521100,
+                       "name": "Chaire de marketing"
+                  }
+             }
+        ],
+        "key": 36547
+   }
+]

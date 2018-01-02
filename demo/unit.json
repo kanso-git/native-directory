@@ -1,0 +1,16 @@
+[
+    {
+         "type": "OU",
+         "id": 103000,
+         "shortName": "SITEL",
+         "name": "Service informatique et télématique",
+         "longName": "Service informatique et télématique",
+         "email": "hotline.sitel@unine.ch",
+         "phone": {
+              "internal": "82000",
+              "external": "+41327182000"
+         },
+         "url": "http://www.unine.ch/sitel",
+         "key": 103000
+    }
+]

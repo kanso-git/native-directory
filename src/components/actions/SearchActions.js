@@ -1,23 +1,19 @@
 import axios from 'axios';
-import { API_ENDPOINT } from 'react-native-dotenv';
+import { API_ENDPOINT, SECURITY_HEADER_NAME } from 'react-native-dotenv';
 import * as types from './Types';
 
 const searchAxios = async (query, secret) => {
   let res;
+  const headers = {};
+  headers[`${SECURITY_HEADER_NAME}`] = secret;
+  headers['Content-Type'] = 'text/plain';
   try {
-    res = await axios.post(`${API_ENDPOINT}/search?maxResults=100`, query, {
-      headers: {
-        'X-unine-directory-token': secret,
-        'Content-Type': 'text/plain',
-      },
+    res = await axios.post(`${API_ENDPOINT}/search`, query, {
+      headers,
     });
-    console.log('------------');
-    console.log(res);
     return res.data;
   } catch (e) {
-    console.log(e);
     throw e;
-    // todo handle the other errors.
   }
 };
 
