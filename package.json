@@ -17,6 +17,7 @@
     "react-native": "0.51.0",
     "react-native-communications": "^2.2.1",
     "react-native-dotenv": "^0.1.0",
+    "react-native-fa-icons": "^3.0.1",
     "react-native-randombytes": "^3.0.0",
     "react-native-router-flux": "4.0.0-beta.24",
     "react-redux": "^5.0.6",

@@ -31,6 +31,7 @@
 		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
 		2D02E4C91E0B4AEC006451C7 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* nativeDirectoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* nativeDirectoryTests.m */; };
+		53154BA5B60D470399E0E96F /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 079A418E76F4482B9D050F2B /* FontAwesome.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		65902CB01FFC798500CEA2F9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65902CAF1FFC798500CEA2F9 /* Images.xcassets */; };
 		65902CF21FFC7C7100CEA2F9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65902CF11FFC7C7000CEA2F9 /* LaunchScreen.xib */; };
@@ -316,6 +317,7 @@
 		00E356EE1AD99517003FC87E /* nativeDirectoryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nativeDirectoryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* nativeDirectoryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = nativeDirectoryTests.m; sourceTree = "<group>"; };
+		079A418E76F4482B9D050F2B /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-fa-icons/fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* nativeDirectory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nativeDirectory.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -511,6 +513,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		62A877CF14044D53B0329912 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				079A418E76F4482B9D050F2B /* FontAwesome.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		65A3AF4E1FFC7306002649A4 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -572,6 +582,7 @@
 				00E356EF1AD99517003FC87E /* nativeDirectoryTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				65A3AF4E1FFC7306002649A4 /* Recovered References */,
+				62A877CF14044D53B0329912 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -1044,6 +1055,7 @@
 			files = (
 				65902CF21FFC7C7100CEA2F9 /* LaunchScreen.xib in Resources */,
 				65902CB01FFC798500CEA2F9 /* Images.xcassets in Resources */,
+				53154BA5B60D470399E0E96F /* FontAwesome.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1430,7 +1442,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1472,7 +1484,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;

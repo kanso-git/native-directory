@@ -25,6 +25,25 @@
         "key": 3110
     },
     {
+        "type": "PERSON",
+        "id": 40670,
+        "lastName": "Bouzelboudjen",
+        "firstName": "Lina",
+        "email": "lina.bouzelboudjen@unine.ch",
+        "positions": [
+             {
+                  "positionName": "Etudiant",
+                  "positionType": "function",
+                  "organizationalUnit": {
+                       "id": 2,
+                       "shortName": "FLSH",
+                       "name": "Faculté des lettres & SH"
+                  }
+             }
+        ],
+        "key": 40670
+   },
+    {
          "type": "PERSON",
          "id": 38784,
          "lastName": "KANSO",
@@ -101,5 +120,19 @@
              }
         ],
         "key": 36547
-   }
+   },
+   {
+    "type": "OU",
+    "id": 103000,
+    "shortName": "SITEL",
+    "name": "Service informatique et télématique",
+    "longName": "Service informatique et télématique",
+    "email": "hotline.sitel@unine.ch",
+    "phone": {
+         "internal": "82000",
+         "external": "+41327182000"
+    },
+    "url": "http://www.unine.ch/sitel",
+    "key": 103000
+  }
 ]

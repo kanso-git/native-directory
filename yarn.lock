@@ -4656,6 +4656,10 @@ react-native-drawer-layout@1.3.2:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
+react-native-fa-icons@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-fa-icons/-/react-native-fa-icons-3.0.1.tgz#76c0f1cb97b57290be2589d6b35a80dd82234fe7"
+
 react-native-randombytes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-native-randombytes/-/react-native-randombytes-3.0.0.tgz#8327464f227a2c42d6ef013b7586b0ad4385ae61"

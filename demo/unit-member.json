@@ -1,0 +1,747 @@
+[
+    {
+        "type": "PERSON",
+        "id": 3054,
+        "lastName": "BAUME",
+        "firstName": "Nicolas",
+        "email": "nicolas.baume@unine.ch",
+        "phones": [
+            {
+                "internal": "82031",
+                "external": "+41327182031"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Responsable d'exploitation",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 4372,
+        "lastName": "BESSIRE",
+        "firstName": "Romain",
+        "email": "romain.bessire@unine.ch",
+        "phones": [
+            {
+                "internal": "82023",
+                "external": "+41327182023"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Administrateur/trice système",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 3110,
+        "lastName": "BOUZELBOUDJEN",
+        "firstName": "Mahmoud",
+        "email": "mahmoud.bouzelboudjen@unine.ch",
+        "phones": [
+            {
+                "internal": "82028",
+                "external": "+41327182028"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Responsable GIS, formation, logiciels",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 5201,
+        "lastName": "BRUNNER",
+        "firstName": "Cédric",
+        "email": "cedric.brunner@unine.ch",
+        "phones": [
+            {
+                "internal": "82035",
+                "external": "+41327182035"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Responsable moyens de communication",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 9652,
+        "lastName": "BURRI",
+        "firstName": "François",
+        "email": "francois.burri@unine.ch",
+        "phones": [
+            {
+                "internal": "82032",
+                "external": "+41327182032"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Responsable base de données et projets",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 20709,
+        "lastName": "CAFISO",
+        "firstName": "Mario",
+        "email": "mario.cafiso@unine.ch",
+        "phones": [
+            {
+                "internal": "82067",
+                "external": "+41327182067"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Ingénieur web et multimédia",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 4357,
+        "lastName": "DANIELE",
+        "firstName": "Paolo",
+        "email": "paolo.daniele@unine.ch",
+        "phones": [
+            {
+                "internal": "82033",
+                "external": "+41327182033"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Responsable système et exploitation",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 13871,
+        "lastName": "DONGIOVANNI",
+        "firstName": "Olivier",
+        "email": "olivier.dongiovanni@unine.ch",
+        "phones": [
+            {
+                "internal": "82041",
+                "external": "+41327182041"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Administrateur/trice système",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            },
+            {
+                "positionName": "Administrateur/trice système",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 31194,
+        "lastName": "FRESTA",
+        "firstName": "Michaël",
+        "email": "michael.fresta@unine.ch",
+        "phones": [
+            {
+                "internal": "82024",
+                "external": "+41327182024"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Technicien en micro-informatique",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 3285,
+        "lastName": "GASPAROTTO",
+        "firstName": "Gianni",
+        "email": "gianni.gasparotto@unine.ch",
+        "phones": [
+            {
+                "internal": "82044",
+                "external": "+41327182044"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Administrateur/trice système",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 14160,
+        "lastName": "GONZALEZ",
+        "firstName": "Laurent",
+        "email": "laurent.gonzalez@unine.ch",
+        "phones": [
+            {
+                "internal": "82034",
+                "external": "+41327182034"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Responsable centre d'impression",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 24132,
+        "lastName": "JACOT-DESCOMBES",
+        "firstName": "Antoine",
+        "email": "antoine.jacot-descombes@unine.ch",
+        "phones": [
+            {
+                "internal": "82049",
+                "external": "+41327182049"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Responsable télécom et sécurité",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 38784,
+        "lastName": "KANSO",
+        "firstName": "Abdallah",
+        "email": "abdallah.kanso@unine.ch",
+        "phones": [
+            {
+                "internal": "82062",
+                "external": "+41327182062"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Ingénieur développement web",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 6040,
+        "lastName": "KUFFNER",
+        "firstName": "Cédric",
+        "email": "cedric.kuffner@unine.ch",
+        "phones": [
+            {
+                "internal": "82038",
+                "external": "+41327182038"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Administrateur/trice système",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 4359,
+        "lastName": "LAMBERT",
+        "firstName": "Béatrice",
+        "email": "beatrice.lambert@unine.ch",
+        "phones": [
+            {
+                "internal": "82048",
+                "external": "+41327182048"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Chef/fe de projet SAP",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 3463,
+        "lastName": "LOPEZ",
+        "firstName": "David",
+        "email": "david.lopez@unine.ch",
+        "phones": [
+            {
+                "internal": "81325",
+                "external": "+41327181325"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Administrateur/trice système",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 25008,
+        "lastName": "MARANZANO",
+        "firstName": "Luca",
+        "email": "luca.maranzano@unine.ch",
+        "positions": [
+            {
+                "positionName": "Stagiaire",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 5151,
+        "lastName": "MAUMARY",
+        "firstName": "Yves",
+        "email": "yves.maumary@unine.ch",
+        "phones": [
+            {
+                "internal": "81048",
+                "external": "+41327181048"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Graphiste",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 3518,
+        "lastName": "MOKEDDEM",
+        "firstName": "Abdelatif",
+        "email": "abdelatif.mokeddem@unine.ch",
+        "phones": [
+            {
+                "internal": "81018",
+                "external": "+41327181018"
+            },
+            {
+                "internal": "82004",
+                "external": "+41327182004"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Directeur/trice",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 38268,
+        "lastName": "MORF",
+        "firstName": "Joel",
+        "email": "joel.morf@unine.ch",
+        "phones": [
+            {
+                "internal": "82059",
+                "external": "+41327182059"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Technicien audiovisuel",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 3567,
+        "lastName": "ORLANDO",
+        "firstName": "Victor",
+        "email": "victor.orlando@unine.ch",
+        "phones": [
+            {
+                "internal": "82021",
+                "external": "+41327182021"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Administrateur/trice d'exploitation",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 33174,
+        "lastName": "ROSSET",
+        "firstName": "Olivier",
+        "email": "olivier.rosset@unine.ch",
+        "phones": [
+            {
+                "internal": "82054",
+                "external": "+41327182054"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Responsable SAP",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 18688,
+        "lastName": "RYSER",
+        "firstName": "Vasupree",
+        "email": "vasupree.ryser@unine.ch",
+        "phones": [
+            {
+                "internal": "82058",
+                "external": "+41327182058"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Ingénieur réseau",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 6642,
+        "lastName": "SEVERINO",
+        "firstName": "Marco",
+        "email": "marco.severino@unine.ch",
+        "phones": [
+            {
+                "internal": "82013",
+                "external": "+41327182013"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Responsable système gestion académique",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 32895,
+        "lastName": "STADELMANN",
+        "firstName": "Jérôme",
+        "email": "jerome.stadelmann@unine.ch",
+        "phones": [
+            {
+                "internal": "82019",
+                "external": "+41327182019"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Ingénieur système",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 25011,
+        "lastName": "STOFFEL",
+        "firstName": "Michael",
+        "email": "michael.stoffel@unine.ch",
+        "positions": [
+            {
+                "positionName": "Technicien en informatique",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 21371,
+        "lastName": "TANNER",
+        "firstName": "Corinne",
+        "email": "corinne.tanner@unine.ch",
+        "phones": [
+            {
+                "internal": "82003",
+                "external": "+41327182003"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Assistant/e de direction",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 3741,
+        "lastName": "TANNER",
+        "firstName": "Florian",
+        "email": "florian.tanner@unine.ch",
+        "phones": [
+            {
+                "internal": "81373",
+                "external": "+41327181373"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Ingénieur développement",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 3774,
+        "lastName": "VARIDEL",
+        "firstName": "Daniel",
+        "email": "daniel.varidel@unine.ch",
+        "phones": [
+            {
+                "internal": "82934",
+                "external": "+41327182934"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Administrateur/trice système",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 3790,
+        "lastName": "WACKER",
+        "firstName": "Claude",
+        "email": "claude.wacker@unine.ch",
+        "phones": [
+            {
+                "internal": "82042",
+                "external": "+41327182042"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Responsable des systèmes audiovisuels",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    },
+    {
+        "type": "PERSON",
+        "id": 3803,
+        "lastName": "WENKER",
+        "firstName": "Laurent",
+        "email": "laurent.wenker@unine.ch",
+        "phones": [
+            {
+                "internal": "82043",
+                "external": "+41327182043"
+            }
+        ],
+        "positions": [
+            {
+                "positionName": "Responsable techn. informatique admin.",
+                "positionType": "function",
+                "organizationalUnit": {
+                    "id": 103000,
+                    "shortName": "SITEL",
+                    "name": "Service informatique et télématique"
+                }
+            }
+        ]
+    }
+]
