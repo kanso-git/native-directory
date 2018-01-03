@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types,no-empty */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { authActions, searchActions } from './actions';
 import Person from './Person';
 
@@ -26,7 +26,8 @@ class MemberDetails extends Component {
     }
   }
   render() {
-    return this.props.person ? <Person person={this.props.person} /> : <View />;
+    return this.props.person ?
+      <ScrollView><Person person={this.props.person} /></ScrollView> : <View />;
   }
 }
 

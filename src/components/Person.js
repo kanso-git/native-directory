@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types,no-empty */
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import Icon from 'react-native-fa-icons';
 import { Card, CardSection } from './common';
+import Communications from 'react-native-communications';
 
 const styles = StyleSheet.create({
   textStyle: {
@@ -34,11 +35,17 @@ const styles = StyleSheet.create({
   },
   containerStyle: {
     flex: 1,
-    height: 40,
+    height: 25,
     flexDirection: 'row',
     alignItems: 'flex-start',
     paddingTop: 10,
     paddingBottom: 10,
+  },
+  touchable: {
+    color: '#007aff',
+  },
+  touchableContainer: {
+    marginBottom: 15,
   },
 });
 const {
@@ -46,24 +53,30 @@ const {
   iconStyle,
   textStyle,
   textStyleElem,
+  touchable,
+  touchableContainer,
 } = styles;
 
 const renderPersonlUrl = (url) => {
   if (url) {
     return (
-      <View style={[containerStyle, { marginBottom: 15 }]}>
-        <Icon name="external-link" style={iconStyle} allowFontScaling />
-        <Text style={textStyleElem}>{url} </Text>
-      </View>
+      <TouchableOpacity onPress={() => Communications.web(url)}>
+        <View style={[containerStyle, touchableContainer]}>
+          <Icon name="external-link" style={[iconStyle, touchable]} allowFontScaling />
+          <Text style={[textStyleElem, touchable]}>{url} </Text>
+        </View>
+      </TouchableOpacity>
     );
   }
   return null;
 };
 const renderPhones = props => props.person.phones.map(phone => (
-  <View key={phone.external} style={[containerStyle, { marginBottom: 15 }]}>
-    <Icon name="phone" style={iconStyle} allowFontScaling />
-    <Text style={textStyleElem}>{phone.external} </Text>
-  </View>
+  <TouchableOpacity key={phone.external} onPress={() => Communications.phonecall(phone.external, true)}>
+    <View style={[containerStyle, touchableContainer]}>
+      <Icon name="phone" style={[iconStyle, touchable]} allowFontScaling />
+      <Text style={[textStyleElem, touchable]}>{phone.external} </Text>
+    </View>
+  </TouchableOpacity>
 ));
 
 const renderFunctions = props => props.person.positions.map(position => (
@@ -72,14 +85,25 @@ const renderFunctions = props => props.person.positions.map(position => (
       <Icon name="suitcase" style={iconStyle} allowFontScaling />
       <Text style={textStyleElem}>{position.positionName} </Text>
     </View>
-    <View style={[containerStyle, { marginBottom: 15 }]}>
-      <Icon name="sitemap" style={iconStyle} allowFontScaling />
-      <Text style={textStyleElem}>{position.organizationalUnit.name} </Text>
-    </View>
-    <View style={[containerStyle, { marginBottom: 15 }]}>
-      <Icon name="building" style={iconStyle} allowFontScaling />
-      <Text style={textStyleElem}>{position.location.local.code} </Text>
-    </View>
+    {
+        position.organizationalUnit && (
+        <View style={[containerStyle, { marginBottom: 15 }]}>
+          <Icon name="sitemap" style={iconStyle} allowFontScaling />
+          <Text style={textStyleElem}>{position.organizationalUnit.name} </Text>
+        </View>
+        )
+
+    }
+
+    {
+        position.location && (
+        <View style={[containerStyle, { marginBottom: 15 }]}>
+          <Icon name="building" style={iconStyle} allowFontScaling />
+          <Text style={textStyleElem}>{position.location.local.code} </Text>
+        </View>
+        )
+    }
+
   </CardSection>
 ));
 const Person = (props) => {
@@ -93,7 +117,7 @@ const Person = (props) => {
   return (
     <Card>
       <CardSection>
-        <View style={containerStyle}>
+        <View style={[containerStyle, { height: 35 }]}>
           <Icon name="user-circle-o" style={[iconStyle, { fontSize: 22 }]} allowFontScaling />
           <Text style={textStyle}>{firstName} {lastName}</Text>
         </View>
@@ -103,14 +127,16 @@ const Person = (props) => {
           <Icon name="info-circle" style={iconStyle} allowFontScaling />
           <Text style={textStyleElem}>{status}</Text>
         </View>
-        <View style={[containerStyle, { marginBottom: 15 }]}>
-          <Icon name="envelope" style={iconStyle} allowFontScaling />
-          <Text style={textStyleElem}>{email} </Text>
-        </View>
-        { renderPhones(props)}
-        { renderPersonlUrl(url)}
+        <TouchableOpacity onPress={() => Communications.email([email], null, null, 'My Subject', 'My body text')}>
+          <View style={[containerStyle, touchableContainer]}>
+            <Icon name="envelope" style={[iconStyle, touchable]} allowFontScaling />
+            <Text style={[textStyleElem, touchable]}>{email} </Text>
+          </View>
+        </TouchableOpacity>
+        { props.person.phones && renderPhones(props)}
+        { url && renderPersonlUrl(url)}
       </CardSection>
-      { renderFunctions(props)}
+      { props.person.positions && renderFunctions(props)}
     </Card>
   );
 };

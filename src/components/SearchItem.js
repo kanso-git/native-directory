@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
-import { Card, CardSection } from './common';
+import { CardSection } from './common';
 
 const SearchItem = ({ item, pressFn }) => (
   <TouchableOpacity onPress={() => pressFn(item)}>
