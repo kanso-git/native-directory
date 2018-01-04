@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
+import { HOME_SCREEN } from 'react-native-dotenv';
 import { Card, InputFlex, CardSection } from './common';
 import { authActions, searchActions } from './actions';
 import SearchList from './SearchList';
@@ -9,12 +10,12 @@ import SearchList from './SearchList';
 
 class Home extends Component {
   componentWillReceiveProps(nextProps) {
-    const { secret, retry } = nextProps.auth;
+    const { secret, retry, screen } = nextProps.auth;
     const { searchQuery } = nextProps.directory;
-    console.log(`componentWillReceiveProps secret:${secret}, retry:${retry}`);
-    if (secret == null && retry > 0) {
+    console.log(`componentWillReceiveProps secret:${secret}, retry:${retry}, screen:${screen}`);
+    if (secret == null && (retry > 0 && screen === HOME_SCREEN)) {
       this.props.register();
-    } else if (secret != null && retry > 0) {
+    } else if (secret != null && (retry > 0 && screen === HOME_SCREEN)) {
       this.props.search(searchQuery, secret);
       this.props.resetRetry();
     }

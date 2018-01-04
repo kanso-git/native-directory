@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ScrollView } from 'react-native';
+import { PERSON_SCREEN } from 'react-native-dotenv';
 import { authActions, searchActions } from './actions';
 import Person from './Person';
 
@@ -15,12 +16,13 @@ class MemberDetails extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { secret, retry } = nextProps.auth;
+    const { secret, retry, screen } = nextProps.auth;
     const { id } = nextProps.navigation.state.params.memberDetails;
-    console.log(`------------ MemberDetail componentWillReceiveProps secret:${secret}, retry:${retry}`);
-    if (secret == null && retry > 0) {
+    console.log(`------------ MemberDetail componentWillReceiveProps 
+      secret:${secret}, retry:${retry}, screen:${screen}`);
+    if (secret == null && (retry > 0 && screen === PERSON_SCREEN)) {
       this.props.register();
-    } else if (secret != null && retry > 0) {
+    } else if (secret != null && (retry > 0 && screen === PERSON_SCREEN)) {
       this.props.getPersonDetail(id, secret);
       this.props.resetRetry();
     }

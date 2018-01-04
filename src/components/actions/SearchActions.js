@@ -1,6 +1,11 @@
 import axios from 'axios';
-import { API_ENDPOINT, SECURITY_HEADER_NAME } from 'react-native-dotenv';
+import { API_ENDPOINT,
+  SECURITY_HEADER_NAME,
+  HOME_SCREEN,
+  PERSON_SCREEN,
+  UNIT_SCREEN } from 'react-native-dotenv';
 import * as types from './Types';
+
 
 const searchAxios = async (query, secret) => {
   let res;
@@ -78,7 +83,7 @@ const search = (searchQuery, secret) =>
             dispatch({
               type: types.RETRY,
               payload: {
-                error: 'retry',
+                screen: HOME_SCREEN,
               },
             });
           }
@@ -105,7 +110,7 @@ const getPersonDetail = (id, secret) =>
           dispatch({
             type: types.RETRY,
             payload: {
-              error: 'retry',
+              screen: PERSON_SCREEN,
             },
           });
         }
@@ -130,7 +135,7 @@ const getUnitDetail = (id, secret) =>
           dispatch({
             type: types.RETRY,
             payload: {
-              error: 'retry',
+              screen: UNIT_SCREEN,
             },
           });
         }
