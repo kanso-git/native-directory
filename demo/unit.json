@@ -1,1 +1,22 @@
-{"type": "OU", "id": 103000, "shortName": "SITEL", "name": "Service informatique et télématique", "longName": "Service informatique et télématique", "personsInSubOUs": false, "email": "hotline.sitel@unine.ch", "phone": {"internal": "82000", "external": "+41327182000"}, "fax": {"internal": "82001", "external": "+41327182001"}, "url": "http://www.unine.ch/sitel", "addressLines": ["Rue Emile-Argand 11", "2000 Neuchâtel"]}
+{
+    "type": "OU",
+    "id": 103000,
+    "shortName": "SITEL",
+    "name": "Service informatique et télématique",
+    "longName": "Service informatique et télématique",
+    "personsInSubOUs": false,
+    "email": "hotline.sitel@unine.ch",
+    "phone": {
+        "internal": "82000",
+        "external": "+41327182000"
+    },
+    "fax": {
+        "internal": "82001",
+        "external": "+41327182001"
+    },
+    "url": "http://www.unine.ch/sitel",
+    "addressLines": [
+        "Rue Emile-Argand 11",
+        "2000 Neuchâtel"
+    ]
+}

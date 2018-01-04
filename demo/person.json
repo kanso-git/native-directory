@@ -1,1 +1,96 @@
-{"type": "PERSON", "id": 3110, "lastName": "BOUZELBOUDJEN", "firstName": "Mahmoud", "email": "mahmoud.bouzelboudjen@unine.ch", "status": "Collaborateur", "phones": [{"internal": "82028", "external": "+41327182028"}], "positions": [{"positionName": "Responsable GIS, formation, logiciels", "positionType": "function", "organizationalUnit": {"id": 103000, "shortName": "SITEL", "name": "Service informatique et télématique", "addressLines": ["Rue Emile-Argand 11", "2000 Neuchâtel"], "phone": {"internal": "82000", "external": "+41327182000"}, "fax": {"internal": "82001", "external": "+41327182001"}, "url": "http://www.unine.ch/sitel"}, "location": {"building": {"code": "30B", "abbreviation": "UM_B", "name": "Unimail B", "addressLines": ["Rue Emile-Argand 13", "2000 Neuchâtel"]}, "floor": {"code": "R", "name": "Rez-de-chaussée"}, "local": {"code": "B002"}}},{"positionName": "Chargé/e de cours", "positionType": "function", "organizationalUnit": {"id": 220000, "shortName": "IGG", "name": "Institut de géographie", "addressLines": ["Espace Louis-Agassiz 1", "2000 Neuchâtel"], "phone": {"internal": "81812", "external": "+41327181812"}, "fax": {"internal": "81701", "external": "+41327181701"}, "url": "http://www.unine.ch/geographie"}, "location": {"building": {"code": "30B", "abbreviation": "UM_B", "name": "Unimail B", "addressLines": ["Rue Emile-Argand 13", "2000 Neuchâtel"]}, "floor": {"code": "R", "name": "Rez-de-chaussée"}, "local": {"code": "B002"}}}]}
+{
+    "type": "PERSON",
+    "id": 3110,
+    "lastName": "BOUZELBOUDJEN",
+    "firstName": "Mahmoud",
+    "email": "mahmoud.bouzelboudjen@unine.ch",
+    "status": "Collaborateur",
+    "phones": [
+        {
+            "internal": "82028",
+            "external": "+41327182028"
+        }
+    ],
+    "positions": [
+        {
+            "positionName": "Responsable GIS, formation, logiciels",
+            "positionType": "function",
+            "organizationalUnit": {
+                "id": 103000,
+                "shortName": "SITEL",
+                "name": "Service informatique et télématique",
+                "addressLines": [
+                    "Rue Emile-Argand 11",
+                    "2000 Neuchâtel"
+                ],
+                "phone": {
+                    "internal": "82000",
+                    "external": "+41327182000"
+                },
+                "fax": {
+                    "internal": "82001",
+                    "external": "+41327182001"
+                },
+                "url": "http://www.unine.ch/sitel"
+            },
+            "location": {
+                "building": {
+                    "code": "30B",
+                    "abbreviation": "UM_B",
+                    "name": "Unimail B",
+                    "addressLines": [
+                        "Rue Emile-Argand 13",
+                        "2000 Neuchâtel"
+                    ]
+                },
+                "floor": {
+                    "code": "R",
+                    "name": "Rez-de-chaussée"
+                },
+                "local": {
+                    "code": "B002"
+                }
+            }
+        },
+        {
+            "positionName": "Chargé/e de cours",
+            "positionType": "function",
+            "organizationalUnit": {
+                "id": 220000,
+                "shortName": "IGG",
+                "name": "Institut de géographie",
+                "addressLines": [
+                    "Espace Louis-Agassiz 1",
+                    "2000 Neuchâtel"
+                ],
+                "phone": {
+                    "internal": "81812",
+                    "external": "+41327181812"
+                },
+                "fax": {
+                    "internal": "81701",
+                    "external": "+41327181701"
+                },
+                "url": "http://www.unine.ch/geographie"
+            },
+            "location": {
+                "building": {
+                    "code": "30B",
+                    "abbreviation": "UM_B",
+                    "name": "Unimail B",
+                    "addressLines": [
+                        "Rue Emile-Argand 13",
+                        "2000 Neuchâtel"
+                    ]
+                },
+                "floor": {
+                    "code": "R",
+                    "name": "Rez-de-chaussée"
+                },
+                "local": {
+                    "code": "B002"
+                }
+            }
+        }
+    ]
+}

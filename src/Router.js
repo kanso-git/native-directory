@@ -18,12 +18,12 @@ const RouterComponent = () => (
         <Scene
           key="memberDetails"
           component={MemberDetails}
-          title="Member Details"
+          title="Détails de la personne"
         />
         <Scene
           key="unitDetails"
           component={UnitDetails}
-          title="Unit Details"
+          title="Détails unité"
         />
       </Scene>
     </Stack>
