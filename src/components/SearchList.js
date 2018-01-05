@@ -25,7 +25,7 @@ class SearchList extends Component {
     }
   };
   renderItem = ({ item }) => (
-    <SearchItem item={item} pressFn={this.onPressItem} />
+    <SearchItem item={item} listLen={this.props.directory.searchResult.length} pressFn={this.onPressItem} />
   );
   render() {
     console.log(JSON.stringify(this.props.directory.searchResult, null, 5));
