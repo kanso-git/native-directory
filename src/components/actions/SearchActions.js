@@ -43,13 +43,13 @@ const getUnitByIdAxios = async (id, secret) => {
   headers[`${SECURITY_HEADER_NAME}`] = secret;
   headers['Content-Type'] = 'text/plain';
   try {
-    unit = await axios.get(`${API_ENDPOINT}/units/${id}?cacheBuster=${(new Date()).getTime()}`, null, {
+    unit = await axios.get(`${API_ENDPOINT}/units/${id}?cacheBuster=${(new Date()).getTime()}`, {
       headers,
     });
-    unitMembers = await axios.get(`${API_ENDPOINT}/units/${id}/members?includeSubUnits=false&cacheBuster=${(new Date()).getTime()}`, null, {
+    unitMembers = await axios.get(`${API_ENDPOINT}/units/${id}/members?includeSubUnits=false&cacheBuster=${(new Date()).getTime()}`, {
       headers,
     });
-    return { unit: unit.data, unitMembers: unitMembers.data };
+    return { unit: unit.data, unitMembers: unitMembers.data.map((item, index) => ({ ...item, key: item.id, index })) };
   } catch (e) {
     throw e;
   }

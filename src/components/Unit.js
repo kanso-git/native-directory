@@ -1,10 +1,13 @@
 /* eslint-disable react/prop-types,no-empty */
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import Icon from 'react-native-fa-icons';
 import Communications from 'react-native-communications';
 import { Actions } from 'react-native-router-flux';
-import Icon from 'react-native-fa-icons';
+
 import { Card, CardSection } from './common';
+import SearchItem from './SearchItem';
+
 
 const styles = StyleSheet.create({
   textStyle: {
@@ -48,7 +51,11 @@ const styles = StyleSheet.create({
   touchableContainer: {
     marginBottom: 15,
   },
+  addressStyle: {
+    paddingLeft: 20,
+  },
 });
+let memberListLen = 0;
 const {
   containerStyle,
   iconStyle,
@@ -56,6 +63,7 @@ const {
   textStyleElem,
   touchable,
   touchableContainer,
+  addressStyle,
 } = styles;
 
 const renderPersonlUrl = (url) => {
@@ -71,77 +79,86 @@ const renderPersonlUrl = (url) => {
   }
   return null;
 };
-const renderPhones = props => props.person.phones.map(phone => (
-  <TouchableOpacity key={phone.external} onPress={() => Communications.phonecall(phone.external, true)}>
+const renderPhone = phone => (
+  <TouchableOpacity
+    key={phone.external}
+    onPress={() => Communications.phonecall(phone.external, true)}
+  >
     <View style={[containerStyle, touchableContainer]}>
       <Icon name="phone" style={[iconStyle, touchable]} allowFontScaling />
       <Text style={[textStyleElem, touchable]}>{phone.external} </Text>
     </View>
   </TouchableOpacity>
-));
-
-const renderFunctions = props => props.person.positions.map(position => (
-  <CardSection key={position.organizationalUnit.id} style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
-    <View style={[containerStyle, { marginBottom: 15 }]}>
-      <Icon name="suitcase" style={iconStyle} allowFontScaling />
-      <Text style={textStyleElem}>{position.positionName} </Text>
+);
+const renderFax = fax => (
+  <TouchableOpacity key={fax.external} onPress={() => Communications.phonecall(fax.external, true)}>
+    <View style={[containerStyle, touchableContainer]}>
+      <Icon name="fax" style={[iconStyle, touchable]} allowFontScaling />
+      <Text style={[textStyleElem, touchable]}>{fax.external} </Text>
     </View>
-    {
-        position.organizationalUnit && (
-        <TouchableOpacity onPress={() => Actions.replace('unitDetails', { unitDetails: position.organizationalUnit })}>
-          <View style={[containerStyle, touchableContainer]}>
-            <Icon name="sitemap" style={[iconStyle, touchable]} allowFontScaling />
-            <Text style={[textStyleElem, touchable]}>{position.organizationalUnit.name} </Text>
-          </View>
-        </TouchableOpacity>
-        )
+  </TouchableOpacity>
+);
+const renderAddress = addressLines => (
+  <View style={[{ marginBottom: 15 }]}>
+    <Icon name="map-marker" style={iconStyle} allowFontScaling />
+    <View style={addressStyle}>
+      { addressLines.map(line => <Text key={line}>{line}</Text>)}
+    </View>
+  </View>
+);
 
-    }
-
-    {
-        position.location && (
-        <View style={[containerStyle, { marginBottom: 15 }]}>
-          <Icon name="building" style={iconStyle} allowFontScaling />
-          <Text style={textStyleElem}>{position.location.local.code} </Text>
-        </View>
-        )
-    }
-
-  </CardSection>
-));
-const Person = (props) => {
+const onPressItem = (item) => {
+  console.log('clicked item -------');
+  Actions.replace('memberDetails', { memberDetails: item });
+};
+const renderItem = ({ item }) => (
+  <SearchItem item={item} listLen={memberListLen} pressFn={onPressItem} />
+);
+const Unit = (props) => {
+  memberListLen = props.unitMembers.length;
   const {
-    lastName,
-    firstName,
-    status,
+    name,
     email,
+    phone,
+    fax,
     url,
-  } = props.person;
+    addressLines,
+  } = props.unit.unit;
+
   return (
     <Card>
       <CardSection>
         <View style={[containerStyle, { height: 35 }]}>
-          <Icon name="user-circle-o" style={[iconStyle, { fontSize: 22 }]} allowFontScaling />
-          <Text style={textStyle}>{firstName} {lastName}</Text>
+          <Icon name="sitemap" style={[iconStyle, { fontSize: 22 }]} allowFontScaling />
+          <Text style={textStyle}>{name}</Text>
         </View>
       </CardSection>
       <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
-        <View style={[containerStyle, { marginBottom: 15 }]}>
-          <Icon name="info-circle" style={iconStyle} allowFontScaling />
-          <Text style={textStyleElem}>{status}</Text>
-        </View>
+
         <TouchableOpacity onPress={() => Communications.email([email], null, null, 'My Subject', 'My body text')}>
           <View style={[containerStyle, touchableContainer]}>
             <Icon name="envelope" style={[iconStyle, touchable]} allowFontScaling />
             <Text style={[textStyleElem, touchable]}>{email} </Text>
           </View>
         </TouchableOpacity>
-        { props.person.phones && renderPhones(props)}
         { url && renderPersonlUrl(url)}
+        { phone && renderPhone(phone)}
+        { fax && renderFax(fax)}
+        { addressLines.length && renderAddress(addressLines)}
       </CardSection>
-      { props.person.positions && renderFunctions(props)}
+      <CardSection>
+        <View style={[containerStyle, { height: 35 }]}>
+          <Icon name="users" style={[iconStyle, { fontSize: 22 }]} allowFontScaling />
+          <Text style={textStyle}>Membres de l'unité ({props.unitMembers.length})</Text>
+        </View>
+      </CardSection>
+      <FlatList
+        data={props.unitMembers}
+        extraData={props.unitMembers}
+        renderItem={renderItem}
+      />
     </Card>
   );
 };
 
-export default Person;
+export default Unit;
