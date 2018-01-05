@@ -45,7 +45,7 @@ class Home extends Component {
   }
   renderResultMessage = () => {
     const { searchQuery, searchResult } = this.props.directory;
-    if (searchQuery.length > 0) {
+    if (searchQuery.length > 2) {
       let result = `${searchResult.length} résultat`;
       if (searchResult.length > 1) {
         result = `${searchResult.length} résultats`;
