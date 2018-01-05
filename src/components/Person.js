@@ -79,13 +79,25 @@ const renderPhones = props => props.person.phones.map(phone => (
     </View>
   </TouchableOpacity>
 ));
-
-const renderFunctions = props => props.person.positions.map(position => (
-  <CardSection key={position.organizationalUnit.id} style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
-    <View style={[containerStyle, { marginBottom: 15 }]}>
-      <Icon name="suitcase" style={iconStyle} allowFontScaling />
-      <Text style={textStyleElem}>{position.positionName} </Text>
+const renderEmail = email => (
+  <TouchableOpacity onPress={() => Communications.email([email], null, null, 'My Subject', 'My body text')}>
+    <View style={[containerStyle, touchableContainer]}>
+      <Icon name="envelope" style={[iconStyle, touchable]} allowFontScaling />
+      <Text style={[textStyleElem, touchable]}>{email} </Text>
     </View>
+  </TouchableOpacity>
+);
+const renderFunctions = props => props.person.positions.map(position => (
+
+  <CardSection key={position.organizationalUnit.id} style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
+    {
+      position.positionName && (
+      <View style={[containerStyle, { marginBottom: 15 }]}>
+        <Icon name="suitcase" style={iconStyle} allowFontScaling />
+        <Text style={textStyleElem}>{position.positionName} </Text>
+      </View>
+    )
+    }
     {
         position.organizationalUnit && (
         <TouchableOpacity onPress={() => Actions.replace('unitDetails', { unitDetails: position.organizationalUnit })}>
@@ -130,12 +142,7 @@ const Person = (props) => {
           <Icon name="info-circle" style={iconStyle} allowFontScaling />
           <Text style={textStyleElem}>{status}</Text>
         </View>
-        <TouchableOpacity onPress={() => Communications.email([email], null, null, 'My Subject', 'My body text')}>
-          <View style={[containerStyle, touchableContainer]}>
-            <Icon name="envelope" style={[iconStyle, touchable]} allowFontScaling />
-            <Text style={[textStyleElem, touchable]}>{email} </Text>
-          </View>
-        </TouchableOpacity>
+        { email && renderEmail(email)}
         { props.person.phones && renderPhones(props)}
         { url && renderPersonlUrl(url)}
       </CardSection>

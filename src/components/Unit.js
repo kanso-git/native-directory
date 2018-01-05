@@ -65,7 +65,14 @@ const {
   touchableContainer,
   addressStyle,
 } = styles;
-
+const renderEmail = email => (
+  <TouchableOpacity onPress={() => Communications.email([email], null, null, 'My Subject', 'My body text')}>
+    <View style={[containerStyle, touchableContainer]}>
+      <Icon name="envelope" style={[iconStyle, touchable]} allowFontScaling />
+      <Text style={[textStyleElem, touchable]}>{email} </Text>
+    </View>
+  </TouchableOpacity>
+);
 const renderPersonlUrl = (url) => {
   if (url) {
     return (
@@ -135,12 +142,7 @@ const Unit = (props) => {
       </CardSection>
       <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
 
-        <TouchableOpacity onPress={() => Communications.email([email], null, null, 'My Subject', 'My body text')}>
-          <View style={[containerStyle, touchableContainer]}>
-            <Icon name="envelope" style={[iconStyle, touchable]} allowFontScaling />
-            <Text style={[textStyleElem, touchable]}>{email} </Text>
-          </View>
-        </TouchableOpacity>
+        { email && renderEmail(email)}
         { url && renderPersonlUrl(url)}
         { phone && renderPhone(phone)}
         { fax && renderFax(fax)}
