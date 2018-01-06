@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, StyleSheet, Text } from 'react-native';
 import { HOME_SCREEN } from 'react-native-dotenv';
-import { Card, InputFlex, CardSection, Footer } from './common';
+import { Card, InputFlex, CardSection, Footer, Spinner } from './common';
 import { authActions, searchActions } from './actions';
 import SearchList from './SearchList';
 
@@ -55,12 +55,13 @@ class Home extends Component {
       );
     }
   }
+  renderSpinner = () => <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View> ;
   render() {
     console.log('------------ render -----------');
     const { secret, retry } = this.props.auth;
-    const { searchQuery } = this.props.directory;
+    const { searchQuery, spinner } = this.props.directory;
     console.log(`render secret:${secret}
-    retry:${retry}`);
+    retry:${retry} , spinner:${spinner}`);
 
     return (
       <View style={container}>
@@ -75,11 +76,7 @@ class Home extends Component {
           </CardSection>
           {this.renderResultMessage()}
         </Card>
-        <View style={searchResultBox}>
-          <Card>
-            <SearchList />
-          </Card>
-        </View>
+        <View style={searchResultBox}><Card><SearchList /></Card></View>
         <View >
           <Footer
             footerTitle1=" Annuaire Version 2.2 - janvier 2018"

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ScrollView } from 'react-native';
 import { PERSON_SCREEN } from 'react-native-dotenv';
+import { Spinner } from './common';
 import { authActions, searchActions } from './actions';
 import Person from './Person';
 
@@ -27,15 +28,18 @@ class MemberDetails extends Component {
       this.props.resetRetry();
     }
   }
+  renderSpinner = () => <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View> ;
+  renderMember = () => (this.props.person ?
+    <ScrollView><Person person={this.props.person} /></ScrollView> : <View />);
   render() {
-    return this.props.person ?
-      <ScrollView><Person person={this.props.person} /></ScrollView> : <View />;
+    return (this.props.spinner ? this.renderSpinner() : this.renderMember());
   }
 }
 
 const mapStateToProps = state => (
   {
     person: state.directory.person,
+    spinner: state.directory.spinner,
     auth: state.auth,
     memberDetails: state.memberDetails,
   });

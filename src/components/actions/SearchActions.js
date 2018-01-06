@@ -63,6 +63,7 @@ const search = (searchQuery, secret) =>
       payload: {
         searchQuery,
         data: [],
+        spinner: true,
       },
     });
     if (searchQuery && searchQuery.trim().length > 2) {
@@ -74,6 +75,7 @@ const search = (searchQuery, secret) =>
           payload: {
             searchQuery,
             data,
+            spinner: false,
           },
         });
       } catch (e) {
@@ -94,12 +96,19 @@ const search = (searchQuery, secret) =>
 const getPersonDetail = (id, secret) =>
   async (dispatch) => {
     try {
+      dispatch({
+        type: types.SHOW_SPINNER,
+        payload: {
+          spinner: true,
+        },
+      });
       const person = await getPersonByIdAxios(id, secret);
       console.log(` ---------------- getPersonDetail : ${JSON.stringify(person, null, 3)}`);
       dispatch({
         type: types.SET_PERSON,
         payload: {
           person,
+          spinner: false,
         },
       });
     } catch (e) {
@@ -111,6 +120,7 @@ const getPersonDetail = (id, secret) =>
             type: types.RETRY,
             payload: {
               screen: PERSON_SCREEN,
+
             },
           });
         }
@@ -120,12 +130,19 @@ const getPersonDetail = (id, secret) =>
 
 const getUnitDetail = (id, secret) =>
   async (dispatch) => {
+    dispatch({
+      type: types.SHOW_SPINNER,
+      payload: {
+        spinner: true,
+      },
+    });
     try {
       const unit = await getUnitByIdAxios(id, secret);
       dispatch({
         type: types.SET_UNIT,
         payload: {
           unit,
+          spinner: false,
         },
       });
     } catch (e) {

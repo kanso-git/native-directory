@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   searchResult: [],
   person: null,
   unit: null,
+  spinner: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -15,6 +16,10 @@ export default (state = INITIAL_STATE, action) => {
         ...INITIAL_STATE,
         searchQuery: action.payload.searchQuery,
         searchResult: action.payload.data.map((item, index) => ({ ...item, key: item.id, index })),
+      };
+    case types.SHOW_SPINNER:
+      return {
+        ...state, ...action.payload,
       };
     case types.SET_PERSON:
     case types.SET_UNIT:

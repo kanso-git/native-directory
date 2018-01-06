@@ -6,6 +6,7 @@ const SET_PERSON = 'set_person';
 const SET_UNIT = 'set_unit';
 const RETRY = 'retry';
 const RESET = 'reset';
+const SHOW_SPINNER = 'show_spinner';
 
 export {
   REGISTER,
@@ -15,4 +16,5 @@ export {
   SET_UNIT,
   RETRY,
   RESET,
+  SHOW_SPINNER,
 };
