@@ -2,6 +2,8 @@
 
 This is the Unine directory, built using react-native
 
-# TODO 
+# TODO's
 
-Enhance the display by adding sub titles 
+1 - Enhance the display by adding sub titles 
+
+2 - Manage the dispay of the titles (rules added in V2.1)
