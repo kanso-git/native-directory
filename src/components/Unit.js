@@ -146,7 +146,7 @@ const Unit = (props) => {
         { url && renderPersonlUrl(url)}
         { phone && renderPhone(phone)}
         { fax && renderFax(fax)}
-        { addressLines.length && renderAddress(addressLines)}
+        { (addressLines && addressLines.length > 0) && renderAddress(addressLines)}
       </CardSection>
       <CardSection>
         <View style={[containerStyle, { height: 35 }]}>
