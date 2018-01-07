@@ -48,14 +48,22 @@ const styles = StyleSheet.create({
   touchableContainer: {
     marginBottom: 15,
   },
+  iconWrapper: {
+    height: 20,
+  },
+  addressStyle: {
+    paddingLeft: 20,
+  },
 });
 const {
   containerStyle,
+  iconWrapper,
   iconStyle,
   textStyle,
   textStyleElem,
   touchable,
   touchableContainer,
+  addressStyle,
 } = styles;
 
 const renderPersonlUrl = (url) => {
@@ -87,6 +95,30 @@ const renderEmail = email => (
     </View>
   </TouchableOpacity>
 );
+
+const renderOfficeAddress = location => (
+  <View style={[containerStyle, { marginBottom: 15 }]}>
+    <View style={iconWrapper}>
+      <Icon name="building" style={iconStyle} allowFontScaling />
+    </View>
+    <View style={addressStyle}>
+      <Text>Bureau: {location.local.code} </Text>
+      <Text>Étage: {location.floor.name} </Text>
+    </View>
+  </View>
+);
+const renderBuildingAddress = building => (
+  <View style={[containerStyle, { marginBottom: 15, height: 45 }]}>
+    <View style={iconWrapper}>
+      <Icon name="map-marker" style={iconStyle} allowFontScaling />
+    </View>
+    <View style={addressStyle}>
+      <Text >{building.name}</Text>
+      { building.addressLines.map(line => <Text key={line}>{line}</Text>)}
+    </View>
+  </View>
+);
+
 const renderFunctions = props => props.person.positions.map(position => (
 
   <CardSection key={position.organizationalUnit.id} style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -112,11 +144,13 @@ const renderFunctions = props => props.person.positions.map(position => (
 
     {
         position.location && (
-        <View style={[containerStyle, { marginBottom: 15 }]}>
-          <Icon name="building" style={iconStyle} allowFontScaling />
-          <Text style={textStyleElem}>{position.location.local.code} </Text>
-        </View>
+        renderOfficeAddress(position.location)
         )
+    }
+    {
+      (position.location && position.location.building) && (
+        renderBuildingAddress(position.location.building)
+      )
     }
 
   </CardSection>
