@@ -115,7 +115,7 @@ const renderAddress = addressLines => (
       <Icon name="map-marker" style={iconStyle} allowFontScaling />
     </View>
     <View style={addressStyle}>
-      { addressLines.map(line => <Text key={line}>{line}</Text>)}
+      { addressLines.map(line => <Text key={line}> {line}</Text>)}
     </View>
   </View>
 );
