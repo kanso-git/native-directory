@@ -50,6 +50,8 @@ const styles = StyleSheet.create({
   },
   iconWrapper: {
     height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   addressStyle: {
     paddingLeft: 20,
@@ -113,8 +115,8 @@ const renderBuildingAddress = building => (
       <Icon name="map-marker" style={iconStyle} allowFontScaling />
     </View>
     <View style={addressStyle}>
-      <Text >{building.name}</Text>
-      { building.addressLines.map(line => <Text key={line}>{line}</Text>)}
+      {building.name && <Text > {building.name}</Text>}
+      { building.addressLines.map(line => <Text key={line}> {line}</Text>)}
     </View>
   </View>
 );
