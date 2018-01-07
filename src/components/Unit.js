@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
     height: 20,
     width: 100,
   },
+  iconWrapper: {
+    height: 20,
+  },
   iconStyle: {
     fontSize: 18,
     paddingLeft: 5,
@@ -58,6 +61,7 @@ const styles = StyleSheet.create({
 let memberListLen = 0;
 const {
   containerStyle,
+  iconWrapper,
   iconStyle,
   textStyle,
   textStyleElem,
@@ -106,8 +110,10 @@ const renderFax = fax => (
   </TouchableOpacity>
 );
 const renderAddress = addressLines => (
-  <View style={[{ marginBottom: 15 }]}>
-    <Icon name="map-marker" style={iconStyle} allowFontScaling />
+  <View style={[containerStyle, { marginBottom: 15 }]}>
+    <View style={iconWrapper}>
+      <Icon name="map-marker" style={iconStyle} allowFontScaling />
+    </View>
     <View style={addressStyle}>
       { addressLines.map(line => <Text key={line}>{line}</Text>)}
     </View>
