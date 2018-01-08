@@ -1,7 +1,5 @@
 import axios from 'axios';
 import { API_ENDPOINT } from 'react-native-dotenv';
-// const extractSecret = secret => ((secret.a - secret.b) * secret.c) || 0;
-// import sha256 from 'crypto-js/sha256';
 import * as types from './Types';
 
 const hash = require('sjcl-hash-sha256/hash');
