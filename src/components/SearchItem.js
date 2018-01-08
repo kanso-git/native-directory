@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types,no-empty */
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import { PERSON } from 'react-native-dotenv';
