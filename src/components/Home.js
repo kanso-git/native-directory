@@ -57,7 +57,7 @@ class Home extends Component {
   }
   renderSpinner = () => <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View> ;
   render() {
-    console.log('------------ render -----------');
+    console.log('------------ render ------------');
     const { secret, retry } = this.props.auth;
     const { searchQuery, spinner } = this.props.directory;
     console.log(`render secret:${secret}
