@@ -9,3 +9,5 @@ This is the Unine directory, built using react-native
 2 - Manage the dispay of the titles (rules added in V2.1)
 
 3 - Android build and setup (splash screen)
+
+4 - align users 
