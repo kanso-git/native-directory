@@ -1,0 +1,57 @@
+{
+    "global" : {
+        "title" : "UniNE Directory",
+        "loading" : "Loading..."
+    },
+    "search" : {
+        "placeholder" : "Person, department, phone number...",
+        "showAll" : "Show all..."
+    },
+    "person" : {
+        "pageTitle" : "Person Details",
+        "status" : "Status",
+        "email" : "Email",
+        "phone" : "Phone",
+        "website" : "Website",
+        "vcard" : {
+            "label1" : "Save contact to your phone",
+            "label2" : "Download VCard"
+        },
+        "position" : {
+            "title" : "Title",
+            "position" : "Position",
+            "positionNA" : "NA",
+            "unit" : {
+                "name" : "Unit",
+                "address" : "Address",
+                "website" : "Website",
+                "phone" : "Phone secretariat",
+                "fax" : "Fax"
+            },
+            "location" : {
+                "office" : "Office",
+                "floor" : "Floor",
+                "buildingName" : "Building",
+                "address" : "Address"
+            }
+        }
+    },
+    "unit" : {
+        "pageTitle" : "Unit details",
+        "email" : "Email",
+        "website" : "Website",
+        "phone" : "Phone",
+        "fax" : "Fax",
+        "address" : "Address",
+        "members" : "Unit members"
+    },
+    "offline" : {
+        "pageTitle" : "Offline device",
+        "header" : "Your device is not connected to the internet",
+        "p1" : "This application relies on an internet connection to get data from our server. Please connect to mobile data or WiFi network to use it."
+    },
+  "home":{
+    "intro":"Please enter the name of a person, organizational unit or telephone number."
+  }
+
+}

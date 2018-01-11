@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 23,
     flex: 1,
-    height: 20,
+    height: 40,
     width: 100,
   },
   containerStyle: {

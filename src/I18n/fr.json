@@ -1,0 +1,57 @@
+{
+    "global" : {
+        "title" : "Annuaire UniNE",
+        "loading" : "Chargement..."
+    },
+    "search" : {
+        "placeholder" : "Personne, département, n° de tél...",
+        "showAll" : "Charger tout..."
+    },
+    "person" : {
+        "pageTitle" : "Détails de la personne",
+        "status" : "Statut",
+        "email" : "E-mail",
+        "phone" : "Téléphone",
+        "website" : "Site web",
+        "vcard" : {
+            "label1" : "Enregistrer le contact sur mon téléphone",
+            "label2" : "Télécharger VCard"
+        },
+        "position" : {
+            "title":"Titre",
+            "position" : "Fonction",
+            "positionNA" : "Indéfinie",
+            "unit" : {
+                "name" : "Unité",
+                "address" : "Adresse",
+                "website" : "Site web",
+                "phone" : "Téléphone secrétariat",
+                "fax" : "Fax"
+            },
+            "location" : {
+                "office" : "Bureau",
+                "floor" : "Étage",
+                "buildingName" : "Bâtiment",
+                "address" : "Adresse"
+            }
+        }
+    },
+    "unit" : {
+        "pageTitle" : "Détails unité",
+        "email" : "E-mail",
+        "website" : "Website",
+        "phone" : "Téléphone",
+        "fax" : "Fax",
+        "address" : "Adresse",
+        "members" : "Membres de l'unité"
+    },
+    "offline" : {
+        "pageTitle" : "Appareil déconnecté",
+        "header" : "Votre appareil n'est pas connecté à Internet",
+        "p1" : "Cette application a besoin d'unne connexion Internet pour accéder aux données sur notre serveur. Veuillez vous connecter à un réseau de données mobiles ou WiFi pour l'utiliser."
+    },
+    "home":{
+      "intro":"Veuillez saisir le nom d’une personne, d’une unité organisationnelle ou d'un numéro de téléphone."
+    }
+
+}

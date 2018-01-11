@@ -3,11 +3,8 @@ package com.nativedirectory;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.auth0.lock.react.LockReactPackage;
-import com.tradle.react.UdpSocketsModule;
-import com.peel.react.TcpSocketsModule;
-import com.peel.react.rnos.RNOSModule;
 import com.bitgo.randombytes.RandomBytesPackage;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -28,11 +25,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new LockReactPackage(),
-            new UdpSocketsModule(),
-            new TcpSocketsModule(),
-            new RNOSModule(),
-            new RandomBytesPackage()
+            new RandomBytesPackage(),
+            new RNI18nPackage()
       );
     }
 

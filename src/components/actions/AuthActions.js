@@ -90,7 +90,7 @@ const resetRetry = () => ({
 });
 
 const register = () =>
-  // Return a function that accepts `dispatch` so we can dispatch later.
+  // Return a function that  accepts `dispatch` so we can dispatch later.
   // Thunk middleware knows how to turn thunk async actions into actions.
   async (dispatch) => {
     try {
