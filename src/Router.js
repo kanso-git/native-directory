@@ -18,13 +18,13 @@ const RouterComponent = (props) => (
         />
         <Scene
           key="memberDetails"
-          headerBackTitle=''
+          backTitle=" "
           component={MemberDetails}
           title={I18n.t('person.pageTitle')}
         />
         <Scene
           key="unitDetails"
-          headerBackTitle=''
+          backTitle=" "
           component={UnitDetails}
           title={I18n.t('unit.pageTitle')}
         />
