@@ -24,11 +24,13 @@ class App extends Component {
     if (Platform.OS === 'android') {
       this.backButtonListener = BackHandler.addEventListener('hardwareBackPress', () => {
         console.log(`android backButtonListener Actions.currentScene:${Actions.currentScene} `);
-        if (Actions.currentScene !== 'home') {
-          return false;
+        if (Actions.currentScene === 'home') {
+          console.log('Exit APP  android backButtonListener');
+          BackHandler.exitApp();
+          return true;
         }
-        BackHandler.exitApp();
-        return true;
+        console.log('Dont exit  android backButtonListener');
+        return false;
       });
     } else {
       console.log(`IOS backButtonListener Actions.currentScene:${Actions.currentScene} `);
