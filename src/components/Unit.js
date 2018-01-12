@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native
 import Icon from 'react-native-fa-icons';
 import Communications from 'react-native-communications';
 import { Actions } from 'react-native-router-flux';
-
+import I18n from 'react-native-i18n';
 import { Card, CardSection } from './common';
 import SearchItem from './SearchItem';
 
@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
   },
   addressStyle: {
     paddingLeft: 20,
+    paddingBottom: 10,
   },
 });
 let memberListLen = 0;
@@ -110,7 +111,7 @@ const renderFax = fax => (
   </TouchableOpacity>
 );
 const renderAddress = addressLines => (
-  <View style={[containerStyle, { marginBottom: 15 }]}>
+  <View style={[containerStyle, { marginBottom: 15, height:45 }]}>
     <View style={iconWrapper}>
       <Icon name="map-marker" style={iconStyle} allowFontScaling />
     </View>
@@ -125,7 +126,7 @@ const onPressItem = (item) => {
   Actions.replace('memberDetails', { memberDetails: item });
 };
 const renderItem = ({ item }) => (
-  <SearchItem item={item} listLen={memberListLen} pressFn={onPressItem} />
+  <SearchItem item={item} style={{paddingLeft:10}} listLen={memberListLen} pressFn={onPressItem} />
 );
 const Unit = (props) => {
   memberListLen = props.unitMembers.length;
@@ -157,7 +158,7 @@ const Unit = (props) => {
       <CardSection>
         <View style={[containerStyle, { height: 35 }]}>
           <Icon name="users" style={[iconStyle, { fontSize: 22 }]} allowFontScaling />
-          <Text style={textStyle}>Membres de l'unité ({props.unitMembers.length})</Text>
+          <Text style={textStyle}>{I18n.t('unit.members')} ({props.unitMembers.length})</Text>
         </View>
       </CardSection>
       <FlatList

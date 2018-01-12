@@ -11,6 +11,11 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   console.log(`search reducer action : ${JSON.stringify(action, null, 2)}`);
   switch (action.type) {
+    case types.SET_QUERYSEARCH:
+      return {
+        ...state,
+        searchQuery: action.payload.searchQuery,
+      };
     case types.SET_RESULT:
       return {
         ...INITIAL_STATE,

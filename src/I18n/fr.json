@@ -5,7 +5,10 @@
     },
     "search" : {
         "placeholder" : "Personne, département, n° de tél...",
-        "showAll" : "Charger tout..."
+        "showAll" : "Charger tout...",
+        "feedback":"Nous avons trouvé ",
+        "result":" résultat",
+        "results":" résultats"
     },
     "person" : {
         "pageTitle" : "Détails de la personne",

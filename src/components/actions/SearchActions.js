@@ -59,16 +59,20 @@ const getUnitByIdAxios = async (id, secret) => {
 const search = (searchQuery, secret) =>
   async (dispatch) => {
     dispatch({
-      type: types.SET_RESULT,
+      type: types.SET_QUERYSEARCH,
       payload: {
         searchQuery,
-        data: [],
-        spinner: true,
       },
     });
     if (searchQuery && searchQuery.trim().length > 2) {
       console.log(`perform search for ${searchQuery}`);
       try {
+        dispatch({
+          type: types.SHOW_SPINNER,
+          payload: {
+            spinner: true,
+          },
+        });
         const data = await searchAxios(searchQuery, secret);
         dispatch({
           type: types.SET_RESULT,

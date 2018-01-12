@@ -30,7 +30,7 @@ class MemberDetails extends Component {
   }
   renderSpinner = () => <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View> ;
   renderMember = () => (this.props.person ?
-    <ScrollView><Person person={this.props.person} /></ScrollView> : <View />);
+    <ScrollView><Person person={this.props.person}/></ScrollView> : <View />);
   render() {
     return (this.props.spinner ? this.renderSpinner() : this.renderMember());
   }

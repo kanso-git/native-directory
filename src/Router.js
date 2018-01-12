@@ -13,18 +13,20 @@ const RouterComponent = (props) => (
         <Scene
           key="home"
           component={Home}
-          title={I18n.t('global.title', { locale: props.language })}
+          title={I18n.t('global.title')}
+          titleStyle={{alignSelf: 'center'}} 
         />
         <Scene
           key="memberDetails"
+          headerBackTitle=''
           component={MemberDetails}
-          title="Détails de la personne"
-          title={I18n.t('person.pageTitle', { locale: props.language })}
+          title={I18n.t('person.pageTitle')}
         />
         <Scene
           key="unitDetails"
+          headerBackTitle=''
           component={UnitDetails}
-          title={I18n.t('unit.pageTitle', { locale: props.language })}
+          title={I18n.t('unit.pageTitle')}
         />
       </Scene>
     </Stack>

@@ -4,8 +4,8 @@ import { Text, TouchableOpacity } from 'react-native';
 import { PERSON } from 'react-native-dotenv';
 import { CardSection } from './common';
 
-const renderPersonItem = (item, listLen) => (
-  <CardSection style={{ flexDirection: 'column' }}>
+const renderPersonItem = (item, listLen, style ={}) => (
+  <CardSection style={[{ flexDirection: 'column' }, style]}>
     <Text style={{ fontSize: 18 }}>{item.firstName} { item.lastName}</Text>
     <Text>
       {item.positions && item.positions[0].positionName ? `${item.positions[0].positionName}, ` : ''}
@@ -22,9 +22,9 @@ const renderUnitItem = (item, listLen) => (
   </CardSection>
 );
 
-const SearchItem = ({ item, pressFn, listLen }) => (
+const SearchItem = ({ item, pressFn, listLen, style }) => (
   <TouchableOpacity onPress={() => pressFn(item)}>
-    {item.type === PERSON ? renderPersonItem(item, listLen) : renderUnitItem(item, listLen)}
+    {item.type === PERSON ? renderPersonItem(item, listLen, style) : renderUnitItem(item, listLen)}
   </TouchableOpacity>
 );
 

@@ -5,7 +5,10 @@
     },
     "search" : {
         "placeholder" : "Person, department, phone number...",
-        "showAll" : "Show all..."
+        "showAll" : "Show all...",
+        "feedback":"We have found ",
+        "result":" result",
+        "results":" results"
     },
     "person" : {
         "pageTitle" : "Person Details",

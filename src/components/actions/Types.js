@@ -7,10 +7,12 @@ const SET_UNIT = 'set_unit';
 const RETRY = 'retry';
 const RESET = 'reset';
 const SHOW_SPINNER = 'show_spinner';
+const SET_QUERYSEARCH = 'set_querysearch';
 
 export {
   REGISTER,
   STORE_SECRET,
+  SET_QUERYSEARCH,
   SET_RESULT,
   SET_PERSON,
   SET_UNIT,

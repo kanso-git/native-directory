@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const InputFlex = ({ value, onChangeText, placeholder, autoFocus, secureTextEntry}) => {
+const InputFlex = ({ value, onChangeText,icon, placeholder, autoFocus, secureTextEntry}) => {
   const { inputStyle, containerStyle } = styles;
   return (
     <View style={containerStyle}>
@@ -28,7 +28,7 @@ const InputFlex = ({ value, onChangeText, placeholder, autoFocus, secureTextEntr
         secureTextEntry={secureTextEntry}
         autoFocus={autoFocus}
         autoCorrect={false}
-        placeholder={placeholder}
+        placeholder={icon + placeholder}
         value={value}
         onChangeText={onChangeText}
         style={inputStyle}

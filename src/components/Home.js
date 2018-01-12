@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, StyleSheet, Text } from 'react-native';
 import { HOME_SCREEN } from 'react-native-dotenv';
+import I18n from 'react-native-i18n';
 import { Card, InputFlex, CardSection, Footer, Spinner } from './common';
 import { authActions, searchActions } from './actions';
 import SearchList from './SearchList';
@@ -19,12 +20,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     padding: 5,
   },
+  spinnerWrapper: {
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
 });
 
 const {
   container,
   resultText,
   searchResultBox,
+  spinnerWrapper,
 } = styles;
 
 class Home extends Component {
@@ -44,14 +50,18 @@ class Home extends Component {
     this.props.search(value, secret);
   }
   renderResultMessage = () => {
+    const _feedback = I18n.t('search.feedback');
+    const _results = I18n.t('search.results');
+    const _result = I18n.t('search.result');
+
     const { searchQuery, searchResult } = this.props.directory;
     if (searchQuery.length > 2) {
-      let result = `${searchResult.length} résultat`;
+      let result = `${ searchResult.length +  _result} `;
       if (searchResult.length > 1) {
-        result = `${searchResult.length} résultats`;
+        result = `${ searchResult.length +  _results} `;
       }
       return (
-        <Text style={resultText}>Nous avons trouvé {result} </Text>
+        this.props.spinner ? <View style={spinnerWrapper}><Spinner size={'small'} /></View> : <Text style={resultText}>{_feedback + result} </Text>
       );
     }
   }
@@ -69,7 +79,8 @@ class Home extends Component {
           <CardSection>
             <InputFlex
               autoFocus
-              placeholder="&#x1F50E; Personne, département, n° de tél..."
+              icon="&#x1F50E;"
+              placeholder={I18n.t('search.placeholder')}
               value={searchQuery}
               onChangeText={this.onSearch}
             />
@@ -88,6 +99,6 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = state => ({ directory: state.directory, auth: state.auth });
+const mapStateToProps = state => ({ directory: state.directory, auth: state.auth, spinner: state.directory.spinner});
 
 export default connect(mapStateToProps, { ...authActions, ...searchActions })(Home);
