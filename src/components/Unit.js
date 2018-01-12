@@ -111,7 +111,7 @@ const renderFax = fax => (
   </TouchableOpacity>
 );
 const renderAddress = addressLines => (
-  <View style={[containerStyle, { marginBottom: 15, height:45 }]}>
+  <View style={[containerStyle, { marginBottom: 15, height: 45 }]}>
     <View style={iconWrapper}>
       <Icon name="map-marker" style={iconStyle} allowFontScaling />
     </View>
@@ -126,7 +126,12 @@ const onPressItem = (item) => {
   Actions.replace('memberDetails', { memberDetails: item });
 };
 const renderItem = ({ item }) => (
-  <SearchItem item={item} style={{paddingLeft:10}} listLen={memberListLen} pressFn={onPressItem} />
+  <SearchItem
+    item={item}
+    style={{ paddingLeft: 10 }}
+    listLen={memberListLen}
+    pressFn={onPressItem}
+  />
 );
 const Unit = (props) => {
   memberListLen = props.unitMembers.length;

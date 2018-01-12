@@ -1,12 +1,12 @@
 import React from 'react';
-import { Scene, Router, Stack, Actions } from 'react-native-router-flux';
+import { Scene, Router, Stack } from 'react-native-router-flux';
 import I18n from 'react-native-i18n';
 import Home from './components/Home';
 import MemberDetails from './components/MemberDetails';
 import UnitDetails from './components/UnitDetails';
 
 
-const RouterComponent = (props) => (
+const RouterComponent = () => (
   <Router >
     <Stack key="root" hideNavBar>
       <Scene key="main" >
@@ -14,7 +14,7 @@ const RouterComponent = (props) => (
           key="home"
           component={Home}
           title={I18n.t('global.title')}
-          titleStyle={{alignSelf: 'center'}} 
+          titleStyle={{ alignSelf: 'center' }}
         />
         <Scene
           key="memberDetails"

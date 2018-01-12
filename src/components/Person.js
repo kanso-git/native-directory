@@ -1,4 +1,7 @@
 /* eslint-disable react/prop-types,no-empty */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Communications from 'react-native-communications';
@@ -41,7 +44,7 @@ const styles = StyleSheet.create({
     height: 20,
     width: 100,
   },
-  textStyleElem2:{
+  textStyleElem2: {
     color: '#000',
     paddingRight: 5,
     paddingLeft: 37,
@@ -109,7 +112,11 @@ const renderPersonlUrl = (url) => {
   return null;
 };
 const renderPhones = props => props.person.phones.map(phone => (
-  <TouchableOpacity key={phone.external} onPress={() => Communications.phonecall(phone.external, true)}>
+  <TouchableOpacity
+    key={phone.external}
+    onPress={
+    () => Communications.phonecall(phone.external, true)}
+  >
     <View style={[containerStyle, touchableContainer]}>
       <Icon name="phone" style={[iconStyle, touchable]} allowFontScaling />
       <Text style={[textStyleElem, touchable]}>{phone.external} </Text>
@@ -137,7 +144,7 @@ const renderOfficeAddress = location => (
   </View>
 );
 const renderBuildingAddress = building => (
-  <View style={[containerStyle, { marginBottom: 15, height:  building.name? 50:40 }]}>
+  <View style={[containerStyle, { marginBottom: 15, height: building.name ? 50 : 40 }]}>
     <View style={iconWrapper}>
       <Icon name="map-marker" style={iconStyle} allowFontScaling />
     </View>
@@ -148,23 +155,23 @@ const renderBuildingAddress = building => (
   </View>
 );
 
-const renderPositionElem = (position) =>{
-  const iconName = position.positionType == 'function' ? 'suitcase' :'certificate';
-  const title = position.positionType == 'function' ? `${I18n.t('person.position.position')} ${position.displayOrder}` :I18n.t('person.position.title');
-  const value = position.positionName ? position.positionName :I18n.t('person.position.positionNA');
+const renderPositionElem = (position) => {
+  const iconName = position.positionType === 'function' ? 'suitcase' : 'certificate';
+  const title = position.positionType === 'function' ? `${I18n.t('person.position.position')} ${position.displayOrder}` : I18n.t('person.position.title');
+  const value = position.positionName ? position.positionName : I18n.t('person.position.positionNA');
   return (
-    <View>  
+    <View>
       <View style={[containerStyle]}>
-         <Icon name={iconName} style={iconStyle} allowFontScaling />
-         <Text style={titleStyleElem}>{title}</Text>
+        <Icon name={iconName} style={iconStyle} allowFontScaling />
+        <Text style={titleStyleElem}>{title}</Text>
       </View>
       <View style={[containerStyle, { marginBottom: 15 }]}>
-         <Text style={textStyleElem2}>{value} </Text>
+        <Text style={textStyleElem2}>{value} </Text>
       </View>
     </View>
-)
+  );
 };
-const renderFunctions = props => props.person.positions.map((position , index)=> (
+const renderFunctions = props => props.person.positions.map((position, index) => (
 
   <CardSection key={index} style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
     {
@@ -195,55 +202,51 @@ const renderFunctions = props => props.person.positions.map((position , index)=>
 
   </CardSection>
 ));
-formatPositions = (person)=>{
+const formatPositions = (person) => {
+  if (!person.positions) {
+    person.currFunctions = [];
+    person.positions = [];
+  } else {
+    const { positions } = person;
+    const currTitles = positions.filter(p => p.positionType === 'title');
+    const currFunctions = positions.filter(p => p.positionType === 'function');
 
-  if(!person.positions){
-    person.currFunctions  = [];
-    person.positions =[];
-  }else{
-    let positions = person.positions;
-
-    let currTitles    = positions.filter(p => p.positionType === "title");
-    let currFunctions = positions.filter(p => p.positionType  === "function");
-
-    let finalPositions = currFunctions.map( (p, key) => {
-        let functionTitle = currTitles.filter(
-          t =>{
-            let isFoundAndNotDeleted = t["organizationalUnit"]["id"] === p["organizationalUnit"]["id"] && !t["deleted"];
-            if(isFoundAndNotDeleted){
-              t["deleted"] = true;
-            }
-            return isFoundAndNotDeleted;
-          }
-        );
-
-        if(functionTitle.length>0){
-          p["titleName"] =functionTitle[0]["positionName"];
-          functionTitle[0]["deleted"]= true;
+    const finalPositions = currFunctions.map((p, key) => {
+      const functionTitle = currTitles.filter((t) => {
+        const isFoundAndNotDeleted =
+         t.organizationalUnit.id === p.organizationalUnit.id && !t.deleted;
+        if (isFoundAndNotDeleted) {
+          t.deleted = true;
         }
+        return isFoundAndNotDeleted;
+      });
 
-        if(currFunctions.length ==1){
-          currFunctions[0]["displayOrder"]  = '';
-        }else{
-          var  displayOrder = key +1;
-          p["displayOrder"]  = displayOrder.toString();
-        }
-        return p;
+      if (functionTitle.length > 0) {
+        p.titleName = functionTitle[0].positionName;
+        functionTitle[0].deleted = true;
       }
-    );
+
+      if (currFunctions.length === 1) {
+        currFunctions[0].displayOrder = '';
+      } else {
+        const displayOrder = key + 1;
+        p.displayOrder = displayOrder.toString();
+      }
+      return p;
+    });
 
     // add unassigned titles to the end on the positions array
-    currTitles.forEach( t => {
-      if(!t.deleted){
+    currTitles.forEach((t) => {
+      if (!t.deleted) {
         t.displayOrder = '';
         finalPositions.push(t);
       }
     });
-    person.currFunctions  = currFunctions;
+    person.currFunctions = currFunctions;
     person.positions = finalPositions;
-   }
-   return person;
-}
+  }
+  return person;
+};
 const Person = (props) => {
   const {
     lastName,
@@ -252,9 +255,8 @@ const Person = (props) => {
     email,
     url,
   } = props.person;
-  const _status = I18n.t('person.status');
   formatPositions(props.person);
-  console.log(_status);
+
   return (
     <Card>
       <CardSection>

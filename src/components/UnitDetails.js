@@ -29,7 +29,10 @@ class UnitDetails extends Component {
     }
   }
    renderSpinner = () => <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View> ;
-   renderUnit = () => (this.props.unit ? <ScrollView><Unit unit={this.props.unit} unitMembers={this.props.unit.unitMembers} /></ScrollView> : <View />);
+   renderUnit = () => (this.props.unit ?
+     <ScrollView>
+       <Unit unit={this.props.unit} unitMembers={this.props.unit.unitMembers} />
+     </ScrollView> : <View />);
    render() {
      return this.props.spinner ? this.renderSpinner() : this.renderUnit();
    }

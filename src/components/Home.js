@@ -49,25 +49,27 @@ class Home extends Component {
     const { secret } = this.props.auth;
     this.props.search(value, secret);
   }
-  renderResultMessage = () => {
-    const _feedback = I18n.t('search.feedback');
-    const _results = I18n.t('search.results');
-    const _result = I18n.t('search.result');
+  renderResultMessage= () => {
+    const feedbackTranslated = I18n.t('search.feedback');
+    const resultsTranslated = I18n.t('search.results');
+    const resultTranslated = I18n.t('search.result');
 
     const { searchQuery, searchResult } = this.props.directory;
     if (searchQuery.length > 2) {
-      let result = `${ searchResult.length +  _result} `;
+      let result = `${searchResult.length + resultTranslated} `;
       if (searchResult.length > 1) {
-        result = `${ searchResult.length +  _results} `;
+        result = `${searchResult.length + resultsTranslated} `;
       }
       return (
-        this.props.spinner ? <View style={spinnerWrapper}><Spinner size={'small'} /></View> : <Text style={resultText}>{_feedback + result} </Text>
+        this.props.spinner ?
+          <View style={spinnerWrapper}><Spinner size="small" /></View> :
+          <Text style={resultText}>{feedbackTranslated + result} </Text>
       );
     }
+    return null;
   }
   renderSpinner = () => <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View> ;
   render() {
-    console.log('------------ render ------------');
     const { secret, retry } = this.props.auth;
     const { searchQuery, spinner } = this.props.directory;
     console.log(`render secret:${secret}
@@ -99,6 +101,11 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = state => ({ directory: state.directory, auth: state.auth, spinner: state.directory.spinner});
+const mapStateToProps = state => (
+  {
+    directory: state.directory,
+    auth: state.auth,
+    spinner: state.directory.spinner,
+  });
 
 export default connect(mapStateToProps, { ...authActions, ...searchActions })(Home);
