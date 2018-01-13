@@ -49,7 +49,10 @@ const getUnitByIdAxios = async (id, secret) => {
     unitMembers = await axios.get(`${API_ENDPOINT}/units/${id}/members?includeSubUnits=false&cacheBuster=${(new Date()).getTime()}`, {
       headers,
     });
-    return { unit: unit.data, unitMembers: unitMembers.data.map((item, index) => ({ ...item, key: item.id, index })) };
+    return {
+      unit: unit.data,
+      unitMembers: unitMembers.data.map((item, index) => ({ ...item, key: item.id, index })),
+    };
   } catch (e) {
     throw e;
   }
@@ -58,12 +61,6 @@ const getUnitByIdAxios = async (id, secret) => {
 
 const search = (searchQuery, secret) =>
   async (dispatch) => {
-    dispatch({
-      type: types.SET_QUERYSEARCH,
-      payload: {
-        searchQuery,
-      },
-    });
     if (searchQuery && searchQuery.trim().length > 2) {
       console.log(`perform search for ${searchQuery}`);
       try {
@@ -95,6 +92,15 @@ const search = (searchQuery, secret) =>
           }
         }
       }
+    } else {
+      dispatch({
+        type: types.SET_RESULT,
+        payload: {
+          searchQuery,
+          data: [],
+          spinner: false,
+        },
+      });
     }
   };
 const getPersonDetail = (id, secret) =>
