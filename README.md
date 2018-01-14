@@ -44,23 +44,23 @@ This is the Unine directory, built using react-native
 
   Use a password when prompted
 
-Once the key is generated, use it to generate the installable build:
+  Once the key is generated, use it to generate the installable build:
 
-react-native bundle --platform android --dev false --entry-file index.android.js \
-  --bundle-output android/app/src/main/assets/index.android.bundle \
-  --assets-dest android/app/src/main/res/
+  react-native bundle --platform android --dev false --entry-file index.android.js \
+   --bundle-output android/app/src/main/assets/index.android.bundle \
+   --assets-dest android/app/src/main/res/
 
-Generate the build using gradle
+  Generate the build using gradle
 
-cd android && ./gradlew assembleRelease
+  cd android && ./gradlew assembleRelease or yarn run android-release (script already setup in package.json)
 
-Upload the APK to your phone. The -r flag will replace the existing app (if it exists)
+  Upload the APK to your phone. The -r flag will replace the existing app (if it exists)
 
-adb install -r ./app/build/outputs/apk/app-release-unsigned.apk
+  adb install -r ./app/build/outputs/apk/app-release-unsigned.apk
 
-A more detailed description is mentioned here: 
+  A more detailed description is mentioned here: 
 
-https://facebook.github.io/react-native/docs/signed-apk-android.html
+  https://facebook.github.io/react-native/docs/signed-apk-android.html
 
 
 
