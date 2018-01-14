@@ -16,15 +16,22 @@ This is the Unine directory, built using react-native
 
 6 - Test the backButton "hardwareButton" on Android
 
+7 - Documentation - component level and method level 
+
+8 - Unit test using jest
+
 # Here are 10 fundamental React-Native commands you might find helpful
 
 1 -  react-native init myProject    # scaffolding new project app called myProject
 
 2 -  react-native run-ios --simulator="iPhone X"    # run the app on iPhone simulator (xcode is required )
+   
     a - use window + D (mac) to see the available options on the runing device 
+    
     b - todo add more cmd at this level 
 
 3 -  react-native run android  # run the app on android connected device 
 
 4 - troubleshooting commands
+    
     a - Ambiguous resolution: module ... # try yarn start --reset-cache or yarn start -- --reset-cache
