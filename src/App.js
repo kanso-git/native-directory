@@ -11,10 +11,6 @@ import reducers from './components/reducers';
 import Router from './Router';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.backButtonListener = null;
-  }
   componentDidMount() {
     if (SplashScreen && SplashScreen.hide) {
       SplashScreen.hide();
@@ -22,22 +18,18 @@ class App extends Component {
     this.myStore.dispatch(authActions.register());
 
     if (Platform.OS === 'android') {
-      this.backButtonListener = BackHandler.addEventListener('hardwareBackPress', () => {
-        console.log(`android backButtonListener Actions.currentScene:${Actions.currentScene} `);
+      BackHandler.addEventListener('hardwareBackPress', () => {
         if (Actions.currentScene === 'home') {
           console.log('Exit APP  android backButtonListener');
           BackHandler.exitApp();
           return true;
         }
-        console.log('Dont exit  android backButtonListener');
         return false;
       });
-    } else {
-      console.log(`IOS backButtonListener Actions.currentScene:${Actions.currentScene} `);
     }
   }
   componentWillUnmount() {
-    this.backButtonListener.remove();
+    if (Platform.OS === 'android') BackHandler.removeEventListener('hardwareBackPress');
   }
   myStore = null;
   render() {
