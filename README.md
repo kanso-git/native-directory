@@ -4,21 +4,9 @@ This is the Unine directory, built using react-native
 
 # TODO's
 
-1 - Enhance the display by adding sub titles  AK: Done 0n 12.01.2018
+1 - Documentation - component level and method level 
 
-2 - Manage the dispay of the titles (rules added in V2.1) AK: Done 0n 12.01.2018
-
-3 - Android build and setup (splash screen) AK: Done 0n 12.01.2018
-
-4 - Align users AK: Done 0n 12.01.2018
-
-5 - Manage exception and not connected case exception
-
-6 - Test the backButton "hardwareButton" on Android
-
-7 - Documentation - component level and method level 
-
-8 - Unit test using jest
+2 - Unit test using jest
 
 # Here are 10 fundamental React-Native commands you might find helpful
 
