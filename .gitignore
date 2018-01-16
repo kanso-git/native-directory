@@ -54,3 +54,4 @@ buck-out/
 
 # APP Ignore
 *.env
+deploy/

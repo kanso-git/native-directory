@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Platform, BackHandler } from 'react-native';
+import { View, Platform, BackHandler, NetInfo } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
@@ -19,17 +19,50 @@ class App extends Component {
 
     if (Platform.OS === 'android') {
       BackHandler.addEventListener('hardwareBackPress', () => {
-        if (Actions.currentScene === 'home') {
-          console.log('Exit APP  android backButtonListener');
+        if (Actions.currentScene === 'home' || Actions.currentScene === 'networkError') {
+          console.log(`Exit APP  android backButtonListener currentScene:${Actions.currentScene}`);
           BackHandler.exitApp();
           return true;
         }
+        console.log(`Should not Exit APP  currentScene:${Actions.currentScene}`);
         return false;
       });
     }
+
+    NetInfo.isConnected.fetch().then((isConnected) => {
+      console.log(`First, is ${isConnected ? 'online' : 'offline'}`);
+    });
+
+    NetInfo.isConnected.addEventListener(
+      'connectionChange',
+      this.handleFirstConnectivityChange,
+    );
   }
   componentWillUnmount() {
-    if (Platform.OS === 'android') BackHandler.removeEventListener('hardwareBackPress');
+    if (Platform.OS === 'android') {
+      BackHandler.removeEventListener('hardwareBackPress');
+    }
+    NetInfo.isConnected.removeEventListener(
+      'connectionChange',
+      this.handleFirstConnectivityChange,
+    );
+  }
+  handleFirstConnectivityChange = (isConnected) => {
+    const networkStatus = isConnected ? 'online' : 'offline';
+    const scene = Actions.currentScene;
+    console.log(`handleFirstConnectivityChange Then, networkStatus is ${networkStatus}
+    scene is ${scene}
+    `);
+    switch (networkStatus) {
+      case 'online':
+        Actions.reset('main');
+        break;
+      case 'offline':
+        Actions.reset('error');
+        break;
+      default:
+        break;
+    }
   }
   myStore = null;
   render() {

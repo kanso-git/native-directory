@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "release-android": "cd android && ./gradlew assembleRelease",
+    "release-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "test": "jest"
   },
   "dependencies": {
@@ -30,7 +30,7 @@
     "babel-eslint": "^8.0.3",
     "babel-jest": "21.2.0",
     "babel-preset-react-native": "4.0.0",
-    "eslint": "^4.13.1",
+    "eslint": "^4.15.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-rallycoding": "^3.2.0",

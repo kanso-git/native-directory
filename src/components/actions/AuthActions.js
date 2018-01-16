@@ -75,10 +75,10 @@ const computeSecretHash = (secret) => {
   const num = ((secret.a - secret.b) * secret.c) | 0; // the bitwise or 'converts' the value to 32 bits integer
   const result = secret.alpha + num;
   let bitArray = toBitsUTF8(result);
-  console.log(`bitArray is :${bitArray}`);
+  // console.log(`bitArray is :${bitArray}`);
 
   for (let i = 0; i < secret.d; i++) {
-    console.log(`bitArray after hash is :${bitArray}`);
+    // console.log(`bitArray after hash is :${bitArray}`);
     bitArray = hash(bitArray);
   }
   return fromBits(bitArray);
@@ -96,6 +96,7 @@ const register = () =>
     try {
       // console.log(hash);
       // console.log(codec);
+      console.log('handle register request');
       const obs = await axios.post(`${API_ENDPOINT}/reg`, {});
       return dispatch({
         type: types.STORE_SECRET,
@@ -104,12 +105,12 @@ const register = () =>
         },
       });
     } catch (e) {
-      console.log('auth error', JSON.stringify(e, null, 3));
+      console.log('register auth error', JSON.stringify(e, null, 3));
       if (e.request) {
-        console.log(`e.request.status :${e.request.status}`);
+        console.log(`register e.request.status :${e.request.status}`);
       }
       if (e.response) {
-        console.log(`e.response.status :${e.response.status}`);
+        console.log(`register e.response.status :${e.response.status}`);
       }
     }
   };

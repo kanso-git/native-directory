@@ -93,7 +93,7 @@ class Home extends Component {
         <View >
           <Footer
             footerTitle1=" Annuaire Version 2.2 - janvier 2018"
-            footerTitle2=" © 2018 SITEL - Université de Neuchâtel"
+            footerTitle2=" © 2016 - 2018 SITEL - Université de Neuchâtel"
           />
         </View>
       </View>

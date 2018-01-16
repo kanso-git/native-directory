@@ -8,7 +8,6 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  console.log(action);
   switch (action.type) {
     case types.STORE_SECRET:
       return { ...state, secret: action.payload.secret };

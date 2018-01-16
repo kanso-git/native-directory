@@ -51,7 +51,7 @@
     "offline" : {
         "pageTitle" : "Appareil déconnecté",
         "header" : "Votre appareil n'est pas connecté à Internet",
-        "p1" : "Cette application a besoin d'unne connexion Internet pour accéder aux données sur notre serveur. Veuillez vous connecter à un réseau de données mobiles ou WiFi pour l'utiliser."
+        "p1" : "Cette application a besoin d'une connexion Internet pour accéder aux données sur notre serveur.\nVeuillez vous connecter à un réseau de données mobiles ou WiFi pour l'utiliser."
     },
     "home":{
       "intro":"Veuillez saisir le nom d’une personne, d’une unité organisationnelle ou d'un numéro de téléphone."

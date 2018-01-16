@@ -67,6 +67,7 @@ const search = (searchQuery, secret) =>
         dispatch({
           type: types.SHOW_SPINNER,
           payload: {
+            searchQuery,
             spinner: true,
           },
         });

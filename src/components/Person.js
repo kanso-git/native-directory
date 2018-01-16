@@ -90,7 +90,6 @@ const {
   iconStyle,
   textStyle,
   textStyleElem,
-  textStyleElem2,
   titleStyleElem,
   touchable,
   touchableContainer,
@@ -166,7 +165,8 @@ const renderPositionElem = (position) => {
         <Text style={titleStyleElem}>{title}</Text>
       </View>
       <View style={[containerStyle, { marginBottom: 15 }]}>
-        <Text style={textStyleElem2}>{value} </Text>
+        <Text style={iconStyle} />
+        <Text style={textStyleElem}>{value} </Text>
       </View>
     </View>
   );
