@@ -29,6 +29,8 @@ build/
 .gradle
 local.properties
 *.iml
+android/gradle.properties
+android/app/*.keystore
 
 # node.js
 #
@@ -55,3 +57,5 @@ buck-out/
 # APP Ignore
 *.env
 deploy/
+android/gradle.properties
+android/app/*.keystore

@@ -37,26 +37,35 @@ This is the Unine directory, built using react-native
     a - Ambiguous resolution: module ... # try yarn start --reset-cache or yarn start -- --reset-cache
 
 5 - How to build react native android app for production?
-  
-    You will have to create a key to sign the apk. Use below to create your key:
+   
+    Prerequisite:
+    
+    1 - key to sign the apk already created and placed under the android/app directory in your project folder.
 
-    keytool -genkey -v -keystore my-app-key.keystore -alias my-app-alias -keyalg RSA -keysize 2048 -validity 10000
+    2 - Global variables setup in android/gradle.properties
 
-    Use a password when prompted
+    3 - Adding signing config to your app's gradle config
 
-    Once the key is generated, use it to generate the installable build:
+    Build and Release steps:
 
-    react-native bundle --platform android --dev false --entry-file index.android.js \
-     --bundle-output android/app/src/main/assets/index.android.bundle \
-     --assets-dest android/app/src/main/res/
+    1 - Generating the release APK
+    
+     yarn run release-android 
 
-    Generate the build using gradle
+     The generated APK can be found under android/app/build/outputs/apk/app-release.apk, and is ready to be distributed.
 
-    cd android && ./gradlew assembleRelease or yarn run android-release (script already setup in package.json)
+    2 - Testing the release build of your app (Before uploading the release build to the Play Store)
 
     Upload the APK to your phone. The -r flag will replace the existing app (if it exists)
 
-    adb install -r ./app/build/outputs/apk/app-release-unsigned.apk
+    adb install -r ./android/app/build/outputs/apk/app-release.apk
+
+    or uninstall any previous version of the app you already have installed. 
+    
+    Install it on the device using:
+    
+    react-native run-android --variant=release
+
 
     A more detailed description is mentioned here: 
 
