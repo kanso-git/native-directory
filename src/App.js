@@ -1,3 +1,4 @@
+/* eslint no-console: ["error", { allow: ["info", "warn", "error"] }] */
 import React, { Component } from 'react';
 import { View, Platform, BackHandler, NetInfo } from 'react-native';
 import { Provider } from 'react-redux';
@@ -5,7 +6,6 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import SplashScreen from 'react-native-splash-screen';
 import { Actions } from 'react-native-router-flux';
-import { LOGGING } from 'react-native-dotenv';
 import './I18n/I18n';
 import { authActions } from './components/actions';
 import reducers from './components/reducers';
@@ -21,19 +21,15 @@ class App extends Component {
     if (Platform.OS === 'android') {
       BackHandler.addEventListener('hardwareBackPress', () => {
         if (Actions.currentScene === 'home' || Actions.currentScene === 'networkError') {
-          if ((parseInt(LOGGING, 10))) console.log(`Exit APP  android backButtonListener currentScene:${Actions.currentScene}`);
+          console.info(`Exit APP  android backButtonListener currentScene:${Actions.currentScene}`);
           BackHandler.exitApp();
           return true;
         }
-        if ((parseInt(LOGGING, 10))) console.log(`Should not Exit APP  currentScene:${Actions.currentScene}`);
+        console.info(`Should not Exit APP  currentScene:${Actions.currentScene}`);
         Actions.pop();
         return true;
       });
     }
-
-    NetInfo.isConnected.fetch().then((isConnected) => {
-      if ((parseInt(LOGGING, 10))) console.log(`First, is ${isConnected ? 'online' : 'offline'}`);
-    });
 
     NetInfo.isConnected.addEventListener(
       'connectionChange',
@@ -49,6 +45,15 @@ class App extends Component {
       this.handleFirstConnectivityChange,
     );
   }
+
+  reConfirmOffline = () => {
+    NetInfo.isConnected.fetch().then((isConnected) => {
+      console.info(`First, is ${isConnected ? 'online' : 'offline'}`);
+      if (!isConnected) {
+        Actions.reset('error');
+      }
+    });
+  }
   handleFirstConnectivityChange = (isConnected) => {
     const networkStatus = isConnected ? 'online' : 'offline';
 
@@ -57,12 +62,13 @@ class App extends Component {
         Actions.reset('main');
         break;
       case 'offline':
-        Actions.reset('error');
+        this.reConfirmOffline();
         break;
       default:
         break;
     }
   }
+
   myStore = null;
   render() {
     this.myStore = createStore(reducers, applyMiddleware(thunk));

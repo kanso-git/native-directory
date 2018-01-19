@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, StyleSheet, Text } from 'react-native';
-import { HOME_SCREEN, LOGGING } from 'react-native-dotenv';
+import { HOME_SCREEN } from 'react-native-dotenv';
 import I18n from 'react-native-i18n';
 import { Card, InputFlex, CardSection, Footer, Spinner, Chromatic } from './common';
 import { authActions, searchActions } from './actions';
@@ -37,7 +37,7 @@ class Home extends Component {
   componentWillReceiveProps(nextProps) {
     const { secret, retry, screen } = nextProps.auth;
     const { searchQuery } = nextProps.directory;
-    
+
     if (secret == null && (retry > 0 && screen === HOME_SCREEN)) {
       this.props.register();
     } else if (secret != null && (retry > 0 && screen === HOME_SCREEN)) {
@@ -70,11 +70,7 @@ class Home extends Component {
   }
   renderSpinner = () => <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View> ;
   render() {
-    const { secret, retry } = this.props.auth;
-    const { searchQuery, spinner } = this.props.directory;
-   if ((parseInt(LOGGING, 10)))  console.log(`render secret:${secret}
-    retry:${retry} , spinner:${spinner}`);
-
+    const { searchQuery } = this.props.directory;
     return (
       <View style={container}>
         <Chromatic />

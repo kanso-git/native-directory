@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types,no-empty */
 import React from 'react';
 import { TextInput, View, StyleSheet } from 'react-native';
 
@@ -20,7 +21,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const InputFlex = ({ value, onChangeText,icon, placeholder, autoFocus, secureTextEntry}) => {
+const InputFlex = ({
+  value,
+  onChangeText,
+  icon, placeholder, autoFocus, secureTextEntry,
+}) => {
   const { inputStyle, containerStyle } = styles;
   return (
     <View style={containerStyle}>

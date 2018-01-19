@@ -1,5 +1,6 @@
+/* eslint no-console: ["error", { allow: ["info", "warn", "error"] }] */
 import axios from 'axios';
-import { API_ENDPOINT, LOGGING } from 'react-native-dotenv';
+import { API_ENDPOINT } from 'react-native-dotenv';
 import * as types from './Types';
 
 const hash = require('sjcl-hash-sha256/hash');
@@ -31,8 +32,7 @@ const clamp = (a, len) => {
 
 
 const fromBits = function (arr) {
-  let out = '',
-    i;
+  let out = '',i;
   for (i = 0; i < arr.length; i++) {
     out += ((arr[i] | 0) + 0xF00000000000).toString(16).substr(4);
   }
@@ -42,9 +42,7 @@ const fromBits = function (arr) {
 /** Convert from a UTF-8 string to a bitArray. */
 const toBitsUTF8 = (str) => {
   str = unescape(encodeURIComponent(str));
-  let out = [],
-    i,
-    tmp = 0;
+  let out = [], i, tmp = 0;
   for (i = 0; i < str.length; i++) {
     tmp = tmp << 8 | str.charCodeAt(i);
     if ((i & 3) === 3) {
@@ -59,9 +57,7 @@ const toBitsUTF8 = (str) => {
 };
 
 const toBits = (str) => {
-  let i,
-    out = [],
-    len;
+  let i, out = [], len;
   str = str.replace(/\s|0x/g, '');
   len = str.length;
   str += '00000000';
@@ -75,10 +71,8 @@ const computeSecretHash = (secret) => {
   const num = ((secret.a - secret.b) * secret.c) | 0; // the bitwise or 'converts' the value to 32 bits integer
   const result = secret.alpha + num;
   let bitArray = toBitsUTF8(result);
-  //if ((parseInt(LOGGING, 10)))  console.log(`bitArray is :${bitArray}`);
 
   for (let i = 0; i < secret.d; i++) {
-    //if ((parseInt(LOGGING, 10)))  console.log(`bitArray after hash is :${bitArray}`);
     bitArray = hash(bitArray);
   }
   return fromBits(bitArray);
@@ -92,11 +86,8 @@ const resetRetry = () => ({
 const register = () =>
   // Return a function that  accepts `dispatch` so we can dispatch later.
   // Thunk middleware knows how to turn thunk async actions into actions.
-  async (dispatch) => {
+  async (dispatch ) => {
     try {
-      //if ((parseInt(LOGGING, 10)))  console.log(hash);
-      //if ((parseInt(LOGGING, 10)))  console.log(codec);
-     if ((parseInt(LOGGING, 10)))  console.log('handle register request');
       const obs = await axios.post(`${API_ENDPOINT}/reg`, {});
       return dispatch({
         type: types.STORE_SECRET,
@@ -105,12 +96,12 @@ const register = () =>
         },
       });
     } catch (e) {
-     if ((parseInt(LOGGING, 10)))  console.log('register auth error', JSON.stringify(e, null, 3));
+      console.error('register auth error', JSON.stringify(e, null, 3));
       if (e.request) {
-       if ((parseInt(LOGGING, 10)))  console.log(`register e.request.status :${e.request.status}`);
+        console.error(`register e.request.status :${e.request.status}`);
       }
       if (e.response) {
-       if ((parseInt(LOGGING, 10)))  console.log(`register e.response.status :${e.response.status}`);
+        console.error(`register e.response.status :${e.response.status}`);
       }
     }
   };

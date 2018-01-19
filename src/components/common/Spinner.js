@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types,no-empty */
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 

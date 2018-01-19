@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ScrollView } from 'react-native';
-import { PERSON_SCREEN, LOGGING } from 'react-native-dotenv';
+import { PERSON_SCREEN } from 'react-native-dotenv';
 import { Spinner, Chromatic } from './common';
 import { authActions, searchActions } from './actions';
 import Person from './Person';
@@ -10,7 +10,6 @@ import Person from './Person';
 
 class MemberDetails extends Component {
   componentWillMount() {
-    if ((parseInt(LOGGING, 10))) console.log('------ MemberDetail componentWillMount ---------');
     const { id } = this.props.navigation.state.params.memberDetails;
     const { secret } = this.props.auth;
     this.props.getPersonDetail(id, secret);
@@ -28,9 +27,11 @@ class MemberDetails extends Component {
     }
   }
   renderSpinner = () => (
-    <View>
+    <View style={{ flex: 1 }}>
       <Chromatic />
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Spinner />
+      </View>
     </View>
   );
   renderMember = () => (this.props.person ?

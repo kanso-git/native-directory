@@ -1,30 +1,33 @@
-import { LOGGING } from 'react-native-dotenv';
+/* eslint no-console: ["error", { allow: ["info", "warn", "error"] }] */
+/* eslint global-require:"no-error" */
+
 import I18n, { getLanguages } from 'react-native-i18n';
 // Enable fallbacks if you want `en-US` and `en-GB` to fallback to `en`
 I18n.fallbacks = true;
 
-// Add different defaultLocale here (default is 'en'). It will be used as a fallback when device locale isn't found in translations
+// Add different defaultLocale here (default is 'en')
+// It will be used as a fallback when device locale isn't found in translations
 // I18n.defaultLocale = 'nl'
 
 // Add translations here
 I18n.translations = {
   en: require('./en.json'),
   fr: require('./fr.json'),
-}
+};
 
-getLanguages().then(languages => {
- if ((parseInt(LOGGING, 10)))  console.log(` languages is :${languages}`) // ['en-US', 'en']
-})
+getLanguages().then((languages) => {
+ console.info(` languages is :${languages}`); // ['en-US', 'en']
+});
 
-let languageCode = I18n.locale.substr(0, 2);
-console.log(`I18n.locale.substr(0, 2) is ${languageCode}`);
-switch(languageCode){
+const languageCode = I18n.locale.substr(0, 2);
+
+switch (languageCode) {
   case 'fr':
-  I18n.translations.fr = require('./fr.json');
-  break;
+    I18n.translations.fr = require('./fr.json');
+    break;
   default:
-  I18n.translations.en = require('./en.json');
-  break;
+    I18n.translations.en = require('./en.json');
+    break;
 }
 
 // let languageCode = I18n.locale.substr(0, 2)
