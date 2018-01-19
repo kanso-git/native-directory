@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import I18n from 'react-native-i18n';
 import Icon from 'react-native-fa-icons';
-import { Card, CardSection } from './common';
+import { Card, CardSection, Chromatic } from './common';
 
 const styles = StyleSheet.create({
   textStyleElem: {
@@ -55,15 +55,18 @@ const renderNetworkError = () => (
       <Icon name="exclamation-triangle" style={iconStyle} allowFontScaling />
       <Text style={textStyleElem}>{I18n.t('offline.header')}</Text>
     </View>
-    <View style={[containerStyle, { marginBottom: 25   }]}>
+    <View style={[containerStyle, { marginBottom: 25 }]}>
       <Text style={titleStyleElem}>{I18n.t('offline.p1')} </Text>
     </View>
   </View>
 );
 
 const NetworkError = () => (
-  <Card >
-    <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between', height: 300 }}>{renderNetworkError()}</CardSection>
-  </Card>
+  <View>
+    <Chromatic />
+    <Card >
+      <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between', height: 300 }}>{renderNetworkError()}</CardSection>
+    </Card>
+  </View>
 );
 export default NetworkError;

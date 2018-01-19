@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "bundle":"react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "release-android": "yarn run bundle && cd android && ./gradlew assembleRelease",
     "test": "jest"
   },
@@ -19,6 +19,7 @@
     "react-native-dotenv": "^0.1.0",
     "react-native-fa-icons": "^3.0.1",
     "react-native-i18n": "^2.0.10",
+    "react-native-linear-gradient": "^2.4.0",
     "react-native-randombytes": "^3.0.0",
     "react-native-router-flux": "4.0.0-beta.24",
     "react-native-splash-screen": "^3.0.6",

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { View, StyleSheet, Text } from 'react-native';
 import { HOME_SCREEN } from 'react-native-dotenv';
 import I18n from 'react-native-i18n';
-import { Card, InputFlex, CardSection, Footer, Spinner } from './common';
+import { Card, InputFlex, CardSection, Footer, Spinner, Chromatic } from './common';
 import { authActions, searchActions } from './actions';
 import SearchList from './SearchList';
 
@@ -77,6 +77,7 @@ class Home extends Component {
 
     return (
       <View style={container}>
+        <Chromatic />
         <Card>
           <CardSection>
             <InputFlex

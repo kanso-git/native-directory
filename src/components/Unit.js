@@ -71,7 +71,7 @@ const {
   addressStyle,
 } = styles;
 const renderEmail = email => (
-  <TouchableOpacity onPress={() => Communications.email([email], null, null, 'My Subject', 'My body text')}>
+  <TouchableOpacity onPress={() => Communications.email([email], null, null, ' ', ' ')}>
     <View style={[containerStyle, touchableContainer]}>
       <Icon name="envelope" style={[iconStyle, touchable]} allowFontScaling />
       <Text style={[textStyleElem, touchable]}>{email} </Text>

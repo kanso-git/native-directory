@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ScrollView } from 'react-native';
 import { PERSON_SCREEN } from 'react-native-dotenv';
-import { Spinner } from './common';
+import { Spinner, Chromatic } from './common';
 import { authActions, searchActions } from './actions';
 import Person from './Person';
 
@@ -28,9 +28,17 @@ class MemberDetails extends Component {
       this.props.resetRetry();
     }
   }
-  renderSpinner = () => <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View> ;
+  renderSpinner = () => (
+    <View>
+      <Chromatic />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View>
+    </View>
+  );
   renderMember = () => (this.props.person ?
-    <ScrollView><Person person={this.props.person} /></ScrollView> : <View />);
+    <View>
+      <Chromatic />
+      <ScrollView><Person person={this.props.person} /></ScrollView>
+    </View> : <View />);
   render() {
     return (this.props.spinner ? this.renderSpinner() : this.renderMember());
   }

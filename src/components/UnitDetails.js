@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { View, ScrollView } from 'react-native';
 import { UNIT_SCREEN } from 'react-native-dotenv';
 import { authActions, searchActions } from './actions';
-import { Spinner } from './common';
+import { Spinner, Chromatic } from './common';
 import Unit from './Unit';
 
 
@@ -28,11 +28,19 @@ class UnitDetails extends Component {
       this.props.resetRetry();
     }
   }
-   renderSpinner = () => <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View> ;
+   renderSpinner = () => (
+     <View>
+       <Chromatic />
+       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View>
+     </View>
+   );
    renderUnit = () => (this.props.unit ?
-     <ScrollView>
-       <Unit unit={this.props.unit} unitMembers={this.props.unit.unitMembers} />
-     </ScrollView> : <View />);
+     <View>
+       <Chromatic />
+       <ScrollView>
+         <Unit unit={this.props.unit} unitMembers={this.props.unit.unitMembers} />
+       </ScrollView>
+     </View> : <View />);
    render() {
      return this.props.spinner ? this.renderSpinner() : this.renderUnit();
    }
