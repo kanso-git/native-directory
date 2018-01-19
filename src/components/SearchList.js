@@ -36,7 +36,7 @@ class SearchList extends Component {
     if ((parseInt(LOGGING, 10))) console.log(JSON.stringify(this.props.directory.searchResult, null, 5));
     return (
       <FlatList
-        keyboardShouldPersistTaps
+        keyboardShouldPersistTaps ="always"
         keyboardDismissMode="on-drag"
         data={this.props.directory.searchResult}
         extraData={this.props.directory.searchResult}
