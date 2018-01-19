@@ -5,6 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import SplashScreen from 'react-native-splash-screen';
 import { Actions } from 'react-native-router-flux';
+import { LOGGING } from 'react-native-dotenv';
 import './I18n/I18n';
 import { authActions } from './components/actions';
 import reducers from './components/reducers';
@@ -20,17 +21,18 @@ class App extends Component {
     if (Platform.OS === 'android') {
       BackHandler.addEventListener('hardwareBackPress', () => {
         if (Actions.currentScene === 'home' || Actions.currentScene === 'networkError') {
-          console.log(`Exit APP  android backButtonListener currentScene:${Actions.currentScene}`);
+          if ((parseInt(LOGGING, 10))) console.log(`Exit APP  android backButtonListener currentScene:${Actions.currentScene}`);
           BackHandler.exitApp();
           return true;
         }
-        console.log(`Should not Exit APP  currentScene:${Actions.currentScene}`);
-        return false;
+        if ((parseInt(LOGGING, 10))) console.log(`Should not Exit APP  currentScene:${Actions.currentScene}`);
+        Actions.pop();
+        return true;
       });
     }
 
     NetInfo.isConnected.fetch().then((isConnected) => {
-      console.log(`First, is ${isConnected ? 'online' : 'offline'}`);
+      if ((parseInt(LOGGING, 10))) console.log(`First, is ${isConnected ? 'online' : 'offline'}`);
     });
 
     NetInfo.isConnected.addEventListener(
@@ -49,10 +51,7 @@ class App extends Component {
   }
   handleFirstConnectivityChange = (isConnected) => {
     const networkStatus = isConnected ? 'online' : 'offline';
-    const scene = Actions.currentScene;
-    console.log(`handleFirstConnectivityChange Then, networkStatus is ${networkStatus}
-    scene is ${scene}
-    `);
+
     switch (networkStatus) {
       case 'online':
         Actions.reset('main');

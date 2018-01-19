@@ -1,3 +1,4 @@
+import { LOGGING } from 'react-native-dotenv';
 import * as types from './../actions/Types';
 
 const INITIAL_STATE = {
@@ -9,7 +10,7 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  console.log(`search reducer action : ${JSON.stringify(action, null, 2)}`);
+ if ((parseInt(LOGGING, 10)))  console.log(`search reducer action : ${JSON.stringify(action, null, 2)}`);
   switch (action.type) {
     case types.SET_QUERYSEARCH:
       return {

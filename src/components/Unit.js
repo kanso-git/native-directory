@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native
 import Icon from 'react-native-fa-icons';
 import Communications from 'react-native-communications';
 import { Actions } from 'react-native-router-flux';
+import { LOGGING } from 'react-native-dotenv';
 import I18n from 'react-native-i18n';
 import { Card, CardSection } from './common';
 import SearchItem from './SearchItem';
@@ -122,7 +123,7 @@ const renderAddress = addressLines => (
 );
 
 const onPressItem = (item) => {
-  console.log('clicked item -------');
+ if ((parseInt(LOGGING, 10)))  console.log('clicked item -------');
   Actions.replace('memberDetails', { memberDetails: item });
 };
 const renderItem = ({ item }) => (

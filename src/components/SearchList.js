@@ -3,17 +3,17 @@ import React, { Component } from 'react';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import { PERSON, UNIT } from 'react-native-dotenv';
+import { PERSON, UNIT, LOGGING } from 'react-native-dotenv';
 import { searchActions } from './actions';
 import SearchItem from './SearchItem';
 
 class SearchList extends Component {
   componentWillMount() {
-    console.log('>>>>>>>>>>>>>> componentWillMount');
+    if ((parseInt(LOGGING, 10))) console.log('>>>>>>>>>>>>>> componentWillMount');
   }
   onPressItem = (item) => {
-    console.log('clicked item -------');
-    console.log(JSON.stringify(item, null, 3));
+    if ((parseInt(LOGGING, 10))) console.log('clicked item -------');
+    if ((parseInt(LOGGING, 10))) console.log(JSON.stringify(item, null, 3));
     switch (item.type) {
       case PERSON:
         Actions.push('memberDetails', { memberDetails: item });
@@ -33,9 +33,11 @@ class SearchList extends Component {
     />
   );
   render() {
-    console.log(JSON.stringify(this.props.directory.searchResult, null, 5));
+    if ((parseInt(LOGGING, 10))) console.log(JSON.stringify(this.props.directory.searchResult, null, 5));
     return (
       <FlatList
+        keyboardShouldPersistTaps
+        keyboardDismissMode="on-drag"
         data={this.props.directory.searchResult}
         extraData={this.props.directory.searchResult}
         renderItem={this.renderItem}

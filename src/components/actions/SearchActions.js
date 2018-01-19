@@ -3,7 +3,7 @@ import { API_ENDPOINT,
   SECURITY_HEADER_NAME,
   HOME_SCREEN,
   PERSON_SCREEN,
-  UNIT_SCREEN } from 'react-native-dotenv';
+  UNIT_SCREEN, LOGGING } from 'react-native-dotenv';
 import * as types from './Types';
 
 
@@ -62,7 +62,7 @@ const getUnitByIdAxios = async (id, secret) => {
 const search = (searchQuery, secret) =>
   async (dispatch) => {
     if (searchQuery && searchQuery.trim().length > 2) {
-      console.log(`perform search for ${searchQuery}`);
+     if ((parseInt(LOGGING, 10)))  console.log(`perform search for ${searchQuery}`);
       try {
         dispatch({
           type: types.SHOW_SPINNER,
@@ -82,7 +82,7 @@ const search = (searchQuery, secret) =>
         });
       } catch (e) {
         if (e.response) {
-          console.log(`e.response.status :${e.response.status}`);
+         if ((parseInt(LOGGING, 10)))  console.log(`e.response.status :${e.response.status}`);
           if (e.response.status === 401) {
             dispatch({
               type: types.RETRY,
@@ -114,7 +114,7 @@ const getPersonDetail = (id, secret) =>
         },
       });
       const person = await getPersonByIdAxios(id, secret);
-      console.log(` ---------------- getPersonDetail : ${JSON.stringify(person, null, 3)}`);
+     if ((parseInt(LOGGING, 10)))  console.log(` ---------------- getPersonDetail : ${JSON.stringify(person, null, 3)}`);
       dispatch({
         type: types.SET_PERSON,
         payload: {
@@ -123,9 +123,9 @@ const getPersonDetail = (id, secret) =>
         },
       });
     } catch (e) {
-      console.log('---------------- Error getPersonDetail ------------------');
+     if ((parseInt(LOGGING, 10)))  console.log('---------------- Error getPersonDetail ------------------');
       if (e.response) {
-        console.log(`e.response.status :${e.response.status}`);
+       if ((parseInt(LOGGING, 10)))  console.log(`e.response.status :${e.response.status}`);
         if (e.response.status === 401) {
           dispatch({
             type: types.RETRY,
@@ -158,7 +158,7 @@ const getUnitDetail = (id, secret) =>
       });
     } catch (e) {
       if (e.response) {
-        console.log(`e.response.status :${e.response.status}`);
+       if ((parseInt(LOGGING, 10)))  console.log(`e.response.status :${e.response.status}`);
         if (e.response.status === 401) {
           dispatch({
             type: types.RETRY,

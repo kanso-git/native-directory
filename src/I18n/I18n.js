@@ -1,6 +1,7 @@
-import I18n, {getLanguages} from 'react-native-i18n'
+import { LOGGING } from 'react-native-dotenv';
+import I18n, { getLanguages } from 'react-native-i18n';
 // Enable fallbacks if you want `en-US` and `en-GB` to fallback to `en`
-I18n.fallbacks = true
+I18n.fallbacks = true;
 
 // Add different defaultLocale here (default is 'en'). It will be used as a fallback when device locale isn't found in translations
 // I18n.defaultLocale = 'nl'
@@ -12,7 +13,7 @@ I18n.translations = {
 }
 
 getLanguages().then(languages => {
-  console.log(` languages is :${languages}`) // ['en-US', 'en']
+ if ((parseInt(LOGGING, 10)))  console.log(` languages is :${languages}`) // ['en-US', 'en']
 })
 
 let languageCode = I18n.locale.substr(0, 2);

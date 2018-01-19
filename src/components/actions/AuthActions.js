@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_ENDPOINT } from 'react-native-dotenv';
+import { API_ENDPOINT, LOGGING } from 'react-native-dotenv';
 import * as types from './Types';
 
 const hash = require('sjcl-hash-sha256/hash');
@@ -75,10 +75,10 @@ const computeSecretHash = (secret) => {
   const num = ((secret.a - secret.b) * secret.c) | 0; // the bitwise or 'converts' the value to 32 bits integer
   const result = secret.alpha + num;
   let bitArray = toBitsUTF8(result);
-  // console.log(`bitArray is :${bitArray}`);
+  //if ((parseInt(LOGGING, 10)))  console.log(`bitArray is :${bitArray}`);
 
   for (let i = 0; i < secret.d; i++) {
-    // console.log(`bitArray after hash is :${bitArray}`);
+    //if ((parseInt(LOGGING, 10)))  console.log(`bitArray after hash is :${bitArray}`);
     bitArray = hash(bitArray);
   }
   return fromBits(bitArray);
@@ -94,9 +94,9 @@ const register = () =>
   // Thunk middleware knows how to turn thunk async actions into actions.
   async (dispatch) => {
     try {
-      // console.log(hash);
-      // console.log(codec);
-      console.log('handle register request');
+      //if ((parseInt(LOGGING, 10)))  console.log(hash);
+      //if ((parseInt(LOGGING, 10)))  console.log(codec);
+     if ((parseInt(LOGGING, 10)))  console.log('handle register request');
       const obs = await axios.post(`${API_ENDPOINT}/reg`, {});
       return dispatch({
         type: types.STORE_SECRET,
@@ -105,12 +105,12 @@ const register = () =>
         },
       });
     } catch (e) {
-      console.log('register auth error', JSON.stringify(e, null, 3));
+     if ((parseInt(LOGGING, 10)))  console.log('register auth error', JSON.stringify(e, null, 3));
       if (e.request) {
-        console.log(`register e.request.status :${e.request.status}`);
+       if ((parseInt(LOGGING, 10)))  console.log(`register e.request.status :${e.request.status}`);
       }
       if (e.response) {
-        console.log(`register e.response.status :${e.response.status}`);
+       if ((parseInt(LOGGING, 10)))  console.log(`register e.response.status :${e.response.status}`);
       }
     }
   };

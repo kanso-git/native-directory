@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ScrollView } from 'react-native';
-import { UNIT_SCREEN } from 'react-native-dotenv';
+import { UNIT_SCREEN, LOGGING } from 'react-native-dotenv';
 import { authActions, searchActions } from './actions';
 import { Spinner, Chromatic } from './common';
 import Unit from './Unit';
@@ -10,7 +10,7 @@ import Unit from './Unit';
 
 class UnitDetails extends Component {
   componentWillMount() {
-    console.log('------------ MemberDetail componentWillMount ------------------');
+    if ((parseInt(LOGGING, 10))) console.log('------------ MemberDetail componentWillMount ------------------');
     const { id } = this.props.navigation.state.params.unitDetails;
     const { secret } = this.props.auth;
     this.props.getUnitDetail(id, secret);
@@ -19,8 +19,7 @@ class UnitDetails extends Component {
   componentWillReceiveProps(nextProps) {
     const { secret, retry, screen } = nextProps.auth;
     const { id } = nextProps.navigation.state.params.unitDetails;
-    console.log(`------------ UnitDetails componentWillReceiveProps 
-      secret:${secret}, retry:${retry}, screen:${screen}`);
+  
     if (secret == null && (retry > 0 && screen === UNIT_SCREEN)) {
       this.props.register();
     } else if (secret != null && (retry > 0 && screen === UNIT_SCREEN)) {
