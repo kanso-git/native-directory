@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ch.unine.directory"
-    android:versionCode="220000"
+    android:versionCode="220001"
     android:versionName="2.2.0">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,7 +9,7 @@
 
     <uses-sdk
         android:minSdkVersion="16"
-        android:targetSdkVersion="22" />
+        android:targetSdkVersion="23" />
 
     <application
       android:name=".MainApplication"

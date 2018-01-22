@@ -62,3 +62,4 @@ android/app/*.keystore
 android/app/*.apk
 android/*.apk
 android/app/build/outputs/apk/*.apk
+**/releases
