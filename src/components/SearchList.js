@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types,no-empty */
 import React, { Component } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Keyboard, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { PERSON, UNIT } from 'react-native-dotenv';
@@ -9,6 +9,9 @@ import SearchItem from './SearchItem';
 
 class SearchList extends Component {
   onPressItem = (item) => {
+    if (Platform.OS === 'android') {
+      Keyboard.dismiss();
+    }
     switch (item.type) {
       case PERSON:
         Actions.push('memberDetails', { memberDetails: item });

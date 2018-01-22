@@ -45,7 +45,7 @@ const RouterComponent = () => (
         />
         <Scene
           key="memberDetails"
-          backTitle="&#x1F50E;"
+          backTitle=" "
           component={MemberDetails}
           title={I18n.t('person.pageTitle')}
           titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
@@ -54,7 +54,7 @@ const RouterComponent = () => (
         />
         <Scene
           key="unitDetails"
-          backTitle="&#x1F50E;"
+          backTitle=" "
           component={UnitDetails}
           title={I18n.t('unit.pageTitle')}
           titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
