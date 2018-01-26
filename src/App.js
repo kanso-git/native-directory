@@ -65,10 +65,12 @@ class App extends Component {
 
     switch (networkStatus) {
       case 'online':
-        Actions.reset('main');
+        if (Actions.currentScene === 'networkError') {
+          Actions.reset('main');
+        }
         break;
       case 'offline':
-        this.reConfirmOffline();
+        setTimeout(() => this.reConfirmOffline(), 3000);
         break;
       default:
         break;

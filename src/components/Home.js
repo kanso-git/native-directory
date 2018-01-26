@@ -89,7 +89,7 @@ class Home extends Component {
         <View style={searchResultBox}><Card><SearchList /></Card></View>
         <View >
           <Footer
-            footerTitle1=" Annuaire Version 2.2 - janvier 2018"
+            footerTitle1=" Annuaire Version 2.3 - février 2018"
             footerTitle2=" © 2016 - 2018 SITEL - Université de Neuchâtel"
           />
         </View>
