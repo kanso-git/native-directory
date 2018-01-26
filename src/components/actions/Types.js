@@ -8,6 +8,7 @@ const RETRY = 'retry';
 const RESET = 'reset';
 const SHOW_SPINNER = 'show_spinner';
 const SET_QUERYSEARCH = 'set_querysearch';
+const GET_BUILDING_LIST = ' get_building_list';
 
 export {
   REGISTER,
@@ -19,4 +20,5 @@ export {
   RETRY,
   RESET,
   SHOW_SPINNER,
+  GET_BUILDING_LIST,
 };

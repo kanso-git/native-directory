@@ -143,15 +143,17 @@ const renderOfficeAddress = location => (
   </View>
 );
 const renderBuildingAddress = building => (
-  <View style={[containerStyle, { marginBottom: 15, height: building.name ? 50 : 40 }]}>
-    <View style={iconWrapper}>
-      <Icon name="map-marker" style={iconStyle} allowFontScaling />
+  <TouchableOpacity onPress={() => Actions.push('mapPage', { code: building.code })}>
+    <View style={[containerStyle, touchableContainer, { marginBottom: 15, height: building.name ? 50 : 40 }]}>
+      <View style={iconWrapper}>
+        <Icon name="map-marker" style={[iconStyle, touchable]} allowFontScaling />
+      </View>
+      <View style={addressStyle}>
+        { building.name && <Text style={[touchable]}> {building.name}</Text> }
+        { building.addressLines.map(line => <Text style={[touchable]} key={line}> {line}</Text>)}
+      </View>
     </View>
-    <View style={addressStyle}>
-      { building.name && <Text > {building.name}</Text> }
-      { building.addressLines.map(line => <Text key={line}> {line}</Text>)}
-    </View>
-  </View>
+  </TouchableOpacity>
 );
 
 const renderPositionElem = (position) => {

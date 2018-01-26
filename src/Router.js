@@ -5,6 +5,7 @@ import I18n from 'react-native-i18n';
 import Home from './components/Home';
 import MemberDetails from './components/MemberDetails';
 import UnitDetails from './components/UnitDetails';
+import MapPage from './components/MapPage';
 import NetworkError from './components/NetworkError';
 
 const styles = StyleSheet.create({
@@ -57,6 +58,15 @@ const RouterComponent = () => (
           backTitle=" "
           component={UnitDetails}
           title={I18n.t('unit.pageTitle')}
+          titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
+          backButtonTintColor="white"
+          navigationBarStyle={styles.navStyle}
+        />
+        <Scene
+          key="mapPage"
+          backTitle=" "
+          component={MapPage}
+          title={I18n.t('mapPage.pageTitle')}
           titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}

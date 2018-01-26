@@ -48,6 +48,9 @@
         "address" : "Address",
         "members" : "Unit members"
     },
+    "mapPage" : {
+        "pageTitle" : "Carte"
+    },
     "offline" : {
         "pageTitle" : "Offline device",
         "header" : "Your device is not connected to the internet",

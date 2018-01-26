@@ -1,0 +1,72 @@
+[{
+    "id": 1,
+    "designation": "Archives",
+    "color": "#f2f268",
+    "sortOrder": 1
+},
+{
+    "id": 2,
+    "designation": "Atelier",
+    "color": "#e6e0cb",
+    "sortOrder": 2
+},
+{
+    "id": 3,
+    "designation": "Aula, auditoire",
+    "color": "#e6e0cb",
+    "sortOrder": 3
+},
+{
+    "id": 4,
+    "designation": "Autres surfaces",
+    "color": "#e3e3d6",
+    "sortOrder": 12
+},
+{
+    "id": 5,
+    "designation": "Bibliothèque",
+    "color": "#f2f5ce",
+    "sortOrder": 4
+},
+{
+    "id": 6,
+    "designation": "Bureau",
+    "color": "#bed2fe",
+    "sortOrder": 5
+},
+{
+    "id": 7,
+    "designation": "Cafétéria",
+    "color": "#c9b088",
+    "sortOrder": 6
+},
+{
+    "id": 8,
+    "designation": "Laboratoire",
+    "color": "#f9b542",
+    "sortOrder": 7
+},
+{
+    "id": 9,
+    "designation": "Local technique",
+    "color": "#acac9f",
+    "sortOrder": 8
+},
+{
+    "id": 10,
+    "designation": "Salle de réunion",
+    "color": "#b3f984",
+    "sortOrder": 10
+},
+{
+    "id": 11,
+    "designation": "Salle d&#39;enseignement",
+    "color": "#f63742",
+    "sortOrder": 9
+},
+{
+    "id": 12,
+    "designation": "Salle informatique",
+    "color": "#3c89f5",
+    "sortOrder": 11
+}]

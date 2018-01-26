@@ -1,22 +1,28 @@
 /* eslint no-console: ["error", { allow: ["info", "warn", "error"] }] */
 import React, { Component } from 'react';
-import { View, Platform, BackHandler, NetInfo } from 'react-native';
+import { View, Platform, BackHandler, NetInfo, StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import SplashScreen from 'react-native-splash-screen';
 import { Actions } from 'react-native-router-flux';
 import './I18n/I18n';
-import { authActions } from './components/actions';
+import { authActions, biluneActions } from './components/actions';
 import reducers from './components/reducers';
 import Router from './Router';
 
+const styles = StyleSheet.create({
+  full: {
+    flex: 1,
+  },
+});
 class App extends Component {
   componentDidMount() {
     if (SplashScreen && SplashScreen.hide) {
       SplashScreen.hide();
     }
     this.myStore.dispatch(authActions.register());
+    setTimeout(() => this.myStore.dispatch(biluneActions.getBuildingList()), 0);
 
     if (Platform.OS === 'android') {
       BackHandler.addEventListener('hardwareBackPress', () => {
@@ -74,7 +80,7 @@ class App extends Component {
     this.myStore = createStore(reducers, applyMiddleware(thunk));
     return (
       <Provider store={this.myStore} >
-        <View style={{ flex: 1 }}>
+        <View style={styles.full}>
           <Router />
         </View>
       </Provider>
