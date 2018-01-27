@@ -78,7 +78,7 @@ Liste des locaux d'un b‚timent
 Liste des personnes d'un b‚timent
 
 /batiments/{batimentId}/etages/{etageId}/personnes
-Liste des personnes d'un Ètage d'un b‚timent
+Liste des personnes d'un Ètage, d'un batiment
 
 /batiments/{batimentId}/photo/normal
 ou
