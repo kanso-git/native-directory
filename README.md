@@ -13,6 +13,24 @@ This is the Unine directory, built using react-native
         buildig card should have the following info :
             builing summary
 
+Br2 
+Rue Abram-Louis Breguet 2 
+2000, Neuchâtel 
+Nombre d'étages : 5
+
+
+Total de locaux :235 (5229.6 m² ) 
+- Archives : 1 ( 16.7 m² ) 
+- Aula, auditoire : 3 ( 228.2 m² ) 
+- Autres surfaces : 94 ( 1593.6 m² ) 
+- Bibliothèque : 11 ( 611.9 m² ) 
+- Bureau : 91 ( 1822.4 m² ) 
+- Cafétéria : 2 ( 85.9 m² ) 
+- Local technique : 18 ( 273.1 m² ) 
+- Salle de réunion : 8 ( 231.5 m² ) 
+- Salle d'enseignement : 5 ( 280.1 m² ) 
+- Salle informatique : 2 ( 86.3 m² ) 
+
 4 - Add Local search Card 
 
 # Here are 10 fundamental React-Native commands you might find helpful
