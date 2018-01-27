@@ -8,6 +8,10 @@ This is the Unine directory, built using react-native
 
 2 - Unit test using jest
 
+3 - Add Building search Card
+
+4 - Add Local search Card 
+
 # Here are 10 fundamental React-Native commands you might find helpful
 
 1 -  react-native init myProject    # scaffolding new project app called myProject
