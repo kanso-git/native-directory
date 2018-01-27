@@ -10,6 +10,9 @@ This is the Unine directory, built using react-native
 
 3 - Add Building search Card
 
+        buildig card should have the following info :
+            builing summary
+
 4 - Add Local search Card 
 
 # Here are 10 fundamental React-Native commands you might find helpful
