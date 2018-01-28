@@ -140,18 +140,25 @@ const loadSpatialData = () =>
 
     try {
       const bdlBuildings = await getBdlBuildingListAxios();
-      // const locals = await getBiluneLocalsOneByOneAxios(bdlBuildings);
-      const locals = await getBiluneLocalsOneByOneViaPromiseAxios(bdlBuildings);
+     
       const biluneBuildings = await getBiluneBuildingListAxios();
       const buildingsEnteries = await getBiluneBuildingEnteriesAxios();
 
       const buildings = bdlBuildings.map((b) => {
         const enteries = filterGeometryForBuilding(buildingsEnteries, b.id);
-        const geometry = filterGeometryForBuilding(biluneBuildings, b.id);
-        return { ...b, enteries, geometry };
+        //const geometry = filterGeometryForBuilding(biluneBuildings, b.id);
+        return { ...b, enteries };
       });
-
-
+      dispatch({
+        type: types.GET_BUILDING_LIST,
+        payload: {
+          buildings,
+          locals: [],
+        },
+      });
+      // const locals = await getBiluneLocalsOneByOneAxios(bdlBuildings);
+      const locals = await getBiluneLocalsOneByOneViaPromiseAxios(bdlBuildings);
+      
       dispatch({
         type: types.GET_BUILDING_LIST,
         payload: {

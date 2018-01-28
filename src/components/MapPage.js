@@ -86,8 +86,8 @@ class MapPage extends Component {
       (<MapMarker
         key={f.id}
         coordinate={{
-          latitude: this.toWebMercatorY(f.geometry[0] ? f.geometry[0].y : f.enteries[0].y),
-          longitude: this.toWebMercatorX(f.geometry[0] ? f.geometry[0].x : f.enteries[0].x),
+          latitude: this.toWebMercatorY(f.enteries[0].y),
+          longitude: this.toWebMercatorX(f.enteries[0].x),
         }}
         title={` ${f.abreviation}`}
         description={`${f.adresseLigne1}`}
@@ -97,9 +97,9 @@ class MapPage extends Component {
     const { code } = this.props.navigation.state.params;
     const f = this.props.bilune.buildings.filter(b => b.code === code);
     const regionLatitude = this
-      .toWebMercatorY(f[0].geometry[0] ? f[0].geometry[0].y : f[0].enteries[0].y);
+      .toWebMercatorY(f[0].enteries[0].y);
     const regionLongitude = this
-      .toWebMercatorX(f[0].geometry[0] ? f[0].geometry[0].x : f[0].enteries[0].x);
+      .toWebMercatorX(f[0].enteries[0].x);
 
     const region = {
       latitude: regionLatitude,
