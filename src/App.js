@@ -22,7 +22,8 @@ class App extends Component {
       SplashScreen.hide();
     }
     this.myStore.dispatch(authActions.register());
-    setTimeout(() => this.myStore.dispatch(biluneActions.getBuildingList()), 0);
+    // load bilune data, from BDL services
+    setTimeout(() => this.myStore.dispatch(biluneActions.loadSpatialData()), 0);
 
     if (Platform.OS === 'android') {
       BackHandler.addEventListener('hardwareBackPress', () => {

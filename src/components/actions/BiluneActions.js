@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
 import axios from 'axios';
 import { BDL_SECURITY_TOKEN, BDL_SECURITY_TOKEN_VAL, LOCAL, BUILDING,
   BDL_LOADED, BDL_LOADING, BDL_ERROR } from 'react-native-dotenv';
@@ -18,14 +20,19 @@ const createGroupedArray = (arr, chunkSize) => {
   }
   return groups;
 };
+const getBiluneLocalsForBuilding = async (id) => {
+  try {
+    const res0 = await axios.get(queries.localsByBuildingId(id));
+    return res0;
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 const getBiluneLocalsOneByOneAxios = async (bdlBuildingsData) => {
   try {
     const totalLocals = [];
     bdlBuildingsData.sort((a, b) => {
-      if (a.id !== b.id) {
-        return a.id - b.id;
-      }
       if (a.id === b.id) {
         return 0;
       }
@@ -40,14 +47,21 @@ const getBiluneLocalsOneByOneAxios = async (bdlBuildingsData) => {
     console.log(e);
   }
 };
-const getBiluneLocalsForBuilding = async (id) => {
+const getBiluneLocalsOneByOneViaPromiseAxios = (bdlBuildingsData) => {
   try {
-    const res0 = await axios.get(queries.localsByBuildingId(id));
-    return res0;
+    const localsArr = [];
+    const localPromises = bdlBuildingsData.map(b => axios.get(queries.localsByBuildingId(b.id)));
+    return Promise.all(localPromises)
+      .then((locals) => {
+        locals.map(loc => loc.data.features).forEach(l => localsArr.push(...l));
+        return localsArr;
+      })
+      .catch(err => console.log(err));
   } catch (e) {
-    console.error(e);
+    console.log(e);
   }
 };
+
 const getBiluneLocalsAxios = async (bdlBuildingsData) => {
   try {
     bdlBuildingsData.sort((a, b) => {
@@ -113,9 +127,10 @@ const getBiluneBuildingEnteriesAxios = async () => {
   }
 };
 
-const getBuildingList = () =>
+const loadSpatialData = () =>
 
   async (dispatch) => {
+    const start = new Date().getTime();
     dispatch({
       type: types.CHANGE_BILUNE_STATE,
       payload: {
@@ -125,7 +140,8 @@ const getBuildingList = () =>
 
     try {
       const bdlBuildings = await getBdlBuildingListAxios();
-      const locals = await getBiluneLocalsOneByOneAxios(bdlBuildings);
+      // const locals = await getBiluneLocalsOneByOneAxios(bdlBuildings);
+      const locals = await getBiluneLocalsOneByOneViaPromiseAxios(bdlBuildings);
       const biluneBuildings = await getBiluneBuildingListAxios();
       const buildingsEnteries = await getBiluneBuildingEnteriesAxios();
 
@@ -150,6 +166,9 @@ const getBuildingList = () =>
           state: BDL_LOADED,
         },
       });
+      const end = new Date().getTime();
+      const time = end - start;
+      console.info(`loadSpatialData loading time: ${time}`);
     } catch (e) {
       dispatch({
         type: types.CHANGE_BILUNE_STATE,
@@ -182,11 +201,11 @@ const searchBilune = (query, data) => {
       });
     }
     // as we can find local with length 2
-    console.log(data.buildings);
+    //  console.log(data.buildings);
     locals = data.locals.filter((b) => {
       const locCode = b.attributes.LOC_CODE.toLowerCase();
       const q = query.toLowerCase();
-      console.log(`------ bat_id:${b.attributes.BAT_ID} locCode:${locCode} && query:${q}`);
+      // console.log(`------ bat_id:${b.attributes.BAT_ID} locCode:${locCode} && query:${q}`);
       return locCode.includes(q);
     });
 
@@ -208,6 +227,6 @@ const searchBilune = (query, data) => {
 };
 
 export {
-  getBuildingList,
+  loadSpatialData,
   searchBilune,
 };
