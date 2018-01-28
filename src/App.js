@@ -58,6 +58,7 @@ class App extends Component {
       console.info(`First, is ${isConnected ? 'online' : 'offline'}`);
       if (!isConnected) {
         Actions.reset('error');
+        setTimeout(() => this.handleFirstConnectivityChange(), 300);
       }
     });
   }
