@@ -41,8 +41,8 @@ const localsByBuildingId = (id) => {
   return localPrefix + url + commonPart();
 };
 
-const locals = () => {
-  const url = 'where=BAT_ID >0';
+const locals = (query) => {
+  const url = `where=${query}`;
   return localPrefix + url + commonPart();
 };
 
@@ -79,6 +79,9 @@ Liste des personnes d'un b‚timent
 
 /batiments/{batimentId}/etages/{etageId}/personnes
 Liste des personnes d'un Ètage, d'un batiment
+
+https://biluneweb.unine.ch/locaux/3056/personnes
+Liste des personnes d'un bureau;
 
 /batiments/{batimentId}/photo/normal
 ou

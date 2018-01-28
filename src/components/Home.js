@@ -5,7 +5,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import { HOME_SCREEN } from 'react-native-dotenv';
 import I18n from 'react-native-i18n';
 import { Card, InputFlex, CardSection, Footer, Spinner, Chromatic } from './common';
-import { authActions, searchActions } from './actions';
+import { authActions, searchActions, biluneActions } from './actions';
 import SearchList from './SearchList';
 
 const styles = StyleSheet.create({
@@ -48,6 +48,8 @@ class Home extends Component {
   onSearch= (value) => {
     const { secret } = this.props.auth;
     this.props.search(value, secret);
+    // new version 2.3.0 searchBilune
+    this.props.searchBilune(value, this.props.bilune);
   }
   renderResultMessage= () => {
     const feedbackTranslated = I18n.t('search.feedback');
@@ -103,6 +105,7 @@ const mapStateToProps = state => (
     directory: state.directory,
     auth: state.auth,
     spinner: state.directory.spinner,
+    bilune: state.bilune,
   });
 
-export default connect(mapStateToProps, { ...authActions, ...searchActions })(Home);
+export default connect(mapStateToProps, { ...authActions, ...searchActions, ...biluneActions })(Home);

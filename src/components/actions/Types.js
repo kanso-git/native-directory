@@ -8,7 +8,10 @@ const RETRY = 'retry';
 const RESET = 'reset';
 const SHOW_SPINNER = 'show_spinner';
 const SET_QUERYSEARCH = 'set_querysearch';
-const GET_BUILDING_LIST = ' get_building_list';
+const GET_BUILDING_LIST = 'get_building_list';
+const SET_SEARCH_BILUNE = 'set_search_bilune';
+const RESET_SEARCH_BILUNE = 'reset_search_bilune';
+const CHANGE_BILUNE_STATE = 'change_bilune_state';
 
 export {
   REGISTER,
@@ -21,4 +24,7 @@ export {
   RESET,
   SHOW_SPINNER,
   GET_BUILDING_LIST,
+  SET_SEARCH_BILUNE,
+  RESET_SEARCH_BILUNE,
+  CHANGE_BILUNE_STATE,
 };
