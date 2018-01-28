@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types,no-empty */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MapMarker from './MapMarker';
 
