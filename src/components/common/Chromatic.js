@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types,no-empty */
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -10,9 +11,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const Chromatic = () => (
+const Chromatic = ({ height }) => (
   <LinearGradient
-    style={styles.chromatic}
+    style={[styles.chromatic, { height: height || 5 }]}
     start={{ x: 0, y: 1 }}
     end={{ x: 1, y: 1 }}
     locations={[0, 0.25, 0.5, 0.75, 1]}

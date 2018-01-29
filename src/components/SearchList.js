@@ -26,7 +26,7 @@ class SearchList extends Component {
   renderItem = ({ item }) => (
     <SearchItem
       item={item}
-      listLen={this.props.directory.searchResult.length}
+      listLen={this.props.totalSearchResult.length}
       pressFn={this.onPressItem}
     />
   );
@@ -35,8 +35,8 @@ class SearchList extends Component {
       <FlatList
         keyboardShouldPersistTaps="always"
         keyboardDismissMode="on-drag"
-        data={this.props.directory.searchResult}
-        extraData={this.props.directory.searchResult}
+        data={this.props.totalSearchResult.map((r, index) => ({ ...r, index }))}
+        extraData={this.props.totalSearchResult}
         renderItem={this.renderItem}
       />
     );
@@ -45,7 +45,13 @@ class SearchList extends Component {
 
 
 const mapStateToProps = state => (
-  { directory: state.directory, secret: state.auth.secret }
+  {
+    directory: state.directory,
+    secret: state.auth.secret,
+    totalSearchResult: [...state.directory.searchResult,
+      ...state.bilune.search.local,
+      ...state.bilune.search.building],
+  }
 );
 
 export default connect(mapStateToProps, searchActions)(SearchList);

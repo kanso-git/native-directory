@@ -56,11 +56,13 @@ class Home extends Component {
     const resultsTranslated = I18n.t('search.results');
     const resultTranslated = I18n.t('search.result');
 
-    const { searchQuery, searchResult } = this.props.directory;
-    if (searchQuery.length > 2) {
-      let result = `${searchResult.length + resultTranslated} `;
-      if (searchResult.length > 1) {
-        result = `${searchResult.length + resultsTranslated} `;
+    const { searchQuery } = this.props.directory;
+    const { totalSearchResult } = this.props;
+    console.log(JSON.stringify(totalSearchResult, null, 5));
+    if (searchQuery.length > 1) {
+      let result = `${totalSearchResult.length + resultTranslated} `;
+      if (totalSearchResult.length > 1) {
+        result = `${totalSearchResult.length + resultsTranslated} `;
       }
       return (
         this.props.spinner ?
@@ -68,6 +70,7 @@ class Home extends Component {
           <Text style={resultText}>{feedbackTranslated + result} </Text>
       );
     }
+
     return null;
   }
   renderSpinner = () => <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View> ;
@@ -106,6 +109,9 @@ const mapStateToProps = state => (
     auth: state.auth,
     spinner: state.directory.spinner,
     bilune: state.bilune,
+    totalSearchResult: [...state.directory.searchResult,
+      ...state.bilune.search.local,
+      ...state.bilune.search.building],
   });
 
 export default connect(mapStateToProps, { ...authActions, ...searchActions, ...biluneActions })(Home);

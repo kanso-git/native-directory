@@ -1,5 +1,5 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-await-in-loop */
+/* eslint no-console: ["error", { allow: ["info", "warn", "error"] }] */
+
 import axios from 'axios';
 import { BDL_SECURITY_TOKEN, BDL_SECURITY_TOKEN_VAL, LOCAL, BUILDING,
   BDL_LOADED, BDL_LOADING, BDL_ERROR } from 'react-native-dotenv';
@@ -11,88 +11,7 @@ const filterGeometryForBuilding = (enteries, bId) => enteries
   .filter(e => e.attributes.BAT_ID === bId)
   .map(f => f.geometry);
 
-
-const createGroupedArray = (arr, chunkSize) => {
-  const groups = [];
-  let i;
-  for (i = 0; i < arr.length; i += chunkSize) {
-    groups.push(arr.slice(i, i + chunkSize));
-  }
-  return groups;
-};
-const getBiluneLocalsForBuilding = async (id) => {
-  try {
-    const res0 = await axios.get(queries.localsByBuildingId(id));
-    return res0;
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-const getBiluneLocalsOneByOneAxios = async (bdlBuildingsData) => {
-  try {
-    const totalLocals = [];
-    bdlBuildingsData.sort((a, b) => {
-      if (a.id === b.id) {
-        return 0;
-      }
-      return a.id > b.id ? 1 : -1;
-    });
-    for (const b of bdlBuildingsData) {
-      const locals = await getBiluneLocalsForBuilding(b.id);
-      totalLocals.push(...locals.data.features);
-    }
-    return totalLocals;
-  } catch (e) {
-    console.log(e);
-  }
-};
-const getBiluneLocalsOneByOneViaPromiseAxios = (bdlBuildingsData) => {
-  try {
-    const localsArr = [];
-    const localPromises = bdlBuildingsData.map(b => axios.get(queries.localsByBuildingId(b.id)));
-    return Promise.all(localPromises)
-      .then((locals) => {
-        locals.map(loc => loc.data.features).forEach(l => localsArr.push(...l));
-        return localsArr;
-      })
-      .catch(err => console.log(err));
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const getBiluneLocalsAxios = async (bdlBuildingsData) => {
-  try {
-    bdlBuildingsData.sort((a, b) => {
-      if (a.id !== b.id) {
-        return a.id - b.id;
-      }
-      if (a.id === b.id) {
-        return 0;
-      }
-      return a.id > b.id ? 1 : -1;
-    });
-    const index = Math.ceil(bdlBuildingsData.length / 2);
-    const groupedArr = bdlBuildingsData ? createGroupedArray(bdlBuildingsData, index) : [];
-
-    const midElem = `${groupedArr[0].slice(-1)[0].id}`;
-
-    const query0 = `BAT_ID < ${midElem + 1}`;
-    const query1 = `BAT_ID > ${midElem}`;
-
-    const res0 = await axios.get(queries.locals(query0));
-    const res1 = await axios.get(queries.locals(query1));
-
-    // result: "[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14]]"
-    const finalResult = [...res0.data.features, ...res1.data.features];
-    console.log(finalResult);
-    return finalResult;
-  } catch (e) {
-    throw e;
-  }
-};
-
+const filterBuildingById = (blArr, id) => blArr.filter(b => b.id === id)[0];
 const getBdlBuildingListAxios = async () => {
   let res;
   const headers = {};
@@ -105,13 +24,13 @@ const getBdlBuildingListAxios = async () => {
   }
 };
 
-const getBiluneBuildingListAxios = async () => {
-  let res;
+const getBiluneLocalsWithSpatialDataAxios = async () => {
   try {
-    res = await axios.get(queries.buildings());
-    return res.data ? res.data.features : res.data;
+    const locals = await axios.get(queries.locals('BAT_ID>0'));
+    console.info(`found ${locals.data.features.length} locals`);
+    return locals.data.features;
   } catch (e) {
-    throw e;
+    console.error(e);
   }
 };
 
@@ -140,13 +59,12 @@ const loadSpatialData = () =>
 
     try {
       const bdlBuildings = await getBdlBuildingListAxios();
-     
-      const biluneBuildings = await getBiluneBuildingListAxios();
+      // const biluneBuildings = await getBiluneBuildingListAxios();
       const buildingsEnteries = await getBiluneBuildingEnteriesAxios();
 
       const buildings = bdlBuildings.map((b) => {
         const enteries = filterGeometryForBuilding(buildingsEnteries, b.id);
-        //const geometry = filterGeometryForBuilding(biluneBuildings, b.id);
+        // const geometry = filterGeometryForBuilding(biluneBuildings, b.id);
         return { ...b, enteries };
       });
       dispatch({
@@ -157,8 +75,8 @@ const loadSpatialData = () =>
         },
       });
       // const locals = await getBiluneLocalsOneByOneAxios(bdlBuildings);
-      const locals = await getBiluneLocalsOneByOneViaPromiseAxios(bdlBuildings);
-      
+      const locals = await getBiluneLocalsWithSpatialDataAxios();
+
       dispatch({
         type: types.GET_BUILDING_LIST,
         payload: {
@@ -191,14 +109,13 @@ const loadSpatialData = () =>
     }
   };
 
-// todo make sure data are fully loaded before searching these data
 const searchBilune = (query, data) => {
   const search = {};
   let buildings = [];
   let locals = [];
 
-  if (data.state === BDL_LOADED && query && query.trim().length > 1) {
-    //  search bilune building minimum query length is 3
+  if (query && query.trim().length > 1) {
+    // search bilune building minimum query length is 3
     if (query.trim().length > 2) {
       buildings = data.buildings.filter((b) => {
         const abreviation = b.abreviation.toLowerCase();
@@ -208,18 +125,24 @@ const searchBilune = (query, data) => {
       });
     }
     // as we can find local with length 2
-    //  console.log(data.buildings);
-    locals = data.locals.filter((b) => {
-      const locCode = b.attributes.LOC_CODE.toLowerCase();
-      const q = query.toLowerCase();
-      // console.log(`------ bat_id:${b.attributes.BAT_ID} locCode:${locCode} && query:${q}`);
-      return locCode.includes(q);
-    });
-
-    search[LOCAL] = locals;
-    search[BUILDING] = buildings;
-
-    console.log(search);
+    if (data.state === BDL_LOADED) {
+      locals = data.locals.filter((b) => {
+        const locCode = b.attributes.LOC_CODE.toLowerCase();
+        const typeDes = b.attributes.LOC_TYPE_DESIGNATION.toLowerCase();
+        const q = query.toLowerCase();
+        return locCode.includes(q) || typeDes.includes(q);
+      });
+    }
+    search[LOCAL] = locals.map((l, index) => ({
+      ...l,
+      type: LOCAL,
+      key: l.attributes.LOC_ID,
+      building: filterBuildingById(data.buildings, l.attributes.BAT_ID),
+      subIndex: index,
+    }));
+    search[BUILDING] = buildings.map((b, index) => ({
+      ...b, type: BUILDING, key: b.id, subIndex: index,
+    }));
     return {
       type: types.SET_SEARCH_BILUNE,
       payload: {

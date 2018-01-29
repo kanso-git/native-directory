@@ -19,7 +19,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...INITIAL_STATE,
         searchQuery: action.payload.searchQuery,
-        searchResult: action.payload.data.map((item, index) => ({ ...item, key: item.id, index })),
+        searchResult: action.payload.data.map(item => ({ ...item, key: item.id })),
       };
     case types.SHOW_SPINNER:
       return {

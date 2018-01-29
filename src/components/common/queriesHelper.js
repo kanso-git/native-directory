@@ -91,6 +91,12 @@ Photo standard du b‚timent
 /batiments/{batimentId}/photo/mini
 Photo miniature du b‚timent
 
+https://biluneapi.unine.ch/locaux/549/photo/mini.jpg
+Photo miniature du local
+
+https://biluneapi.unine.ch/locaux/549/photo.jpg
+big photo
+
 /locaux
 https://biluneapi.unine.ch/locaux
 list de locaux

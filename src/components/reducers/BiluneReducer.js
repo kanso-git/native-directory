@@ -3,7 +3,10 @@ import * as types from './../actions/Types';
 const INITIAL_STATE = {
   state: null,
   building: [],
-  search: {},
+  search: {
+    local: [],
+    building: [],
+  },
 };
 
 export default (state = INITIAL_STATE, action) => {

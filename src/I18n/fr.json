@@ -51,6 +51,16 @@
     "mapPage" : {
         "pageTitle" : "Carte"
     },
+    "local" : {
+        "title" : "Local",
+        "floor" : "Étage",
+        "type" : "Type"
+    },
+    "section" : {
+        "personUnit": "Personnes et Structures Organisationnelles",
+        "local":"Locaux",
+        "building":"Bâtiments"
+    },
     "offline" : {
         "pageTitle" : "Appareil déconnecté",
         "header" : "Votre appareil n'est pas connecté à Internet",
