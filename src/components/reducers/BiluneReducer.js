@@ -18,7 +18,7 @@ export default (state = INITIAL_STATE, action) => {
     case types.SET_SEARCH_BILUNE:
       return { ...state, ...action.payload };
     case types.RESET_SEARCH_BILUNE:
-      return { ...state, ...action.payload };
+      return { ...state, search: INITIAL_STATE.search };
     default:
       return state;
   }
