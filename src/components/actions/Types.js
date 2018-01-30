@@ -12,6 +12,7 @@ const GET_BUILDING_LIST = 'get_building_list';
 const SET_SEARCH_BILUNE = 'set_search_bilune';
 const RESET_SEARCH_BILUNE = 'reset_search_bilune';
 const CHANGE_BILUNE_STATE = 'change_bilune_state';
+const GET_BILUNE_DATA = 'get_bilune_data';
 
 export {
   REGISTER,
@@ -27,4 +28,5 @@ export {
   SET_SEARCH_BILUNE,
   RESET_SEARCH_BILUNE,
   CHANGE_BILUNE_STATE,
+  GET_BILUNE_DATA,
 };

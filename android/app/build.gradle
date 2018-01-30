@@ -148,6 +148,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-maps')
+    compile project(':react-native-fetch-blob')
     compile(project(':react-native-linear-gradient')) {
         exclude group: 'com.facebook.react', module: 'react-native'
     }

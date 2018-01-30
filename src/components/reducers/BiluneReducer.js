@@ -2,7 +2,8 @@ import * as types from './../actions/Types';
 
 const INITIAL_STATE = {
   state: null,
-  building: [],
+  buildings: [],
+  locals: [],
   search: {
     local: [],
     building: [],

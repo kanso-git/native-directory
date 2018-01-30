@@ -33,8 +33,8 @@ class SearchItem extends Component {
              source={{ uri: item.base64Image }}
            />
            <View style={{ flexDirection: 'column', paddingLeft: 5 }}>
-             <Text style={{ fontSize: 18 }}>{`${item.attributes.LOC_CODE}, (${item.attributes.LOC_TYPE_DESIGNATION})`} </Text>
-             <Text style={{ fontSize: 13, paddingTop: 5 }}>{`${item.attributes.ETG_DESIGNATION}, ${item.building.abreviation}, ${item.building.adresseLigne1}`} </Text>
+             <Text style={{ fontSize: 18 }}>{`${item.attributes.LOC_CODE}, ${item.building.abreviation}, (${item.attributes.LOC_TYPE_DESIGNATION})`} </Text>
+             <Text style={{ fontSize: 13, paddingTop: 5 }}>{`${item.attributes.ETG_DESIGNATION === 'Rez-de-chaussée' ? 'Rez' : item.attributes.ETG_DESIGNATION}, ${item.building.adresseLigne1}`} </Text>
              <Text style={{ fontSize: 13, paddingTop: 2 }}>{`${item.building.localite}, ${item.building.npa}`} </Text>
            </View>
          </View>
@@ -44,7 +44,9 @@ class SearchItem extends Component {
 
         }}
          >
-           <Text style={{ fontSize: 10, paddingTop: -5 }}>{item.index + 1}/{listLen}</Text>
+           <Text style={{ fontSize: 10, paddingTop: -5, paddingRight: 2 }}>
+             { item.index + 1 }/{listLen}
+           </Text>
          </View>
        </View>
      </CardSection>

@@ -49,7 +49,7 @@ class Home extends Component {
     const { secret } = this.props.auth;
     this.props.search(value, secret);
     // new version 2.3.0 searchBilune
-    this.props.searchBilune(value, this.props.bilune);
+    this.props.searchBilune(value);
   }
   renderResultMessage= () => {
     const feedbackTranslated = I18n.t('search.feedback');
@@ -58,7 +58,7 @@ class Home extends Component {
 
     const { searchQuery } = this.props.directory;
     const { totalSearchResult } = this.props;
-    console.log(JSON.stringify(totalSearchResult, null, 5));
+
     if (searchQuery.length > 1) {
       let result = `${totalSearchResult.length + resultTranslated} `;
       if (totalSearchResult.length > 1) {

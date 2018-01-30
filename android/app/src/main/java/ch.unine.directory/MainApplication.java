@@ -11,6 +11,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.BV.LinearGradient.LinearGradientPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,7 +28,8 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
               new LinearGradientPackage(),
-            new SplashScreenReactPackage(),
+              new RNFetchBlobPackage(),
+              new SplashScreenReactPackage(),
             new RandomBytesPackage(),
             new RNI18nPackage()
       );
