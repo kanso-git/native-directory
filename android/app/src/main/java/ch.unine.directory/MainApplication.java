@@ -12,6 +12,7 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
+import com.airbnb.android.react.maps.MapsPackage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,8 +31,9 @@ public class MainApplication extends Application implements ReactApplication {
               new LinearGradientPackage(),
               new RNFetchBlobPackage(),
               new SplashScreenReactPackage(),
-            new RandomBytesPackage(),
-            new RNI18nPackage()
+              new RandomBytesPackage(),
+              new RNI18nPackage(),
+              new MapsPackage()
       );
     }
 

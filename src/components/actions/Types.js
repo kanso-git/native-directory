@@ -8,11 +8,12 @@ const RETRY = 'retry';
 const RESET = 'reset';
 const SHOW_SPINNER = 'show_spinner';
 const SET_QUERYSEARCH = 'set_querysearch';
-const GET_BUILDING_LIST = 'get_building_list';
+const SET_BILUNE_DATA = 'set_building_data';
 const SET_SEARCH_BILUNE = 'set_search_bilune';
 const RESET_SEARCH_BILUNE = 'reset_search_bilune';
 const CHANGE_BILUNE_STATE = 'change_bilune_state';
 const GET_BILUNE_DATA = 'get_bilune_data';
+const SET_IMAGE_BILUNE = 'set_image_bilune';
 
 export {
   REGISTER,
@@ -24,9 +25,10 @@ export {
   RETRY,
   RESET,
   SHOW_SPINNER,
-  GET_BUILDING_LIST,
+  SET_BILUNE_DATA,
   SET_SEARCH_BILUNE,
   RESET_SEARCH_BILUNE,
   CHANGE_BILUNE_STATE,
   GET_BILUNE_DATA,
+  SET_IMAGE_BILUNE,
 };

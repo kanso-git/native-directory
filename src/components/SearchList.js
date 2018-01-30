@@ -26,6 +26,8 @@ class SearchList extends Component {
   renderItem = ({ item }) => (
     <SearchItem
       item={item}
+      image={item.attributes ?
+        this.props.images[item.attributes.OBJECTID] : this.props.images[item.id]}
       listLen={this.props.totalSearchResult.length}
       pressFn={this.onPressItem}
     />
@@ -48,6 +50,7 @@ const mapStateToProps = state => (
   {
     directory: state.directory,
     secret: state.auth.secret,
+    images: state.bilune.images,
     totalSearchResult: [...state.directory.searchResult,
       ...state.bilune.search.local,
       ...state.bilune.search.building],
