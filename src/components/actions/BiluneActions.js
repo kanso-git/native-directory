@@ -22,6 +22,22 @@ const filterGeometryForBuilding = (enteries, bId) => enteries
 
 const filterBuildingById = (blArr, id) => blArr.filter(b => b.id === id)[0];
 
+const getImageUsingBlob = async (url) => {
+  try {
+    const RNFetchBlob = require('react-native-fetch-blob').default;
+    const res = await RNFetchBlob.fetch('GET', url, {
+      ...headers,
+    });
+    const mimetype = 'image/jpg';
+    const base64Str = res.base64();
+    return (res.base64() && res.base64().length > 0) ?
+      `data:${mimetype};base64,${base64Str}` : base64Image0;
+  } catch (e) {
+    console.error(`error occured getImageUsingBlob ${e}`);
+    throw e;
+  }
+};
+
 const getBdlBuildingListAxios = async () => {
   let res;
   try {
@@ -56,7 +72,7 @@ const getBiluneBuildingEnteriesAxios = async () => {
 
 const loadSpatialData = () =>
 
-  async (dispatch) => {
+  async (dispatch, getState) => {
     const start = new Date().getTime();
     dispatch({
       type: types.CHANGE_BILUNE_STATE,
@@ -82,6 +98,30 @@ const loadSpatialData = () =>
           locals: [],
         },
       });
+      // load building images for home slider
+      const { images } = getState().bilune;
+      const imagesPromise = [];
+      const imagesId = [];
+      buildings.forEach((b) => {
+        // image is not loaded
+        if (!images[b.id]) {
+          imagesId.push(b.id);
+          imagesPromise.push(getImageUsingBlob(`${API_BDL}/batiments/${b.id}/photo/mini`));
+        }
+      });
+      console.info(`loading images for ${imagesId.length} buildings`);
+      if (imagesId.length > 0) {
+        Promise.all(imagesPromise).then((imagesData) => {
+          // handle image stocking
+          imagesId.forEach((id, i) => {
+            images[id] = imagesData[i];
+          });
+          dispatch({
+            type: types.SET_IMAGE_BILUNE,
+            payload: { images },
+          });
+        }).catch(err => console.error(`err loading image:${err}`));
+      }
       // const locals = await getBiluneLocalsOneByOneAxios(bdlBuildings);
       const locals = await getBiluneLocalsWithSpatialDataAxios();
 
@@ -117,21 +157,6 @@ const loadSpatialData = () =>
     }
   };
 
-const getImageUsingBlob = async (url) => {
-  try {
-    const RNFetchBlob = require('react-native-fetch-blob').default;
-    const res = await RNFetchBlob.fetch('GET', url, {
-      ...headers,
-    });
-    const mimetype = 'image/jpg';
-    const base64Str = res.base64();
-    return (res.base64() && res.base64().length > 0) ?
-      `data:${mimetype};base64,${base64Str}` : base64Image0;
-  } catch (e) {
-    console.error(`error occured getImageUsingBlob ${e}`);
-    throw e;
-  }
-};
 
 const searchBilune = query =>
   async (dispatch, getState) => {

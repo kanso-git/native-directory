@@ -7,6 +7,7 @@ import I18n from 'react-native-i18n';
 import { Card, InputFlex, CardSection, Footer, Spinner, Chromatic } from './common';
 import { authActions, searchActions, biluneActions } from './actions';
 import SearchList from './SearchList';
+import HomeCarousel from './HomeCarousel';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,7 +26,6 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
 });
-
 const {
   container,
   resultText,
@@ -76,6 +76,13 @@ class Home extends Component {
   renderSpinner = () => <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View> ;
   render() {
     const { searchQuery } = this.props.directory;
+    const entries = this.props.bilune.buildings ? this.props.bilune.buildings.map((b, index) => {
+      b.key = b.id;
+      b.index = index;
+      b.image = this.props.bilune.images[b.id];
+      return b;
+    }): null;
+    console.log( entries );
     return (
       <View style={container}>
         <Chromatic />
@@ -92,6 +99,7 @@ class Home extends Component {
           {this.renderResultMessage()}
         </Card>
         <View style={searchResultBox}><Card><SearchList /></Card></View>
+        { (entries && entries.length > 0) && <View style={searchResultBox}><Card><HomeCarousel entries={ entries} /></Card></View>}
         <View >
           <Footer
             footerTitle1=" Annuaire Version 2.3 - février 2018"
@@ -112,6 +120,7 @@ const mapStateToProps = state => (
     totalSearchResult: [...state.directory.searchResult,
       ...state.bilune.search.local,
       ...state.bilune.search.building],
+    images: state.bilune.images,
   });
 
 export default connect(mapStateToProps, { ...authActions, ...searchActions, ...biluneActions })(Home);
