@@ -94,23 +94,25 @@ class MapPage extends Component {
       />));
     
     this.setState(() => ({ mapMarkers }));
-    const { code } = this.props.navigation.state.params;
-    const f = this.props.bilune.buildings.filter(b => b.code === code);
-    const regionLatitude = this
-      .toWebMercatorY(f[0].enteries[0].y);
-    const regionLongitude = this
-      .toWebMercatorX(f[0].enteries[0].x);
+    if (this.props.navigation && this.props.navigation.state.params) {
+      const { code } = this.props.navigation.state.params;
+      const f = this.props.bilune.buildings.filter(b => b.code === code);
+      const regionLatitude = this
+        .toWebMercatorY(f[0].enteries[0].y);
+      const regionLongitude = this
+        .toWebMercatorX(f[0].enteries[0].x);
 
-    const region = {
-      latitude: regionLatitude,
-      latitudeDelta: 0.1,
-      longitude: regionLongitude,
-      longitudeDelta: 0.1,
-    };
+      const region = {
+        latitude: regionLatitude,
+        latitudeDelta: 0.1,
+        longitude: regionLongitude,
+        longitudeDelta: 0.1,
+      };
 
-    setTimeout(() => {
-      this.setState(() => ({ region }));
-    }, 500);
+      setTimeout(() => {
+        this.setState(() => ({ region }));
+      }, 500);
+    }
   }
 
   render() {
@@ -124,7 +126,7 @@ class MapPage extends Component {
           showsPointsOfInterest
           showsScale
           loadingEnabled
-          minZoomLevel={17}
+         
           region={this.state.region}
         >
           { this.state.maplocals }

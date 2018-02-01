@@ -8,6 +8,7 @@ import { Card, InputFlex, CardSection, Footer, Spinner, Chromatic } from './comm
 import { authActions, searchActions, biluneActions } from './actions';
 import SearchList from './SearchList';
 import HomeCarousel from './HomeCarousel';
+import MapPage from './MapPage';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,6 +17,17 @@ const styles = StyleSheet.create({
   searchResultBox: {
     flex: 1,
     marginBottom: 40,
+  },
+  wrapperMapSlider: {
+    flex: 1,
+  },
+  sliderBox: {
+    flex: 2,
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  mapBox: {
+    flex: 3,
   },
   resultText: {
     fontSize: 14,
@@ -31,6 +43,9 @@ const {
   resultText,
   searchResultBox,
   spinnerWrapper,
+  sliderBox,
+  mapBox,
+  wrapperMapSlider,
 } = styles;
 
 class Home extends Component {
@@ -73,23 +88,55 @@ class Home extends Component {
 
     return null;
   }
+  renderSectionJsx = text => (
+    <View>
+      <Text style={{
+         fontSize: 18,
+         padding: 5,
+         backgroundColor: '#E5EFF5',
+         shadowColor: '#000',
+         shadowOffset: { width: 0, height: 2 },
+         shadowOpacity: 0.5,
+         elevation: 2,
+       }}
+      >
+        {text}
+      </Text>
+      <Chromatic height={2} />
+    </View>
+  )
+  renderContent = () => {
+    const entries = this.props.bilune.buildings ? this.props.bilune.buildings.map((b) => {
+      b.key = b.id;
+      b.image = this.props.bilune.images[b.id];
+      return b;
+    }) : null;
+    const buildings = this.props.bilune.buildings ? this.props.bilune.buildings : null;
+
+    if (this.props.totalSearchResult && this.props.totalSearchResult.length) {
+      return (
+        <View style={searchResultBox}><Card><SearchList /></Card></View>
+      );
+    } else if (entries && entries.length > 0 && buildings && buildings.length > 0) {
+      return (
+        <View style={wrapperMapSlider} >
+          {this.renderSectionJsx('Bâtiments')}
+          <View style={sliderBox}><HomeCarousel entries={entries} /></View>
+          {this.renderSectionJsx('Carte')}
+          <View style={mapBox}><MapPage /></View>
+        </View>
+      );
+    }
+  }
   renderSpinner = () => <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View> ;
   render() {
     const { searchQuery } = this.props.directory;
-    const entries = this.props.bilune.buildings ? this.props.bilune.buildings.map((b, index) => {
-      b.key = b.id;
-      b.index = index;
-      b.image = this.props.bilune.images[b.id];
-      return b;
-    }): null;
-    console.log( entries );
     return (
       <View style={container}>
         <Chromatic />
         <Card>
           <CardSection>
             <InputFlex
-              autoFocus
               icon="&#x1F50E;"
               placeholder={I18n.t('search.placeholder')}
               value={searchQuery}
@@ -98,8 +145,7 @@ class Home extends Component {
           </CardSection>
           {this.renderResultMessage()}
         </Card>
-        <View style={searchResultBox}><Card><SearchList /></Card></View>
-        { (entries && entries.length > 0) && <View style={searchResultBox}><Card><HomeCarousel entries={ entries} /></Card></View>}
+        {this.renderContent()}
         <View >
           <Footer
             footerTitle1=" Annuaire Version 2.3 - février 2018"
