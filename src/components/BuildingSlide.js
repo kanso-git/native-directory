@@ -14,9 +14,9 @@ const BuildingSlide = props => (
     <Image
       style={{
       backgroundColor: '#F8F8F8',
-      alignSelf: 'stretch',
-      height: (slideWidth / 2) - 30,
-      width: slideWidth / 2,
+      alignSelf: 'strech',
+      height: slideWidth - 80,
+      width: slideWidth - 120,
       borderWidth: 0,
       borderRadius: 8,
       shadowOffset: { width: 0, height: 4 },
@@ -24,7 +24,7 @@ const BuildingSlide = props => (
       source={{ uri: props.data.image }}
     />
     <View style={{
- backgroundColor: 'rgba(0,0,0,.6)', height: 60, marginTop: -60, width: slideWidth / 2,
+ backgroundColor: 'rgba(0,0,0,.6)', height: 60, marginTop: -60, width: slideWidth -40,
 }}
     >
       <Text style={{

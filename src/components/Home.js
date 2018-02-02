@@ -7,7 +7,7 @@ import I18n from 'react-native-i18n';
 import { Card, InputFlex, CardSection, Footer, Spinner, Chromatic } from './common';
 import { authActions, searchActions, biluneActions } from './actions';
 import SearchList from './SearchList';
-import HomeCarousel from './HomeCarousel';
+import Slider from './Slider';
 import MapPage from './MapPage';
 
 const styles = StyleSheet.create({
@@ -22,12 +22,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sliderBox: {
-    flex: 2,
+    flex: 5,
     justifyContent: 'center',
-    marginTop: 20,
   },
   mapBox: {
-    flex: 3,
+    flex: 4,
   },
   resultText: {
     fontSize: 14,
@@ -106,14 +105,15 @@ class Home extends Component {
     </View>
   )
   renderContent = () => {
+    const { searchQuery } = this.props.directory;
     const entries = this.props.bilune.buildings ? this.props.bilune.buildings.map((b) => {
-      b.key = b.id;
       b.image = this.props.bilune.images[b.id];
       return b;
     }) : null;
     const buildings = this.props.bilune.buildings ? this.props.bilune.buildings : null;
-
-    if (this.props.totalSearchResult && this.props.totalSearchResult.length) {
+  
+    if ((this.props.totalSearchResult && this.props.totalSearchResult.length)
+    || searchQuery.length > 0) {
       return (
         <View style={searchResultBox}><Card><SearchList /></Card></View>
       );
@@ -121,7 +121,7 @@ class Home extends Component {
       return (
         <View style={wrapperMapSlider} >
           {this.renderSectionJsx('Bâtiments')}
-          <View style={sliderBox}><HomeCarousel entries={entries} /></View>
+          <View style={sliderBox}><Slider entries={entries} /></View>
           {this.renderSectionJsx('Carte')}
           <View style={mapBox}><MapPage /></View>
         </View>

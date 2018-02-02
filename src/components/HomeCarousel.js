@@ -34,7 +34,7 @@ class HomeCarousel extends Component {
 
      renderItem= ({ item, index }) => <BuildingSlide index={index} data={item} />
      render() {
-       const slideHeight = viewportHeight * 0.30;
+       const slideHeight = viewportHeight;
        const slideWidth = this.wp(100);
        return (
          <View style={styles.container}>
@@ -43,9 +43,11 @@ class HomeCarousel extends Component {
              renderItem={this.renderItem}
              onSnapToItem={index => this.setState(() => ({ activeSlide: index }))}
              sliderWidth={slideWidth}
-             itemWidth={slideWidth / 2}
-             sliderHeight={ (slideWidth / 2) - 30 }
+             itemWidth={slideWidth}
+             sliderHeight={slideHeight}
              activeSlide={this.state.activeSlide}
+             layout={'stack'} 
+             layoutCardOffset={26}
            />
          </View>
        );
