@@ -15,14 +15,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   searchResultBox: {
-    flex: 1,
+    flex: 10,
     marginBottom: 40,
   },
   wrapperMapSlider: {
-    flex: 1,
+    flex: 10,
   },
   sliderBox: {
-    flex: 5,
+    flex: 6,
     justifyContent: 'center',
   },
   mapBox: {
@@ -113,7 +113,7 @@ class Home extends Component {
     const buildings = this.props.bilune.buildings ? this.props.bilune.buildings : null;
   
     if ((this.props.totalSearchResult && this.props.totalSearchResult.length)
-    || searchQuery.length > 0) {
+    || searchQuery.length > 0 || !entries) {
       return (
         <View style={searchResultBox}><Card><SearchList /></Card></View>
       );
@@ -146,7 +146,7 @@ class Home extends Component {
           {this.renderResultMessage()}
         </Card>
         {this.renderContent()}
-        <View >
+        <View style={{ flex:1, alignItems:'baseline' }} >
           <Footer
             footerTitle1=" Annuaire Version 2.3 - février 2018"
             footerTitle2=" © 2016 - 2018 SITEL - Université de Neuchâtel"
