@@ -15,14 +15,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   searchResultBox: {
-    flex: 10,
+    flex: 1,
     marginBottom: 40,
   },
   wrapperMapSlider: {
-    flex: 10,
+    flex: 1,
   },
   sliderBox: {
-    flex: 6,
+    flex: 5,
     justifyContent: 'center',
   },
   mapBox: {
@@ -104,6 +104,14 @@ class Home extends Component {
       <Chromatic height={2} />
     </View>
   )
+  renderFooter = () => (
+    <View style={{position: 'absolute', left: 0, right: 0, bottom: 0}}>
+      <Footer
+        footerTitle1=" Annuaire Version 2.3 - février 2018"
+        footerTitle2=" © 2016 - 2018 SITEL - Université de Neuchâtel"
+      />
+    </View>
+  )
   renderContent = () => {
     const { searchQuery } = this.props.directory;
     const entries = this.props.bilune.buildings ? this.props.bilune.buildings.map((b) => {
@@ -111,11 +119,12 @@ class Home extends Component {
       return b;
     }) : null;
     const buildings = this.props.bilune.buildings ? this.props.bilune.buildings : null;
-  
-    if ((this.props.totalSearchResult && this.props.totalSearchResult.length)
-    || searchQuery.length > 0 || !entries) {
+
+    if (searchQuery.length > 0 || !entries) {
       return (
-        <View style={searchResultBox}><Card><SearchList /></Card></View>
+        <View style={searchResultBox}>
+          <Card><SearchList /></Card>
+        </View>
       );
     } else if (entries && entries.length > 0 && buildings && buildings.length > 0) {
       return (
@@ -128,6 +137,7 @@ class Home extends Component {
       );
     }
   }
+
   renderSpinner = () => <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Spinner /></View> ;
   render() {
     const { searchQuery } = this.props.directory;
@@ -146,12 +156,7 @@ class Home extends Component {
           {this.renderResultMessage()}
         </Card>
         {this.renderContent()}
-        <View style={{ flex:1, alignItems:'baseline' }} >
-          <Footer
-            footerTitle1=" Annuaire Version 2.3 - février 2018"
-            footerTitle2=" © 2016 - 2018 SITEL - Université de Neuchâtel"
-          />
-        </View>
+        {this.renderFooter()}
       </View>
     );
   }

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types,no-empty */
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { sliderWidth, itemWidth } from './SliderEntryStyle';
 import SliderEntry from './SliderEntry';
@@ -30,6 +30,7 @@ export default class Slider extends Component {
             containerCustomStyle={styles.slider}
             contentContainerCustomStyle={styles.sliderContentContainer}
             layout={type}
+            loop
           />
         </View>
       );
@@ -41,16 +42,7 @@ export default class Slider extends Component {
 
      return (
        <View style={styles.container}>
-
-         <ScrollView
-           style={styles.scrollview}
-           scrollEventThrottle={200}
-           directionalLockEnabled
-         >
-
-           { example3 }
-
-         </ScrollView>
+         { example3 }
        </View>
      );
    }
