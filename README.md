@@ -84,6 +84,6 @@ Total de locaux :235 (5229.6 m² )
 
     https://facebook.github.io/react-native/docs/signed-apk-android.html
 
-
+remove unsed code
 
 
