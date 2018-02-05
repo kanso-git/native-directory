@@ -6,7 +6,7 @@ import styles from './SliderEntryStyle';
 
 export default class SliderEntry extends Component {
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps :'+nextProps.data.image);
+    // console.log(`componentWillReceiveProps :${ nextProps.data.image}`);
   }
   render() {
     const { data: { abreviation, adresseLigne1 }, even } = this.props;

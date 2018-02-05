@@ -17,6 +17,9 @@ export default class Slider extends Component {
         entries: nextProps.entries,
       }));
     }
+    handleSnapToItem = (index) => {
+      console.log(`slide to silde index:${index}`);
+    }
 
     layoutExample(number, title, type) {
       return (
@@ -31,6 +34,7 @@ export default class Slider extends Component {
             contentContainerCustomStyle={styles.sliderContentContainer}
             layout={type}
             loop
+            onSnapToItem={this.handleSnapToItem}
           />
         </View>
       );
