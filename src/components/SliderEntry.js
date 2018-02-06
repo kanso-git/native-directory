@@ -9,8 +9,7 @@ export default class SliderEntry extends Component {
     // console.log(`componentWillReceiveProps :${ nextProps.data.image}`);
   }
   render() {
-    const { data: { abreviation, adresseLigne1 }, even } = this.props;
-    console.log(this.props.data.image);
+    const { data: { abreviation, adresseLigne1, localite, npa }, even } = this.props;
     const uppercaseTitle = abreviation ? (
       <Text
         style={[styles.title, even ? styles.titleEven : {}]}
@@ -41,7 +40,9 @@ export default class SliderEntry extends Component {
             numberOfLines={2}
           >
             { adresseLigne1 }
+            { `\n${npa}, ${localite}` }
           </Text>
+    
         </View>
       </TouchableOpacity>
     );

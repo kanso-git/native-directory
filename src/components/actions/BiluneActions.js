@@ -282,7 +282,9 @@ const searchBilune = query =>
     });
   };
 
+const zoomToBat = ({ id }) => ({ type: types.SET_DEFAULT_BAT_ID, payload: { id } });
 export {
   loadSpatialData,
   searchBilune,
+  zoomToBat,
 };

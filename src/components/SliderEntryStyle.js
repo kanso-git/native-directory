@@ -31,7 +31,7 @@ export default StyleSheet.create({
     left: itemHorizontalMargin,
     right: itemHorizontalMargin,
     bottom: 18,
-    shadowColor: colors.black,
+    shadowColor: colors.blueunine,
     shadowOpacity: 0.25,
     shadowOffset: { width: 0, height: 10 },
     shadowRadius: 10,
@@ -45,7 +45,7 @@ export default StyleSheet.create({
     borderTopRightRadius: entryBorderRadius,
   },
   imageContainerEven: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.blueunine,
   },
   image: {
     ...StyleSheet.absoluteFillObject,
@@ -64,19 +64,19 @@ export default StyleSheet.create({
     backgroundColor: 'white',
   },
   radiusMaskEven: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.blueunine,
   },
   textContainer: {
     justifyContent: 'center',
-    paddingTop: 20 - entryBorderRadius,
-    paddingBottom: 20,
+    paddingTop: 10 - entryBorderRadius,
+    paddingBottom: 10,
     paddingHorizontal: 16,
     backgroundColor: 'white',
     borderBottomLeftRadius: entryBorderRadius,
     borderBottomRightRadius: entryBorderRadius,
   },
   textContainerEven: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.blueunine,
   },
   title: {
     color: colors.black,
@@ -88,7 +88,7 @@ export default StyleSheet.create({
     color: 'white',
   },
   subtitle: {
-    marginTop: 6,
+    marginTop: 2,
     color: colors.gray,
     fontSize: 12,
     fontStyle: 'italic',

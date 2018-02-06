@@ -41,8 +41,14 @@ class MapPage extends Component {
     mapMarkers: [],
     maplocals: [],
   }
+
   componentDidMount() {
     this.renderBuildings();
+  }
+  componentWillReceiveProps(nextProp) {
+    if (nextProp.bilune.id !== this.props.bilune.id) {
+      this.zoomToBuilding(nextProp.bilune.id);
+    }
   }
 
   shouldComponentUpdate() {
@@ -66,20 +72,37 @@ class MapPage extends Component {
     return locObj.length > 0 ? locObj[0].color : '#f7f7f7';
   }
 
-  renderLocals = () => {
-    const data = this.props.bilune.locals;
-    const maplocals = data.map((f, index) => {
-      const aLatLng = f.geometry.rings[0].map(p => ({
-        latitude: this.toWebMercatorY(p[1]),
-        longitude: this.toWebMercatorX(p[0]),
-      }));
-      const locals = <MapView.Polygon fillColor={this.colorByLocType(f.attributes.LOC_TYPE_ID)}key={`${f.attributes.BAT_ID}_${f.attributes.ETG_ID}_${index}`} coordinates={[...aLatLng]} />;
-      return locals;
-    });
-    // this.setState(() => ({ maplocals }));
+
+  zoomToBuilding = (id) => {
+    const f = this.props.bilune.buildings.filter(b => b.id === id);
+    const regionLatitude = this
+      .toWebMercatorY(f[0].enteries[0].y);
+    const regionLongitude = this
+      .toWebMercatorX(f[0].enteries[0].x);
+
+    const region = {
+      latitude: regionLatitude,
+      latitudeDelta: 0.005,
+      longitude: regionLongitude,
+      longitudeDelta: 0.005,
+    };
+
+    setTimeout(() => {
+      this.setState(() => ({ region }));
+    }, 50);
   }
-
-
+    renderLocals = () => {
+      const data = this.props.bilune.locals;
+      const maplocals = data.map((f, index) => {
+        const aLatLng = f.geometry.rings[0].map(p => ({
+          latitude: this.toWebMercatorY(p[1]),
+          longitude: this.toWebMercatorX(p[0]),
+        }));
+        const locals = <MapView.Polygon fillColor={this.colorByLocType(f.attributes.LOC_TYPE_ID)}key={`${f.attributes.BAT_ID}_${f.attributes.ETG_ID}_${index}`} coordinates={[...aLatLng]} />;
+        return locals;
+      });
+    // this.setState(() => ({ maplocals }));
+    }
   renderBuildings = () => {
     const data = this.props.bilune.buildings;
     const mapMarkers = data.map(f =>
@@ -92,30 +115,15 @@ class MapPage extends Component {
         title={` ${f.abreviation}`}
         description={`${f.adresseLigne1}`}
       />));
-    
+
     this.setState(() => ({ mapMarkers }));
-    if (this.props.navigation && this.props.navigation.state.params) {
-      const { code } = this.props.navigation.state.params;
-      const f = this.props.bilune.buildings.filter(b => b.code === code);
-      const regionLatitude = this
-        .toWebMercatorY(f[0].enteries[0].y);
-      const regionLongitude = this
-        .toWebMercatorX(f[0].enteries[0].x);
-
-      const region = {
-        latitude: regionLatitude,
-        latitudeDelta: 0.1,
-        longitude: regionLongitude,
-        longitudeDelta: 0.1,
-      };
-
-      setTimeout(() => {
-        this.setState(() => ({ region }));
-      }, 500);
+    if (this.props.bilune.id != null) {
+      this.zoomToBuilding(this.props.bilune.id);
     }
   }
 
   render() {
+    console.log(JSON.stringify(this.props.bilune.id, null, 5));
     return (
       <View style={styles.container}>
         <MapView.Animated
@@ -126,7 +134,7 @@ class MapPage extends Component {
           showsPointsOfInterest
           showsScale
           loadingEnabled
-         
+
           region={this.state.region}
         >
           { this.state.maplocals }

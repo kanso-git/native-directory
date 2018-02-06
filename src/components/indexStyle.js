@@ -5,6 +5,7 @@ export const colors = {
   gray: '#888888',
   background1: '#B721FF',
   background2: '#21D4FD',
+  blueunine: '#034d7c',
 };
 
 export default StyleSheet.create({
@@ -26,7 +27,7 @@ export default StyleSheet.create({
     paddingVertical: -10,
   },
   exampleContainerDark: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.blueunine,
   },
   exampleContainerLight: {
     backgroundColor: 'white',
@@ -40,7 +41,7 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   titleDark: {
-    color: colors.black,
+    color: colors.blueunine,
   },
   subtitle: {
     marginTop: 5,

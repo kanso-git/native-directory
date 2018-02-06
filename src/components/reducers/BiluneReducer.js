@@ -9,6 +9,7 @@ const INITIAL_STATE = {
     building: [],
   },
   images: {},
+  id: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -23,6 +24,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, images: action.payload.images };
     case types.RESET_SEARCH_BILUNE:
       return { ...state, search: INITIAL_STATE.search };
+    case types.SET_DEFAULT_BAT_ID:
+      return { ...state, ...action.payload };
     default:
       return state;
   }
