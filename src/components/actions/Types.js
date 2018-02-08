@@ -15,6 +15,7 @@ const CHANGE_BILUNE_STATE = 'change_bilune_state';
 const GET_BILUNE_DATA = 'get_bilune_data';
 const SET_IMAGE_BILUNE = 'set_image_bilune';
 const SET_DEFAULT_BAT_ID = 'set_default_bat_id';
+const ENRICH_BILUNE_BUILDING = 'enrich_bilune_building';
 
 export {
   REGISTER,
@@ -33,4 +34,5 @@ export {
   GET_BILUNE_DATA,
   SET_IMAGE_BILUNE,
   SET_DEFAULT_BAT_ID,
+  ENRICH_BILUNE_BUILDING,
 };

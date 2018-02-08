@@ -44,6 +44,18 @@ const getBdlBuildingListAxios = async () => {
     res = await axios.get(queries.bdlBuildings(), { headers });
     return res.data;
   } catch (e) {
+    console.error(`error occured getBdlBuildingFloorsAxios ${e}`);
+    throw e;
+  }
+};
+
+const getBdlBuildingFloorsAxios = async (floorBuildingId) => {
+  let res;
+  try {
+    res = await axios.get(queries.bdlBuildingFloors(floorBuildingId), { headers });
+    return res.data;
+  } catch (e) {
+    console.error(`error occured getBdlBuildingFloorsAxios ${e}`);
     throw e;
   }
 };
@@ -85,6 +97,7 @@ const loadSpatialData = () =>
       const bdlBuildings = await getBdlBuildingListAxios();
       // const biluneBuildings = await getBiluneBuildingListAxios();
       const buildingsEnteries = await getBiluneBuildingEnteriesAxios();
+
 
       const buildings = bdlBuildings.map((b) => {
         const enteries = filterGeometryForBuilding(buildingsEnteries, b.id);
@@ -152,6 +165,87 @@ const loadSpatialData = () =>
       if (e.response) {
         if (e.response.status === 401) {
           console.error(`Error getBuildingList ${e} `);
+        }
+      }
+    }
+  };
+
+const formatedDataForList = (myBuilding) => {
+  // handle data formating
+  const locals = [];
+  let building = {};
+  if (myBuilding && myBuilding.locals && myBuilding.floors) {
+    myBuilding.floors.forEach((b) => {
+      const localsPerFloor = myBuilding.locals.filter(l => parseInt(l.attributes.ETG_ID, 10) === b.id);
+      locals.push(...localsPerFloor);
+    });
+    building = { ...myBuilding, locals };
+  } else {
+    building = { ...myBuilding };
+  }
+  return building;
+};
+const loadAllBuildingData = buildingId =>
+  async (dispatch, getState) => {
+    const dataLocals = getState().bilune.locals;
+    const { images } = getState().bilune;
+    let locals = [];
+    if (getState().bilune.state === BDL_LOADED) {
+      locals = dataLocals.filter((l) => {
+        const builId = l.attributes.BAT_ID;
+        if (builId === buildingId) {
+          return true;
+        }
+        return false;
+      });
+
+      const imagesPromise = [];
+      const imagesId = [];
+      locals.forEach((loc) => {
+        // image is not loaded
+        const typeCode = loc.attributes.LOC_TYPE_ID;
+        if (!images[loc.attributes.OBJECTID] &&
+              ((typeCode === 11 || typeCode === 12 || typeCode === 3))) {
+          imagesId.push(loc.attributes.OBJECTID);
+          imagesPromise.push(getImageUsingBlob(`${API_BDL}/locaux/${loc.attributes.LOC_ID}/photo/mini`));
+        }
+      });
+      console.info(`loading images for ${imagesId.length} locals`);
+      if (imagesId.length > 0) {
+        Promise.all(imagesPromise).then((imagesData) => {
+          // handle image stocking
+          imagesId.forEach((id, i) => {
+            images[id] = imagesData[i];
+          });
+          dispatch({
+            type: types.SET_IMAGE_BILUNE,
+            payload: { images },
+          });
+        }).catch(err => console.error(`err loading image:${err}`));
+      }
+    }
+    const dataBuildings = getState().bilune.buildings;
+    const buildings = [];
+    try {
+      const floors = await getBdlBuildingFloorsAxios(buildingId);
+
+      dataBuildings.forEach((currBuilding) => {
+        if (currBuilding.id === buildingId) {
+          const buidlingFormated = formatedDataForList({ ...currBuilding, locals, floors });
+          buildings.push(buidlingFormated);
+        } else {
+          buildings.push(currBuilding);
+        }
+      });
+
+      dispatch({
+        type: types.ENRICH_BILUNE_BUILDING,
+        payload: { buildings },
+      });
+    } catch (e) {
+      if (e.response) {
+        if (e.response.status === 401) {
+          console.error(`Error buildingFloors ${e} `);
         }
       }
     }
@@ -285,6 +379,7 @@ const searchBilune = query =>
 const zoomToBat = ({ id }) => ({ type: types.SET_DEFAULT_BAT_ID, payload: { id } });
 export {
   loadSpatialData,
+  loadAllBuildingData,
   searchBilune,
   zoomToBat,
 };

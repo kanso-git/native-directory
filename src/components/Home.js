@@ -106,8 +106,9 @@ class Home extends Component {
   )
   renderFooter = () => (
     <View style={{
- position: 'absolute', left: 0, right: 0, bottom: 0 
-}}>
+ position: 'absolute', left: 0, right: 0, bottom: 0,
+}}
+    >
       <Footer
         footerTitle1=" Annuaire Version 2.3 - février 2018"
         footerTitle2=" © 2016 - 2018 SITEL - Université de Neuchâtel"
@@ -116,6 +117,7 @@ class Home extends Component {
   )
   renderContent = () => {
     const { searchQuery } = this.props.directory;
+   
     const entries = this.props.bilune.buildings ? this.props.bilune.buildings.map((b) => {
       b.image = this.props.bilune.images[b.id];
       return b;

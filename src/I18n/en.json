@@ -48,6 +48,9 @@
         "address" : "Address",
         "members" : "Unit members"
     },
+    "building" :{ 
+        "pageTitle" : "Building"
+    },
     "mapPage" : {
         "pageTitle" : "Map"
     },
@@ -57,7 +60,7 @@
         "type" : "Type"
     },
     "section" : {
-        "personUnit": "Persons and organizational unit",
+        "personUnit": "Persons and organizational units",
         "local":"Locals",
         "building":"Buildings"
     },

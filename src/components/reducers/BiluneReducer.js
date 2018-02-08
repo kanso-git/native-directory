@@ -26,6 +26,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, search: INITIAL_STATE.search };
     case types.SET_DEFAULT_BAT_ID:
       return { ...state, ...action.payload };
+    case types.ENRICH_BILUNE_BUILDING:
+      return { ...state, ...action.payload };
     default:
       return state;
   }

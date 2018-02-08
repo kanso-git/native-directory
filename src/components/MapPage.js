@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import Icon from 'react-native-fa-icons';
 import { Actions } from 'react-native-router-flux';
 import MapMarker from './MapMarker';
 
@@ -32,12 +31,12 @@ const styles = StyleSheet.create({
   },
   openBtn: {
     position: 'absolute',
-    top: 20,
-    right: 12,
-    backgroundColor: 'rgba(255,255,255,0.4)',
-    padding: 12,
-    borderRadius: 20,
-    width: 80,
+    top: 10,
+    right: 8,
+    backgroundColor: 'rgba(255,255,255,0.6)',
+    padding: 6,
+    borderRadius: 10,
+    width: 40,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -58,9 +57,9 @@ class MapPage extends Component {
   componentDidMount() {
     this.renderBuildings();
   }
-  componentWillReceiveProps(nextProp) {
-    if (nextProp.bilune.id !== this.props.bilune.id) {
-      this.zoomToBuilding(nextProp.bilune.id);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.bilune.id !== this.props.bilune.id) {
+      this.zoomToBuilding(nextProps.bilune.id);
     }
   }
 
@@ -104,18 +103,9 @@ class MapPage extends Component {
       this.setState(() => ({ region }));
     }, 50);
   }
-    renderLocals = () => {
-      const data = this.props.bilune.locals;
-      const maplocals = data.map((f, index) => {
-        const aLatLng = f.geometry.rings[0].map(p => ({
-          latitude: this.toWebMercatorY(p[1]),
-          longitude: this.toWebMercatorX(p[0]),
-        }));
-        const locals = <MapView.Polygon fillColor={this.colorByLocType(f.attributes.LOC_TYPE_ID)}key={`${f.attributes.BAT_ID}_${f.attributes.ETG_ID}_${index}`} coordinates={[...aLatLng]} />;
-        return locals;
-      });
-    // this.setState(() => ({ maplocals }));
-    }
+  handleOnRegionChange = (newRegion) => {
+    console.log(`handleOnRegionChange is called with ${JSON.stringify(newRegion, null, 5)}`);
+  }
   renderBuildings = () => {
     const data = this.props.bilune.buildings;
     const mapMarkers = data.map(f =>
@@ -141,11 +131,21 @@ class MapPage extends Component {
       style={styles.openBtn}
       onPress={() => Actions.push('mapPage')}
     >
-      <Text style={{ fontWeight: 'bold', zIndex: 2, fontSize: 30 }}>&harr;</Text>
+      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>&#10063;</Text>
     </TouchableOpacity>
   )
-  handleOnRegionChange = (newRegion) => {
-    console.log(`handleOnRegionChange is called with ${JSON.stringify(newRegion, null, 5)}`);
+
+  renderLocals = () => {
+    const data = this.props.bilune.locals;
+    const maplocals = data.map((f, index) => {
+      const aLatLng = f.geometry.rings[0].map(p => ({
+        latitude: this.toWebMercatorY(p[1]),
+        longitude: this.toWebMercatorX(p[0]),
+      }));
+      const locals = <MapView.Polygon fillColor={this.colorByLocType(f.attributes.LOC_TYPE_ID)}key={`${f.attributes.BAT_ID}_${f.attributes.ETG_ID}_${index}`} coordinates={[...aLatLng]} />;
+      return locals;
+    });
+  // this.setState(() => ({ maplocals }));
   }
   render() {
     console.log(JSON.stringify(this.props.bilune.id, null, 5));

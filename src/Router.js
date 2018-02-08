@@ -5,6 +5,7 @@ import I18n from 'react-native-i18n';
 import Home from './components/Home';
 import MemberDetails from './components/MemberDetails';
 import UnitDetails from './components/UnitDetails';
+import BuildingDetails from './components/BuildingDetails';
 import MapPage from './components/MapPage';
 import NetworkError from './components/NetworkError';
 
@@ -62,6 +63,17 @@ const RouterComponent = () => (
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}
         />
+
+        <Scene
+          key="buildingDetails"
+          backTitle=" "
+          component={BuildingDetails}
+          title={I18n.t('building.pageTitle')}
+          titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
+          backButtonTintColor="white"
+          navigationBarStyle={styles.navStyle}
+        />
+
         <Scene
           key="mapPage"
           backTitle=" "

@@ -21,6 +21,8 @@ const commonPart = () => {
 
 const bdlBuildings = () => `${API_BDL}/batiments`;
 
+const bdlBuildingFloors = myBatId => `${API_BDL}/batiments/${myBatId}/etages`;
+
 const buildings = () => {
   const url = 'where=BAT_ID > 0';
   return buildingPrefix + url + commonPart();
@@ -58,6 +60,7 @@ export {
   localsByBuildingId,
   localsByBuildingIdAndFloorId,
   bdlBuildings,
+  bdlBuildingFloors,
   buildingsEnteries };
 
 /*
