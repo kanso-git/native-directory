@@ -2,8 +2,10 @@
 /* eslint-disable react/prop-types,no-empty */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import Icon from 'react-native-fa-icons';
+import { Actions } from 'react-native-router-flux';
 import MapMarker from './MapMarker';
 
 // const originShift = 2 * Math.PI * 6378137 / 2.0;
@@ -27,6 +29,17 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
+  },
+  openBtn: {
+    position: 'absolute',
+    top: 20,
+    right: 12,
+    backgroundColor: 'rgba(255,255,255,0.4)',
+    padding: 12,
+    borderRadius: 20,
+    width: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
@@ -119,13 +132,26 @@ class MapPage extends Component {
     this.setState(() => ({ mapMarkers }));
     if (this.props.bilune.id != null) {
       this.zoomToBuilding(this.props.bilune.id);
+    } else {
+      this.zoomToBuilding(this.props.bilune.buildings[0].id);
     }
   }
-
+  renderOpenMapButton = () => (
+    <TouchableOpacity
+      style={styles.openBtn}
+      onPress={() => Actions.push('mapPage')}
+    >
+      <Text style={{ fontWeight: 'bold', zIndex: 2, fontSize: 30 }}>&harr;</Text>
+    </TouchableOpacity>
+  )
+  handleOnRegionChange = (newRegion) => {
+    console.log(`handleOnRegionChange is called with ${JSON.stringify(newRegion, null, 5)}`);
+  }
   render() {
     console.log(JSON.stringify(this.props.bilune.id, null, 5));
     return (
       <View style={styles.container}>
+
         <MapView.Animated
           style={styles.map}
           provider={PROVIDER_GOOGLE}
@@ -134,13 +160,13 @@ class MapPage extends Component {
           showsPointsOfInterest
           showsScale
           loadingEnabled
-
+          onRegionChange={this.handleOnRegionChange}
           region={this.state.region}
         >
           { this.state.maplocals }
           { this.state.mapMarkers }
         </MapView.Animated>
-
+        {Actions.currentScene === 'home' && this.renderOpenMapButton()}
       </View>
     );
   }

@@ -6,6 +6,7 @@ export const colors = {
   background1: '#B721FF',
   background2: '#21D4FD',
   blueunine: '#034d7c',
+  white: '#ffffff',
 };
 
 export default StyleSheet.create({
@@ -15,7 +16,7 @@ export default StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: colors.background1,
+    backgroundColor: colors.white,
   },
   gradient: {
     ...StyleSheet.absoluteFillObject,

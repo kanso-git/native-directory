@@ -131,7 +131,7 @@ class Home extends Component {
         <View style={wrapperMapSlider} >
           {this.renderSectionJsx('Bâtiments')}
           <View style={sliderBox}><Slider entries={entries} /></View>
-          {this.renderSectionJsx('Carte')}
+          <Chromatic height={2} />
           <View style={mapBox}><MapPage /></View>
         </View>
       );
