@@ -105,7 +105,9 @@ class Home extends Component {
     </View>
   )
   renderFooter = () => (
-    <View style={{position: 'absolute', left: 0, right: 0, bottom: 0}}>
+    <View style={{
+ position: 'absolute', left: 0, right: 0, bottom: 0 
+}}>
       <Footer
         footerTitle1=" Annuaire Version 2.3 - février 2018"
         footerTitle2=" © 2016 - 2018 SITEL - Université de Neuchâtel"
@@ -127,9 +129,10 @@ class Home extends Component {
         </View>
       );
     } else if (entries && entries.length > 0 && buildings && buildings.length > 0) {
+      const labelBuildingSection = `${I18n.t('section.building')} (${buildings.length})`;
       return (
         <View style={wrapperMapSlider} >
-          {this.renderSectionJsx('Bâtiments')}
+          {this.renderSectionJsx(labelBuildingSection)}
           <View style={sliderBox}><Slider entries={entries} /></View>
           <Chromatic height={2} />
           <View style={mapBox}><MapPage /></View>

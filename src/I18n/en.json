@@ -49,17 +49,17 @@
         "members" : "Unit members"
     },
     "mapPage" : {
-        "pageTitle" : "Carte"
+        "pageTitle" : "Map"
     },
     "local" : {
         "title" : "Local",
-        "floor" : "Étage",
+        "floor" : "Floor",
         "type" : "Type"
     },
     "section" : {
-        "personUnit": "Personnes et Structures Organisationnelles",
-        "local":"Locaux",
-        "building":"Bâtiments"
+        "personUnit": "Persons and organizational unit",
+        "local":"Locals",
+        "building":"Buildings"
     },
     "offline" : {
         "pageTitle" : "Offline device",

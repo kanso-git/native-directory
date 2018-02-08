@@ -23,7 +23,7 @@ export default class SliderEntry extends Component {
       <TouchableOpacity
         activeOpacity={1}
         style={styles.slideInnerContainer}
-        onPress={() => { alert(`You've clicked '${abreviation}'`); }}
+        onPress={() => { console.log(`You've clicked '${abreviation}'`); }}
       >
         <View style={styles.shadow} />
         <View style={[styles.imageContainer, even ? styles.imageContainerEven : {}]}>
@@ -40,7 +40,7 @@ export default class SliderEntry extends Component {
             numberOfLines={2}
           >
             { adresseLigne1 }
-            { `\n${npa}, ${localite}` }
+            { `\n${npa} ${localite}` }
           </Text>
     
         </View>

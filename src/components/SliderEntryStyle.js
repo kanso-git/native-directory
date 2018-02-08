@@ -43,9 +43,15 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     borderTopLeftRadius: entryBorderRadius,
     borderTopRightRadius: entryBorderRadius,
+    borderWidth: 1,
+    borderBottomWidth: 0,
+    borderColor: colors.gray,
   },
   imageContainerEven: {
     backgroundColor: colors.blueunine,
+    borderWidth: 1,
+    borderBottomWidth: 0,
+    borderColor: colors.gray,
   },
   image: {
     ...StyleSheet.absoluteFillObject,
@@ -74,6 +80,9 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     borderBottomLeftRadius: entryBorderRadius,
     borderBottomRightRadius: entryBorderRadius,
+    borderWidth: 1,
+    borderTopWidth: 0,
+    borderColor: colors.gray,
   },
   textContainerEven: {
     backgroundColor: colors.blueunine,
