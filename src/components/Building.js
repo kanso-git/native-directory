@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types,no-empty */
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions } from 'react-native';
 import Icon from 'react-native-fa-icons';
 import Communications from 'react-native-communications';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
-import { Card, CardSection } from './common';
-import SearchItem from './SearchItem';
+import { Card, CardSection, InputFlex } from './common';
+import BuildingLocalItem from './BuildingLocalItem';
 
 
 const styles = StyleSheet.create({
@@ -45,8 +46,8 @@ const styles = StyleSheet.create({
     height: 25,
     flexDirection: 'row',
     alignItems: 'flex-start',
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 2,
+    paddingBottom: 2,
   },
   touchable: {
     color: '#007aff',
@@ -60,123 +61,96 @@ const styles = StyleSheet.create({
   },
 });
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
-const memberListLen = 0;
+let memberListLen = 0;
+const currentBuilding = {};
 const {
   containerStyle,
-  iconWrapper,
-  iconStyle,
   textStyle,
   textStyleElem,
   touchable,
   touchableContainer,
   addressStyle,
 } = styles;
-const renderEmail = email => (
-  <TouchableOpacity onPress={() => Communications.email([email], null, null, ' ', ' ')}>
-    <View style={[containerStyle, touchableContainer]}>
-      <Icon name="envelope" style={[iconStyle, touchable]} allowFontScaling />
-      <Text style={[textStyleElem, touchable]}>{email} </Text>
-    </View>
-  </TouchableOpacity>
-);
-const renderSummaryInfo = buildingObj => (
-  <View style={[containerStyle]}>
-    <Text style={[textStyleElem]}>Nombre d'étages : {buildingObj.floors.length} </Text>
-  </View>
-);
-const renderPersonlUrl = (url) => {
-  if (url) {
-    return (
-      <TouchableOpacity onPress={() => Communications.web(url)}>
-        <View style={[containerStyle, touchableContainer]}>
-          <Icon name="external-link" style={[iconStyle, touchable]} allowFontScaling />
-          <Text style={[textStyleElem, touchable]}>{url} </Text>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-  return null;
-};
-const renderPhone = phone => (
-  <TouchableOpacity
-    key={phone.external}
-    onPress={() => Communications.phonecall(phone.external, true)}
-  >
-    <View style={[containerStyle, touchableContainer]}>
-      <Icon name="phone" style={[iconStyle, touchable]} allowFontScaling />
-      <Text style={[textStyleElem, touchable]}>{phone.external} </Text>
-    </View>
-  </TouchableOpacity>
-);
-const renderFax = fax => (
-  <TouchableOpacity key={fax.external} onPress={() => Communications.phonecall(fax.external, true)}>
-    <View style={[containerStyle, touchableContainer]}>
-      <Icon name="fax" style={[iconStyle, touchable]} allowFontScaling />
-      <Text style={[textStyleElem, touchable]}>{fax.external} </Text>
-    </View>
-  </TouchableOpacity>
-);
-const renderNameAddress = (abreviation, addressLines, localite, npa) => (
-  <TouchableOpacity onPress={() => console.log(' show the map')}>
-    <View style={[containerStyle, { height: 25 }]}>
-      <Text style={[textStyle, touchable]}>{abreviation}</Text>
-    </View>
-    <View style={[containerStyle, { marginBottom: 5, height: 45 }, touchableContainer]}>
-      <View style={addressStyle}>
-        <Text style={[touchable]}>{`${addressLines}
+
+
+class Building extends Component {
+   renderSummaryInfo = buildingObj => (
+     <View style={[containerStyle]}>
+       <Text style={[textStyleElem]}>Nombre d'étages : {buildingObj.floors.length} </Text>
+     </View>
+   );
+
+
+   renderNameAddress = (abreviation, addressLines, localite, npa) => (
+     <TouchableOpacity onPress={() => console.log(' show the map')}>
+       <View style={[containerStyle, { height: 20 }]}>
+         <Text style={[textStyle, touchable]}>{abreviation}</Text>
+       </View>
+       <View style={[containerStyle, { marginBottom: 5, height: 30 }, touchableContainer]}>
+         <View style={addressStyle}>
+           <Text style={[touchable]}>{`${addressLines}
 ${npa} ${localite}`}
-        </Text>
-      </View>
-    </View>
-  </TouchableOpacity>
+           </Text>
+         </View>
+       </View>
+     </TouchableOpacity>
+   );
+
+   onPressItem = (item) => {
+     // Actions.replace('memberDetails', { memberDetails: item });
+   };
+   renderItem = ({ item }) => {
+     console.log(item);
+     return (
+       <BuildingLocalItem
+         item={item}
+         image={item.attributes ?
+          this.props.images[item.attributes.OBJECTID] : this.props.images[item.id]}
+         building={this.currentBuilding}
+         style={{ paddingLeft: 10 }}
+         listLen={this.memberListLen}
+         pressFn={this.onPressItem}
+       />
+     );
+   };
+
+   render() {
+     this.currentBuilding = this.props.building;
+     if (this.props.building.locals && this.props.building.locals.length > 0) {
+       this.memberListLen = this.props.building.locals.length;
+     }
+     const {
+       abreviation, adresseLigne1, localite, npa,
+     } = this.props.building;
+     return (
+       <Card>
+         <CardSection>
+           <Image
+             style={{ width: viewportWidth - 22, height: viewportHeight * 0.33 }}
+             source={{ uri: this.props.building.image }}
+           />
+         </CardSection>
+         <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
+           { (adresseLigne1 && adresseLigne1.length > 0) &&
+            this.renderNameAddress(abreviation, adresseLigne1, localite, npa)}
+         </CardSection>
+         { (this.props.building.locals && this.props.building.locals.length > 0) &&
+         <FlatList
+           data={this.props.building.locals}
+           extraData={this.props.building.locals}
+           renderItem={this.renderItem}
+         />
+        }
+
+       </Card>
+     );
+   }
+}
+
+const mapStateToProps = state => (
+  {
+    images: state.bilune.images,
+  }
 );
 
-const onPressItem = (item) => {
-  // Actions.replace('memberDetails', { memberDetails: item });
-};
-const renderItem = ({ item }) => {
-  console.log(item);
-  return (
-    <SearchItem
-      item={item}
-      style={{ paddingLeft: 10 }}
-      listLen={memberListLen}
-      pressFn={onPressItem}
-    />
-  );
-};
-const Building = (props) => {
-  const {
-    abreviation,
-    adresseLigne1,
-    localite,
-    npa,
-  } = props.building;
-
-  return (
-    <Card>
-      <CardSection>
-        <Image
-          style={{ width: viewportWidth - 22, height: viewportHeight * 0.33 }}
-          source={{ uri: props.building.image }}
-        />
-      </CardSection>
-      <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
-        { (adresseLigne1 && adresseLigne1.length > 0) &&
-          renderNameAddress(abreviation, adresseLigne1, localite, npa)}
-        { (props.building.floors && props.building.floors.length > 0) &&
-          renderSummaryInfo(props.building)}
-      </CardSection>
-      { (props.building.locals && props.building.locals.length > 0) &&
-        <FlatList
-          data={props.building.locals}
-          extraData={props.building.locals}
-          renderItem={renderItem}
-        />
-      }
-
-    </Card>
-  );
-};
-
-export default Building;
+export default connect(mapStateToProps)(Building);

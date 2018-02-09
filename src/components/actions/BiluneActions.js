@@ -176,10 +176,17 @@ const formatedDataForList = (myBuilding) => {
   let building = {};
   if (myBuilding && myBuilding.locals && myBuilding.floors) {
     myBuilding.floors.forEach((b) => {
-      const localsPerFloor = myBuilding.locals.filter(l => parseInt(l.attributes.ETG_ID, 10) === b.id);
+      const localsPerFloor = myBuilding
+        .locals.filter(l => parseInt(l.attributes.ETG_ID, 10) === b.id);
       locals.push(...localsPerFloor);
     });
-    building = { ...myBuilding, locals };
+
+    building = {
+      ...myBuilding,
+      locals: locals.map((item, index) => ({
+        ...item, type: LOCAL, key: item.attributes.LOC_ID, index,
+      })),
+    };
   } else {
     building = { ...myBuilding };
   }
