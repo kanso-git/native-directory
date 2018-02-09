@@ -178,6 +178,8 @@ const formatedDataForList = (myBuilding) => {
     myBuilding.floors.forEach((b) => {
       const localsPerFloor = myBuilding
         .locals.filter(l => parseInt(l.attributes.ETG_ID, 10) === b.id);
+      const section = localsPerFloor[0].attributes.ETG_DESIGNATION;
+      localsPerFloor[0].attributes.section = section;
       locals.push(...localsPerFloor);
     });
 

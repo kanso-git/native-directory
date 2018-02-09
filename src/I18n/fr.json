@@ -5,6 +5,8 @@
     },
     "search" : {
         "placeholder" : "Personne, département, n° de tél...",
+        "placeholderBlding" : "Local code, aula, salle informatique ....",
+        
         "showAll" : "Charger tout...",
         "feedback":"Nous avons trouvé ",
         "result":" résultat",

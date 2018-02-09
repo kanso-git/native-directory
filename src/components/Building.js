@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types,no-empty */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Animated } from 'react-native';
 import Icon from 'react-native-fa-icons';
 import Communications from 'react-native-communications';
 import { Actions } from 'react-native-router-flux';
@@ -59,9 +59,36 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingBottom: 10,
   },
+  flipCard: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'blue',
+    backfaceVisibility: 'hidden',
+  },
+  flipCardBack: {
+    backgroundColor: '#E5EFF5',
+    position: 'absolute',
+    top: 0,
+  },
+  flipText: {
+    fontSize: 20,
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  flipBtn: {
+    position: 'absolute',
+    top: 10,
+    right: 8,
+    backgroundColor: 'rgba(255,255,255,0.6)',
+    padding: 6,
+    borderRadius: 10,
+    width: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
-let memberListLen = 0;
+const memberListLen = 0;
 const currentBuilding = {};
 const {
   containerStyle,
@@ -74,6 +101,24 @@ const {
 
 
 class Building extends Component {
+  state={
+    search: '',
+  }
+  componentWillMount() {
+    this.animatedValue = new Animated.Value(0);
+    this.value = 0;
+    this.animatedValue.addListener(({ value }) => {
+      this.value = value;
+    });
+    this.frontInterpolate = this.animatedValue.interpolate({
+      inputRange: [0, 180],
+      outputRange: ['0deg', '180deg'],
+    });
+    this.backInterpolate = this.animatedValue.interpolate({
+      inputRange: [0, 180],
+      outputRange: ['180deg', '360deg'],
+    });
+  }
    renderSummaryInfo = buildingObj => (
      <View style={[containerStyle]}>
        <Text style={[textStyleElem]}>Nombre d'étages : {buildingObj.floors.length} </Text>
@@ -96,6 +141,9 @@ ${npa} ${localite}`}
      </TouchableOpacity>
    );
 
+   onShowHideFloor = (floorId) => {
+     console.log(`clicked floorId: ${floorId}`);
+   }
    onPressItem = (item) => {
      // Actions.replace('memberDetails', { memberDetails: item });
    };
@@ -110,11 +158,40 @@ ${npa} ${localite}`}
          style={{ paddingLeft: 10 }}
          listLen={this.memberListLen}
          pressFn={this.onPressItem}
+         showHideFloor={this.onShowHideFloor}
        />
      );
    };
 
+   flipCard = () => {
+     if (this.value >= 90) {
+       Animated.spring(this.animatedValue, {
+         toValue: 0,
+         friction: 8,
+         tension: 10,
+       }).start();
+     } else {
+       Animated.spring(this.animatedValue, {
+         toValue: 180,
+         friction: 8,
+         tension: 10,
+       }).start();
+     }
+   }
+   onSearch = () => {
+
+   }
    render() {
+     const frontAnimatedStyle = {
+       transform: [
+         { rotateY: this.frontInterpolate },
+       ],
+     };
+     const backAnimatedStyle = {
+       transform: [
+         { rotateY: this.backInterpolate },
+       ],
+     };
      this.currentBuilding = this.props.building;
      if (this.props.building.locals && this.props.building.locals.length > 0) {
        this.memberListLen = this.props.building.locals.length;
@@ -125,14 +202,35 @@ ${npa} ${localite}`}
      return (
        <Card>
          <CardSection>
-           <Image
-             style={{ width: viewportWidth - 22, height: viewportHeight * 0.33 }}
-             source={{ uri: this.props.building.image }}
-           />
+           <Animated.View style={[styles.flipCard, frontAnimatedStyle]}>
+             <Image
+               style={{ width: viewportWidth - 22, height: viewportHeight * 0.33 }}
+               source={{ uri: this.props.building.image }}
+             />
+           </Animated.View>
+           <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
+             <View style={{ width: viewportWidth - 12, height: viewportHeight * 0.33 }}>
+               <CardSection>
+                 <Text>Total de locaux: </Text>
+               </CardSection>
+             </View>
+           </Animated.View>
+           <TouchableOpacity style={styles.flipBtn} onPress={() => this.flipCard()}>
+             <Icon name="cog" style={{ fontSize: 20 }} allowFontScaling />
+           </TouchableOpacity>
          </CardSection>
          <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
            { (adresseLigne1 && adresseLigne1.length > 0) &&
             this.renderNameAddress(abreviation, adresseLigne1, localite, npa)}
+           <InputFlex
+             icon="&#x1F50E;"
+             style={{
+              height: 40, borderRadius: 5, borderWidth: 1, borderColor: '#dfdfdf',
+            }}
+             placeholder={I18n.t('search.placeholderBlding')}
+             value={this.state.search}
+             onChangeText={this.onSearch}
+           />
          </CardSection>
          { (this.props.building.locals && this.props.building.locals.length > 0) &&
          <FlatList
