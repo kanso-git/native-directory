@@ -148,7 +148,6 @@ class MapPage extends Component {
   // this.setState(() => ({ maplocals }));
   }
   render() {
-    console.log(JSON.stringify(this.props.bilune.id, null, 5));
     return (
       <View style={styles.container}>
 
@@ -166,7 +165,7 @@ class MapPage extends Component {
           { this.state.maplocals }
           { this.state.mapMarkers }
         </MapView.Animated>
-        {Actions.currentScene === 'home' && this.renderOpenMapButton()}
+        {Actions.currentScene !== 'mapPage' && this.renderOpenMapButton()}
       </View>
     );
   }
