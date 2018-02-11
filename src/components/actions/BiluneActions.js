@@ -232,29 +232,30 @@ const loadAllBuildingData = buildingId =>
           });
         }).catch(err => console.error(`err loading image:${err}`));
       }
-    }
-    const dataBuildings = getState().bilune.buildings;
-    const buildings = [];
-    try {
-      const floors = await getBdlBuildingFloorsAxios(buildingId);
 
-      dataBuildings.forEach((currBuilding) => {
-        if (currBuilding.id === buildingId) {
-          const buidlingFormated = formatedDataForList({ ...currBuilding, locals, floors });
-          buildings.push(buidlingFormated);
-        } else {
-          buildings.push(currBuilding);
-        }
-      });
+      const dataBuildings = getState().bilune.buildings;
+      const buildings = [];
+      try {
+        const floors = await getBdlBuildingFloorsAxios(buildingId);
 
-      dispatch({
-        type: types.ENRICH_BILUNE_BUILDING,
-        payload: { buildings },
-      });
-    } catch (e) {
-      if (e.response) {
-        if (e.response.status === 401) {
-          console.error(`Error buildingFloors ${e} `);
+        dataBuildings.forEach((currBuilding) => {
+          if (currBuilding.id === buildingId) {
+            const buidlingFormated = formatedDataForList({ ...currBuilding, locals, floors });
+            buildings.push(buidlingFormated);
+          } else {
+            buildings.push(currBuilding);
+          }
+        });
+
+        dispatch({
+          type: types.ENRICH_BILUNE_BUILDING,
+          payload: { buildings },
+        });
+      } catch (e) {
+        if (e.response) {
+          if (e.response.status === 401) {
+            console.error(`Error buildingFloors ${e} `);
+          }
         }
       }
     }
