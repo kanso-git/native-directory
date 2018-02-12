@@ -173,13 +173,16 @@ const formatedDataForList = (myBuilding) => {
   // handle data formating
   const locals = [];
   let building = {};
+
   if (myBuilding && myBuilding.locals && myBuilding.floors) {
     myBuilding.floors.forEach((b) => {
       const localsPerFloor = myBuilding
         .locals.filter(l => parseInt(l.attributes.ETG_ID, 10) === b.id);
-      const section = localsPerFloor[0].attributes.ETG_DESIGNATION;
-      localsPerFloor[0].attributes.section = section;
-      locals.push(...localsPerFloor);
+      if (localsPerFloor.length > 0) {
+        const section = localsPerFloor[0].attributes.ETG_DESIGNATION;
+        localsPerFloor[0].attributes.section = section;
+        locals.push(...localsPerFloor);
+      }
     });
 
     building = {
@@ -317,11 +320,9 @@ const searchInBuilding = (buildingId, searchQuery) =>
           return locCode.includes(q);
         });
 
-        // currBuilding.query = searchQuery;
-        const fomattedLocals = locals.map((item, index) => ({
-          ...item, type: LOCAL, key: item.attributes.LOC_ID, index,
-        }));
-        buildings.push({ ...currBuilding, query: searchQuery, locals: fomattedLocals });
+        const tobeFormatted = { ...currBuilding, query: searchQuery, locals };
+        const formated = formatedDataForList(tobeFormatted);
+        buildings.push(formated);
       } else {
         buildings.push(currBuilding);
       }
