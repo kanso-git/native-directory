@@ -271,12 +271,13 @@ const showHideBuildingFloor = (buildingId, floorId) =>
       if (currBuilding.id === buildingId) {
         const floors = currBuilding.floors.map((f) => {
           if (f.id === floorId) {
-            f.collapsed = !f.collapsed;
+            const collapsed = !f.collapsed;
+            return { ...f, collapsed };
           }
           return f;
         });
-        currBuilding.floors = floors;
-        buildings.push(currBuilding);
+        // currBuilding.floors = floors;
+        buildings.push({ ...currBuilding, floors });
       } else {
         buildings.push(currBuilding);
       }
