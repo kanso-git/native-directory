@@ -99,7 +99,7 @@ class MapPage extends Component {
       longitudeDelta: 0.003,
     };
     const data = this.props.bilune.buildings;
-    const mapMarkers = data.map(f => this.generateMarker(f, id));
+    const mapMarkers = data.map(b => this.generateMarker(b, id));
     this.setState(() => ({ region, mapMarkers }));
   }
   handleOnRegionChange = (newRegion) => {
