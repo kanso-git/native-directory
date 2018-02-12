@@ -322,7 +322,8 @@ const searchInBuilding = (buildingId, searchQuery) =>
 
         const tobeFormatted = { ...currBuilding, query: searchQuery, locals };
         const formated = formatedDataForList(tobeFormatted);
-        buildings.push(formated);
+        const expanded = formated.floors.map(f => ({ ...f, collapsed: false }));
+        buildings.push({ ...formated, floors: expanded });
       } else {
         buildings.push(currBuilding);
       }
