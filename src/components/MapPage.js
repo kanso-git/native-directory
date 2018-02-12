@@ -94,37 +94,53 @@ class MapPage extends Component {
 
     const region = {
       latitude: regionLatitude,
-      latitudeDelta: 0.005,
+      latitudeDelta: 0.003,
       longitude: regionLongitude,
-      longitudeDelta: 0.005,
+      longitudeDelta: 0.003,
     };
-
-    setTimeout(() => {
-      this.setState(() => ({ region }));
-    }, 50);
+    const data = this.props.bilune.buildings;
+    const mapMarkers = data.map(f => this.generateMarker(f, id));
+    this.setState(() => ({ region, mapMarkers }));
   }
   handleOnRegionChange = (newRegion) => {
     console.log(`handleOnRegionChange is called with ${JSON.stringify(newRegion, null, 5)}`);
   }
+  generateMarker= (bat, zoomId) => {
+    if (bat.id === zoomId) {
+      return (<MapMarker
+        key={bat.id}
+        pinColor="#034d7c"
+        coordinate={{
+       latitude: this.toWebMercatorY(bat.enteries[0].y),
+       longitude: this.toWebMercatorX(bat.enteries[0].x),
+     }}
+        title={` ${bat.abreviation}`}
+        description={`${bat.adresseLigne1}`}
+      />);
+    }
+    return (<MapMarker
+      key={bat.id}
+      coordinate={{
+          latitude: this.toWebMercatorY(bat.enteries[0].y),
+          longitude: this.toWebMercatorX(bat.enteries[0].x),
+        }}
+      title={` ${bat.abreviation}`}
+      description={`${bat.adresseLigne1}`}
+    />);
+  }
+
   renderBuildings = () => {
     const data = this.props.bilune.buildings;
-    const mapMarkers = data.map(f =>
-      (<MapMarker
-        key={f.id}
-        coordinate={{
-          latitude: this.toWebMercatorY(f.enteries[0].y),
-          longitude: this.toWebMercatorX(f.enteries[0].x),
-        }}
-        title={` ${f.abreviation}`}
-        description={`${f.adresseLigne1}`}
-      />));
-
-    this.setState(() => ({ mapMarkers }));
+    let zoomId = 0;
     if (this.props.bilune.id != null) {
-      this.zoomToBuilding(this.props.bilune.id);
+      zoomId = this.props.bilune.id;
+      this.zoomToBuilding(zoomId);
     } else {
-      this.zoomToBuilding(this.props.bilune.buildings[0].id);
+      zoomId = this.props.bilune.buildings[0].id;
+      this.zoomToBuilding(zoomId);
     }
+    const mapMarkers = data.map(f => this.generateMarker(f, zoomId));
+    this.setState(() => ({ mapMarkers }));
   }
   renderOpenMapButton = () => (
     <TouchableOpacity
