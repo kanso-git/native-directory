@@ -32,10 +32,6 @@ class SliderEntry extends Component {
         style={styles.slideInnerContainer}
         onPress={() => {
           this.props.zoomToBat({ id });
-          if (locals && locals.length > 0) {
-          } else {
-            this.props.loadAllBuildingData(id);
-          }
           Actions.push('buildingDetails');
          }}
       >

@@ -6,6 +6,7 @@ import Communications from 'react-native-communications';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
+import { biluneActions } from './actions';
 import { Card, CardSection, InputFlex } from './common';
 import BuildingLocalItem from './BuildingLocalItem';
 
@@ -88,8 +89,6 @@ const styles = StyleSheet.create({
   },
 });
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
-const memberListLen = 0;
-const currentBuilding = {};
 const {
   containerStyle,
   textStyle,
@@ -142,26 +141,24 @@ ${npa} ${localite}`}
    );
 
    onShowHideFloor = (floorId) => {
-     console.log(`clicked floorId: ${floorId}`);
+     this.props.showHideBuildingFloor(this.props.currentBuilding.id, parseInt(floorId, 10));
    }
    onPressItem = (item) => {
      // Actions.replace('memberDetails', { memberDetails: item });
    };
-   renderItem = ({ item }) => {
-     console.log(item);
-     return (
-       <BuildingLocalItem
-         item={item}
-         image={item.attributes ?
+   renderItem = ({ item }) => (
+     <BuildingLocalItem
+       item={item}
+       visibleFloors={this.props.visibleFloors}
+       image={item.attributes ?
           this.props.images[item.attributes.OBJECTID] : this.props.images[item.id]}
-         building={this.currentBuilding}
-         style={{ paddingLeft: 10 }}
-         listLen={this.memberListLen}
-         pressFn={this.onPressItem}
-         showHideFloor={this.onShowHideFloor}
-       />
-     );
-   };
+       building={this.props.currentBuilding}
+       style={{ paddingLeft: 10 }}
+       listLen={this.props.currentBuilding.locals.length}
+       pressFn={this.onPressItem}
+       showHideFloor={this.onShowHideFloor}
+     />
+   );
 
    flipCard = () => {
      if (this.value >= 90) {
@@ -178,10 +175,14 @@ ${npa} ${localite}`}
        }).start();
      }
    }
-   onSearch = () => {
-
+   onSearch = (value) => {
+     console.log(`searchInBuilding  for value :${value}`);
+     console.log(`searchInBuilding  for this.props.currentBuilding.id :${this.props.currentBuilding.id}`);
+     this.props.searchInBuilding(this.props.currentBuilding.id, value);
    }
    render() {
+     console.log('Building.js');
+     console.log(this.props.visibleFloors);
      const frontAnimatedStyle = {
        transform: [
          { rotateY: this.frontInterpolate },
@@ -192,20 +193,17 @@ ${npa} ${localite}`}
          { rotateY: this.backInterpolate },
        ],
      };
-     this.currentBuilding = this.props.building;
-     if (this.props.building.locals && this.props.building.locals.length > 0) {
-       this.memberListLen = this.props.building.locals.length;
-     }
+
      const {
        abreviation, adresseLigne1, localite, npa,
-     } = this.props.building;
+     } = this.props.currentBuilding;
      return (
        <Card>
          <CardSection>
            <Animated.View style={[styles.flipCard, frontAnimatedStyle]}>
              <Image
                style={{ width: viewportWidth - 22, height: viewportHeight * 0.33 }}
-               source={{ uri: this.props.building.image }}
+               source={{ uri: this.props.currentBuilding.image }}
              />
            </Animated.View>
            <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
@@ -228,14 +226,14 @@ ${npa} ${localite}`}
               height: 40, borderRadius: 5, borderWidth: 1, borderColor: '#dfdfdf',
             }}
              placeholder={I18n.t('search.placeholderBlding')}
-             value={this.state.search}
+             value={this.props.currentBuilding.query}
              onChangeText={this.onSearch}
            />
          </CardSection>
-         { (this.props.building.locals && this.props.building.locals.length > 0) &&
+         { (this.props.currentBuilding.locals && this.props.currentBuilding.locals.length > 0) &&
          <FlatList
-           data={this.props.building.locals}
-           extraData={this.props.building.locals}
+           data={this.props.currentBuilding.locals}
+           extraData={this.props.currentBuilding.floors}
            renderItem={this.renderItem}
          />
         }
@@ -248,7 +246,9 @@ ${npa} ${localite}`}
 const mapStateToProps = state => (
   {
     images: state.bilune.images,
+    currentBuilding: state.bilune.buildings.find(b => b.id === state.bilune.id),
+    visibleFloors: state.bilune.buildings.find(b => b.id === state.bilune.id).floors.filter(f => !f.collapsed),
   }
 );
 
-export default connect(mapStateToProps)(Building);
+export default connect(mapStateToProps, { ...biluneActions })(Building);

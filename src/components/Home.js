@@ -61,10 +61,19 @@ class Home extends Component {
   }
   onSearch= (value) => {
     const { secret } = this.props.auth;
-    this.props.search(value, secret);
-    // new version 2.3.0 searchBilune
-    this.props.searchBilune(value);
+    if (this.props.bilune.buildings.length > 0 || this.props.bilune.state === 'BDL_LOADED') {
+      this.props.search(value, secret);
+      // new version 2.3.0 searchBilune
+      this.props.searchBilune(value);
+    }
   }
+  showBdlLoading = () => (
+    <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Spinner />
+      </View>
+    </View>
+  )
   renderResultMessage= () => {
     const feedbackTranslated = I18n.t('search.feedback');
     const resultsTranslated = I18n.t('search.results');
@@ -117,7 +126,7 @@ class Home extends Component {
   )
   renderContent = () => {
     const { searchQuery } = this.props.directory;
-   
+
     const entries = this.props.bilune.buildings ? this.props.bilune.buildings.map((b) => {
       b.image = this.props.bilune.images[b.id];
       return b;
@@ -160,7 +169,7 @@ class Home extends Component {
           </CardSection>
           {this.renderResultMessage()}
         </Card>
-        {this.renderContent()}
+        {this.props.bilune.buildings.length === 0 ? this.showBdlLoading() : this.renderContent()}
         {this.renderFooter()}
       </View>
     );

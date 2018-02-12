@@ -53,7 +53,7 @@ const getBdlBuildingFloorsAxios = async (floorBuildingId) => {
   let res;
   try {
     res = await axios.get(queries.bdlBuildingFloors(floorBuildingId), { headers });
-    return res.data;
+    return res.data.map(f => ({ ...f, collapsed: false }));
   } catch (e) {
     console.error(`error occured getBdlBuildingFloorsAxios ${e}`);
     throw e;
@@ -98,7 +98,6 @@ const loadSpatialData = () =>
       // const biluneBuildings = await getBiluneBuildingListAxios();
       const buildingsEnteries = await getBiluneBuildingEnteriesAxios();
 
-
       const buildings = bdlBuildings.map((b) => {
         const enteries = filterGeometryForBuilding(buildingsEnteries, b.id);
         // const geometry = filterGeometryForBuilding(biluneBuildings, b.id);
@@ -122,7 +121,7 @@ const loadSpatialData = () =>
           imagesPromise.push(getImageUsingBlob(`${API_BDL}/batiments/${b.id}/photo/mini`));
         }
       });
-      console.info(`loading images for ${imagesId.length} buildings`);
+      console.info(`loadSpatialData loading images for ${imagesId.length} buildings`);
       if (imagesId.length > 0) {
         Promise.all(imagesPromise).then((imagesData) => {
           // handle image stocking
@@ -194,53 +193,56 @@ const formatedDataForList = (myBuilding) => {
   }
   return building;
 };
+
 const loadAllBuildingData = buildingId =>
   async (dispatch, getState) => {
-    const dataLocals = getState().bilune.locals;
-    const { images } = getState().bilune;
-    let locals = [];
-    if (getState().bilune.state === BDL_LOADED) {
-      locals = dataLocals.filter((l) => {
-        const builId = l.attributes.BAT_ID;
-        if (builId === buildingId) {
-          return true;
-        }
-        return false;
-      });
+    try {
+      const floors = await getBdlBuildingFloorsAxios(buildingId);
+      const dataLocals = getState().bilune.locals;
+      const { images } = getState().bilune;
+      let locals = [];
 
-      const imagesPromise = [];
-      const imagesId = [];
-      locals.forEach((loc) => {
+      if (getState().bilune.state === BDL_LOADED) {
+        locals = dataLocals.filter((l) => {
+          const builId = l.attributes.BAT_ID;
+          if (builId === buildingId) {
+            return true;
+          }
+          return false;
+        });
+
+        const imagesPromise = [];
+        const imagesId = [];
+        locals.forEach((loc) => {
         // image is not loaded
-        const typeCode = loc.attributes.LOC_TYPE_ID;
-        if (!images[loc.attributes.OBJECTID] &&
+          const typeCode = loc.attributes.LOC_TYPE_ID;
+          if (!images[loc.attributes.OBJECTID] &&
               ((typeCode === 11 || typeCode === 12 || typeCode === 3))) {
-          imagesId.push(loc.attributes.OBJECTID);
-          imagesPromise.push(getImageUsingBlob(`${API_BDL}/locaux/${loc.attributes.LOC_ID}/photo/mini`));
-        }
-      });
-      console.info(`loading images for ${imagesId.length} locals`);
-      if (imagesId.length > 0) {
-        Promise.all(imagesPromise).then((imagesData) => {
+            imagesId.push(loc.attributes.OBJECTID);
+            imagesPromise.push(getImageUsingBlob(`${API_BDL}/locaux/${loc.attributes.LOC_ID}/photo/mini`));
+          }
+        });
+        console.info(`loadAllBuildingData loading images for ${imagesId.length} locals`);
+        if (imagesId.length > 0) {
+          Promise.all(imagesPromise).then((imagesData) => {
           // handle image stocking
-          imagesId.forEach((id, i) => {
-            images[id] = imagesData[i];
-          });
-          dispatch({
-            type: types.SET_IMAGE_BILUNE,
-            payload: { images },
-          });
-        }).catch(err => console.error(`err loading image:${err}`));
-      }
+            imagesId.forEach((id, i) => {
+              images[id] = imagesData[i];
+            });
+            dispatch({
+              type: types.SET_IMAGE_BILUNE,
+              payload: { images },
+            });
+          }).catch(err => console.error(`err loading image:${err}`));
+        }
 
-      const dataBuildings = getState().bilune.buildings;
-      const buildings = [];
-      try {
-        const floors = await getBdlBuildingFloorsAxios(buildingId);
-
+        const dataBuildings = getState().bilune.buildings;
+        const buildings = [];
         dataBuildings.forEach((currBuilding) => {
           if (currBuilding.id === buildingId) {
-            const buidlingFormated = formatedDataForList({ ...currBuilding, locals, floors });
+            const buidlingFormated = formatedDataForList({
+              ...currBuilding, locals, floors, query: '',
+            });
             buildings.push(buidlingFormated);
           } else {
             buildings.push(currBuilding);
@@ -251,16 +253,84 @@ const loadAllBuildingData = buildingId =>
           type: types.ENRICH_BILUNE_BUILDING,
           payload: { buildings },
         });
-      } catch (e) {
-        if (e.response) {
-          if (e.response.status === 401) {
-            console.error(`Error buildingFloors ${e} `);
-          }
+      }
+    } catch (e) {
+      if (e.response) {
+        if (e.response.status === 401) {
+          console.error(`Error buildingFloors ${e} `);
         }
       }
     }
   };
 
+const showHideBuildingFloor = (buildingId, floorId) =>
+  async (dispatch, getState) => {
+    const dataBuildings = getState().bilune.buildings;
+    const buildings = [];
+    dataBuildings.forEach((currBuilding) => {
+      if (currBuilding.id === buildingId) {
+        const floors = currBuilding.floors.map((f) => {
+          if (f.id === floorId) {
+            f.collapsed = !f.collapsed;
+          }
+          return f;
+        });
+        currBuilding.floors = floors;
+        buildings.push(currBuilding);
+      } else {
+        buildings.push(currBuilding);
+      }
+    });
+
+    dispatch({
+      type: types.ENRICH_BILUNE_BUILDING,
+      payload: { buildings },
+    });
+  };
+
+const searchInBuilding = (buildingId, searchQuery) =>
+  async (dispatch, getState) => {
+    const dataBuildings = getState().bilune.buildings;
+    const buildings = [];
+    let buildingsLocals = [];
+
+    dataBuildings.forEach((currBuilding) => {
+      if (currBuilding.id === buildingId) {
+        const dataLocals = getState().bilune.locals;
+        buildingsLocals = dataLocals.filter((l) => {
+          const builId = l.attributes.BAT_ID;
+          if (builId === buildingId) {
+            return true;
+          }
+          return false;
+        });
+
+        const locals = buildingsLocals.filter((l) => {
+          const locCode = l.attributes.LOC_CODE.toLowerCase();
+          const typeDes = l.attributes.LOC_TYPE_DESIGNATION.toLowerCase();
+          const q = searchQuery.toLowerCase();
+          const typeCode = l.attributes.LOC_TYPE_ID;
+          if (typeCode === 11 || typeCode === 12 || typeCode === 3) {
+            return locCode.includes(q) || typeDes.includes(q);
+          }
+          return locCode.includes(q);
+        });
+
+        // currBuilding.query = searchQuery;
+        const fomattedLocals = locals.map((item, index) => ({
+          ...item, type: LOCAL, key: item.attributes.LOC_ID, index,
+        }));
+        buildings.push({ ...currBuilding, query: searchQuery, locals: fomattedLocals });
+      } else {
+        buildings.push(currBuilding);
+      }
+    });
+
+    dispatch({
+      type: types.ENRICH_BILUNE_BUILDING,
+      payload: { buildings },
+    });
+  };
 
 const searchBilune = query =>
   async (dispatch, getState) => {
@@ -297,7 +367,7 @@ const searchBilune = query =>
             imagesPromise.push(getImageUsingBlob(`${API_BDL}/batiments/${b.id}/photo/mini`));
           }
         });
-        console.info(`loading images for ${imagesId.length} buildings`);
+        console.info(`searchBilune loading images for ${imagesId.length} buildings`);
         if (imagesId.length > 0) {
           Promise.all(imagesPromise).then((imagesData) => {
             // handle image stocking
@@ -335,7 +405,7 @@ const searchBilune = query =>
             imagesPromise.push(getImageUsingBlob(`${API_BDL}/locaux/${loc.attributes.LOC_ID}/photo/mini`));
           }
         });
-        console.info(`loading images for ${imagesId.length} locals`);
+        console.info(`searchBilune loading images for ${imagesId.length} locals`);
         if (imagesId.length > 0) {
           Promise.all(imagesPromise).then((imagesData) => {
             // handle image stocking
@@ -392,4 +462,6 @@ export {
   loadAllBuildingData,
   searchBilune,
   zoomToBat,
+  showHideBuildingFloor,
+  searchInBuilding,
 };

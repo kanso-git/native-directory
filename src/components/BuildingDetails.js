@@ -8,14 +8,6 @@ import Building from './Building';
 
 
 class BuidlingDetails extends Component {
-  state={
-    spinner: true,
-  }
-  stopSpinner= () => {
-    this.setState(() => ({
-      spinner: false,
-    }));
-  }
   renderSpinner = () => (
     <View style={{ flex: 1 }}>
       <Chromatic />
@@ -24,18 +16,25 @@ class BuidlingDetails extends Component {
       </View>
     </View>
   );
-   renderBuilding = buildingObject => (
-     <View>
-       <Chromatic />
-       <ScrollView>
-         <Building building={buildingObject} />
-       </ScrollView>
-     </View>);
-   render() {
+   renderBuilding = () => {
+     console.log('renderBuilding in BuildingDetails.js');
      const myBuilding = this.props.bilune.buildings.filter(b => b.id === this.props.bilune.id);
-     const building = myBuilding[0];
 
-     return this.renderBuilding(building);
+     if (myBuilding && myBuilding[0] && myBuilding[0].locals) {
+       return (
+         <View>
+           <Chromatic />
+           <ScrollView>
+             <Building />
+           </ScrollView>
+         </View>
+       );
+     }
+     this.props.loadAllBuildingData(this.props.bilune.id);
+     return this.renderSpinner();
+   }
+   render() {
+     return this.props.bilune.state !== 'BDL_LOADED' ? this.renderSpinner() : this.renderBuilding();
    }
 }
 
