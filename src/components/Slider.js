@@ -24,7 +24,7 @@ class Slider extends Component {
       const bat = this.state.entries[index];
       this.props.zoomToBat(bat);
     }
-
+ 
     layoutExample(number, title, type) {
       return (
         <View style={[styles.exampleContainer, styles.exampleContainerLight]}>

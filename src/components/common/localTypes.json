@@ -17,12 +17,6 @@
     "sortOrder": 3
 },
 {
-    "id": 4,
-    "designation": "Autres surfaces",
-    "color": "#e3e3d6",
-    "sortOrder": 12
-},
-{
     "id": 5,
     "designation": "Bibliothèque",
     "color": "#f2f5ce",
@@ -52,12 +46,7 @@
     "color": "#acac9f",
     "sortOrder": 8
 },
-{
-    "id": 10,
-    "designation": "Salle de réunion",
-    "color": "#b3f984",
-    "sortOrder": 10
-},
+
 {
     "id": 11,
     "designation": "Salle d'enseignement",
@@ -65,8 +54,20 @@
     "sortOrder": 9
 },
 {
+    "id": 10,
+    "designation": "Salle de réunion",
+    "color": "#b3f984",
+    "sortOrder": 10
+},
+{
     "id": 12,
     "designation": "Salle informatique",
     "color": "#3c89f5",
     "sortOrder": 11
+},
+{
+    "id": 4,
+    "designation": "Autres surfaces",
+    "color": "#e3e3d6",
+    "sortOrder": 12
 }]

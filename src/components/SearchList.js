@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { FlatList, Keyboard, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import { PERSON, UNIT } from 'react-native-dotenv';
-import { searchActions } from './actions';
+import { PERSON, UNIT, BUILDING } from 'react-native-dotenv';
+import { searchActions, biluneActions } from './actions';
 import SearchItem from './SearchItem';
 
 class SearchList extends Component {
@@ -18,6 +18,10 @@ class SearchList extends Component {
         break;
       case UNIT:
         Actions.push('unitDetails', { unitDetails: item });
+        break;
+      case BUILDING:
+        this.props.zoomToBat(item);
+        Actions.push('buildingDetails');
         break;
       default:
         break;
@@ -57,4 +61,4 @@ const mapStateToProps = state => (
   }
 );
 
-export default connect(mapStateToProps, searchActions)(SearchList);
+export default connect(mapStateToProps, { ...searchActions, ...biluneActions })(SearchList);

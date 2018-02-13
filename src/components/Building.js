@@ -9,6 +9,7 @@ import I18n from 'react-native-i18n';
 import { biluneActions } from './actions';
 import { Card, CardSection, InputFlex } from './common';
 import BuildingLocalItem from './BuildingLocalItem';
+import BuildingSummary from './BuildingSummary';
 
 
 const styles = StyleSheet.create({
@@ -61,9 +62,9 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   flipCard: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'blue',
     backfaceVisibility: 'hidden',
   },
   flipCardBack: {
@@ -80,19 +81,21 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 8,
-    backgroundColor: 'rgba(255,255,255,0.6)',
+    backgroundColor: 'rgba(255,255,255,0.8)',
     padding: 6,
     borderRadius: 10,
     width: 60,
     alignItems: 'center',
     justifyContent: 'center',
+    borderColor: '#ddd',
+    borderBottomWidth: 0,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
   },
 });
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 const {
-  containerStyle,
   textStyle,
-  textStyleElem,
   touchable,
   touchableContainer,
   addressStyle,
@@ -100,9 +103,6 @@ const {
 
 
 class Building extends Component {
-  state={
-    search: '',
-  }
   componentWillMount() {
     this.animatedValue = new Animated.Value(0);
     this.value = 0;
@@ -118,19 +118,37 @@ class Building extends Component {
       outputRange: ['180deg', '360deg'],
     });
   }
-   renderSummaryInfo = buildingObj => (
-     <View style={[containerStyle]}>
-       <Text style={[textStyleElem]}>Nombre d'étages : {buildingObj.floors.length} </Text>
-     </View>
-   );
-
-
+  onShowHideFloor = (floorId) => {
+    this.props.showHideBuildingFloor(this.props.currentBuilding.id, parseInt(floorId, 10));
+  }
+  onPressItem = (item) => {
+    console.log(JSON.stringify(item, null, 4));
+    // Actions.replace('memberDetails', { memberDetails: item });
+  };
+  onSearch = (value) => {
+    this.props.searchInBuilding(this.props.currentBuilding.id, value);
+  }
+  flipCard = () => {
+    if (this.value >= 90) {
+      Animated.spring(this.animatedValue, {
+        toValue: 0,
+        friction: 8,
+        tension: 10,
+      }).start();
+    } else {
+      Animated.spring(this.animatedValue, {
+        toValue: 180,
+        friction: 8,
+        tension: 10,
+      }).start();
+    }
+  }
    renderNameAddress = (abreviation, addressLines, localite, npa) => (
      <TouchableOpacity onPress={() => console.log(' show the map')}>
-       <View style={[containerStyle, { height: 20 }]}>
+       <View style={[{ height: 20 }]}>
          <Text style={[textStyle, touchable]}>{abreviation}</Text>
        </View>
-       <View style={[containerStyle, { marginBottom: 5, height: 30 }, touchableContainer]}>
+       <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>
          <View style={addressStyle}>
            <Text style={[touchable]}>{`${addressLines}
 ${npa} ${localite}`}
@@ -140,12 +158,6 @@ ${npa} ${localite}`}
      </TouchableOpacity>
    );
 
-   onShowHideFloor = (floorId) => {
-     this.props.showHideBuildingFloor(this.props.currentBuilding.id, parseInt(floorId, 10));
-   }
-   onPressItem = (item) => {
-     // Actions.replace('memberDetails', { memberDetails: item });
-   };
    renderItem = ({ item }) => (
      <BuildingLocalItem
        item={item}
@@ -160,29 +172,8 @@ ${npa} ${localite}`}
      />
    );
 
-   flipCard = () => {
-     if (this.value >= 90) {
-       Animated.spring(this.animatedValue, {
-         toValue: 0,
-         friction: 8,
-         tension: 10,
-       }).start();
-     } else {
-       Animated.spring(this.animatedValue, {
-         toValue: 180,
-         friction: 8,
-         tension: 10,
-       }).start();
-     }
-   }
-   onSearch = (value) => {
-     console.log(`searchInBuilding  for value :${value}`);
-     console.log(`searchInBuilding  for this.props.currentBuilding.id :${this.props.currentBuilding.id}`);
-     this.props.searchInBuilding(this.props.currentBuilding.id, value);
-   }
    render() {
      console.log('Building.js');
-     console.log(this.props.visibleFloors);
      const frontAnimatedStyle = {
        transform: [
          { rotateY: this.frontInterpolate },
@@ -198,47 +189,71 @@ ${npa} ${localite}`}
        abreviation, adresseLigne1, localite, npa,
      } = this.props.currentBuilding;
      return (
-       <Card>
-         <CardSection>
-           <Animated.View style={[styles.flipCard, frontAnimatedStyle]}>
-             <Image
-               style={{ width: viewportWidth - 22, height: viewportHeight * 0.33 }}
-               source={{ uri: this.props.currentBuilding.image }}
-             />
-           </Animated.View>
-           <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
-             <View style={{ width: viewportWidth - 12, height: viewportHeight * 0.33 }}>
-               <CardSection>
-                 <Text>Total de locaux: </Text>
-               </CardSection>
-             </View>
-           </Animated.View>
-           <TouchableOpacity style={styles.flipBtn} onPress={() => this.flipCard()}>
-             <Icon name="cog" style={{ fontSize: 20 }} allowFontScaling />
-           </TouchableOpacity>
-         </CardSection>
-         <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
-           { (adresseLigne1 && adresseLigne1.length > 0) &&
-            this.renderNameAddress(abreviation, adresseLigne1, localite, npa)}
-           <InputFlex
-             icon="&#x1F50E;"
-             style={{
+       <View>
+
+         <Animated.View style={[styles.flipCard, frontAnimatedStyle]}>
+           <Image
+             style={{ width: viewportWidth, height: viewportHeight * 0.33 }}
+             source={{ uri: this.props.currentBuilding.image }}
+           />
+           <View >
+             <TouchableOpacity
+               style={{
+              width: viewportWidth,
+              paddingLeft: 5,
+              paddingTop: 10,
+              backgroundColor: '#DFDFDF',
+              justifyContent: 'flex-end',
+              alignItems: 'flex-start' }}
+               onPress={() => console.log(' show the map')}
+             >
+               <View style={[{ height: 20 }]}>
+                 <Text style={[textStyle, touchable]}>{abreviation}</Text>
+               </View>
+               <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>
+                 <View style={addressStyle}>
+                   <Text style={[touchable]}>{`${adresseLigne1}
+${npa} ${localite}`}
+                   </Text>
+                 </View>
+               </View>
+             </TouchableOpacity>
+           </View>
+         </Animated.View>
+
+         <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
+           <View style={{ width: viewportWidth }}>
+             <BuildingSummary currentBuilding={this.props.currentBuilding} />
+           </View>
+         </Animated.View>
+
+         <TouchableOpacity style={styles.flipBtn} onPress={() => this.flipCard()}>
+           <Icon name="cog" style={{ fontSize: 20 }} allowFontScaling />
+         </TouchableOpacity>
+
+         <Card>
+           <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
+             <InputFlex
+               icon="&#x1F50E;"
+               style={{
               height: 40, borderRadius: 5, borderWidth: 1, borderColor: '#dfdfdf',
             }}
-             placeholder={I18n.t('search.placeholderBlding')}
-             value={this.props.currentBuilding.query}
-             onChangeText={this.onSearch}
+               placeholder={I18n.t('search.placeholderBlding')}
+               value={this.props.currentBuilding.query}
+               onChangeText={this.onSearch}
+             />
+           </CardSection>
+
+           { (this.props.currentBuilding.locals && this.props.currentBuilding.locals.length > 0) &&
+           <FlatList
+             data={this.props.currentBuilding.locals}
+             extraData={this.props.currentBuilding.floors}
+             renderItem={this.renderItem}
            />
-         </CardSection>
-         { (this.props.currentBuilding.locals && this.props.currentBuilding.locals.length > 0) &&
-         <FlatList
-           data={this.props.currentBuilding.locals}
-           extraData={this.props.currentBuilding.floors}
-           renderItem={this.renderItem}
-         />
         }
 
-       </Card>
+         </Card>
+       </View>
      );
    }
 }
