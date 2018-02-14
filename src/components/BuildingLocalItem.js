@@ -86,22 +86,6 @@ class BuildingLocalItem extends Component {
      if (item.attributes.section) {
        return this.renderSectionJsx(item.attributes.section, item.attributes.ETG_ID, visibleFloors);
      }
-     /*
-     if (item.index === 0) {
-       const localsNbr = this.props.building.locals.length;
-       let roundedArea = 0;
-       this.props.building.locals.forEach((l) => {
-         roundedArea += Math.round(l.attributes.SHAPE_Area * 10);
-       });
-       roundedArea /= 10;
-       switch (item.type) {
-         case LOCAL:
-           return this.renderSectionJsx(`Total de locaux : ${localsNbr}
-${item.attributes.section}`);
-         default:
-           break;
-       }
-     } */
    }
 
    render() {

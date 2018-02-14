@@ -1,11 +1,10 @@
 /* eslint-disable react/prop-types,no-empty */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { Spinner, Chromatic } from './common';
 import { biluneActions } from './actions';
 import Local from './Local';
-
 
 class LocalDetails extends Component {
   componentDidMount() {
@@ -28,7 +27,8 @@ class LocalDetails extends Component {
     </View>
   )
   render() {
-    return !this.props.reservations[this.props.bilune.locId] ? this.renderSpinner() : this.renderLocal();
+    return (this.props.bilune.state !== 'BDL_LOADED' || !this.props.reservations[this.props.bilune.locId]) ?
+      this.renderSpinner() : this.renderLocal();
   }
 }
 

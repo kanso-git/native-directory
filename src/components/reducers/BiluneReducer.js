@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   },
   images: {},
   reservations: {},
+  localWithReservations: {},
   id: null,
   localId: null,
 };
@@ -33,6 +34,8 @@ export default (state = INITIAL_STATE, action) => {
     case types.SET_DEFAULT_LOC_ID:
       return { ...state, ...action.payload };
     case types.ENRICH_BILUNE_BUILDING:
+      return { ...state, ...action.payload };
+    case types.ENRICH_BILUNE_LOCAL_RESERVATIONS:
       return { ...state, ...action.payload };
     default:
       return state;

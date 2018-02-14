@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
 import { biluneActions } from './actions';
 import { Card, CardSection, InputFlex } from './common';
-import BuildingLocalItem from './BuildingLocalItem';
+import LocalReservationItem from './LocalReservationItem';
 import LocalSummary from './LocalSummary';
 
 
@@ -118,15 +118,14 @@ class Local extends Component {
       outputRange: ['180deg', '360deg'],
     });
   }
-  onShowHideFloor = (floorId) => {
-    this.props.showHideBuildingFloor(this.props.currentBuilding.id, parseInt(floorId, 10));
+  onShowHideDay = (dayId) => {
+    this.props.showHideReservationDay(this.props.locId, dayId);
   }
   onPressItem = (item) => {
     console.log(JSON.stringify(item, null, 4));
-    // Actions.replace('memberDetails', { memberDetails: item });
   };
   onSearch = (value) => {
-    this.props.searchInBuilding(this.props.currentBuilding.id, value);
+    this.props.searchInLocalReservations(this.props.locId, value);
   }
   flipCard = () => {
     if (this.value >= 90) {
@@ -145,21 +144,18 @@ class Local extends Component {
   }
 
    renderItem = ({ item }) => (
-     <BuildingLocalItem
+     <LocalReservationItem
        item={item}
-       visibleFloors={this.props.visibleFloors}
-       image={item.attributes ?
-          this.props.images[item.attributes.OBJECTID] : this.props.images[item.id]}
-       building={this.props.currentBuilding}
+       visibleDays={this.props.visibleDays}
        style={{ paddingLeft: 10 }}
-       listLen={this.props.currentBuilding.locals.length}
+       listLen={this.props.localWithReservations.days.length}
        pressFn={this.onPressItem}
-       showHideFloor={this.onShowHideFloor}
+       showHideDay={this.onShowHideDay}
      />
    );
 
    render() {
-    
+     console.log(this.props.localWithReservations);
      const frontAnimatedStyle = {
        transform: [
          { rotateY: this.frontInterpolate },
@@ -181,7 +177,7 @@ class Local extends Component {
          <Animated.View style={[styles.flipCard, frontAnimatedStyle]}>
            <Image
              style={{ width: viewportWidth, height: viewportHeight * 0.33 }}
-             source={{ uri: this.props.images[this.props.currentLocal.attributes.OBJECTID] }}
+             source={{ uri: this.props.images[this.props.localWithReservations.attributes.OBJECTID] }}
            />
            <View >
              <TouchableOpacity
@@ -225,15 +221,15 @@ ${npa} ${localite}`}
               height: 40, borderRadius: 5, borderWidth: 1, borderColor: '#dfdfdf',
             }}
                placeholder={I18n.t('search.placeholderLocal')}
-               value={this.props.currentBuilding.query}
+               value={this.props.localWithReservations.query}
                onChangeText={this.onSearch}
              />
            </CardSection>
 
-           { (this.props.currentBuilding.locals && this.props.currentBuilding.locals.length > 0) &&
+           { (this.props.localWithReservations.days && this.props.localWithReservations.days.length > 0) &&
            <FlatList
-             data={this.props.currentBuilding.locals}
-             extraData={this.props.currentBuilding.floors}
+             data={this.props.localWithReservations.days}
+             extraData={this.props.visibleDays}
              renderItem={this.renderItem}
            />
         }
@@ -247,9 +243,10 @@ ${npa} ${localite}`}
 const mapStateToProps = state => (
   {
     images: state.bilune.images,
-    currentBuilding: state.bilune.buildings.find(b => b.id === state.bilune.id),
-    currentLocal: state.bilune.locals.find(l => l.attributes.LOC_ID === state.bilune.locId),
     locId: state.bilune.locId,
+    currentBuilding: state.bilune.buildings.find(b => b.id === state.bilune.id),
+    localWithReservations: state.bilune.localWithReservations,
+    visibleDays: state.bilune.localWithReservations.days.filter(f => !f.collapsed),
   }
 );
 

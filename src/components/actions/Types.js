@@ -18,6 +18,7 @@ const SET_DEFAULT_BAT_ID = 'set_default_bat_id';
 const ENRICH_BILUNE_BUILDING = 'enrich_bilune_building';
 const SET_DEFAULT_LOC_ID = 'set_default_loc_id';
 const SET_RESERVATIONS_BILUNE_LOCALS = 'set_reservations_bilune_locals';
+const ENRICH_BILUNE_LOCAL_RESERVATIONS = 'enrich_bilune_local_reserbvations';
 
 export {
   REGISTER,
@@ -37,6 +38,7 @@ export {
   SET_IMAGE_BILUNE,
   SET_DEFAULT_BAT_ID,
   ENRICH_BILUNE_BUILDING,
+  ENRICH_BILUNE_LOCAL_RESERVATIONS,
   SET_DEFAULT_LOC_ID,
   SET_RESERVATIONS_BILUNE_LOCALS,
 };

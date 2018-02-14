@@ -2,12 +2,13 @@
 /* eslint global-require: "off" */
 
 import axios from 'axios';
-
+import * as _ from 'lodash';
 import { BDL_SECURITY_TOKEN,
   BDL_SECURITY_TOKEN_VAL,
   API_BDL, LOCAL, BUILDING,
   BDL_LOADED,
   BDL_LOADING,
+  RESERVATION,
   BDL_ERROR } from 'react-native-dotenv';
 import * as types from './Types';
 import * as queries from '../common/queriesHelper';
@@ -171,7 +172,7 @@ const loadSpatialData = () =>
     }
   };
 
-const formatedDataForList = (myBuilding) => {
+const formatedBuildingDataForList = (myBuilding) => {
   // handle data formating
   const locals = [];
   let building = {};
@@ -210,6 +211,71 @@ const reservationListAxios = async (lId, sD, eD) => {
     throw e;
   }
 };
+
+const formatedLocalReservationDataForList = (myLocal) => {
+  const moment = require('moment');
+  if (myLocal && myLocal.days && myLocal.days.length > 0) {
+    const formattedDays = [];
+    myLocal.days.forEach((d) => {
+      const section = d.date;
+      if ((d.occupation && d.occupation.length > 0)) {
+        const occupations = d.occupation.sort((o1, o2) => {
+          // "debutUTC": "2018-02-14T08:15:00Z",
+          const a = moment(o1.debutUTC, moment.ISO_8601);
+          const b = moment(o2.debutUTC, moment.ISO_8601);
+          const res = a.diff(b) > 0 ? 1 : -1;
+          return res;
+        });
+        occupations.forEach((oc, i) => {
+          if (i === 0) {
+            formattedDays.push({ ...oc, section, collapsed: false });
+          } else {
+            formattedDays.push({ ...oc });
+          }
+        });
+      } else if ( _.isObject(d.occupation)) {
+        formattedDays.push({ ...d.occupation, section, collapsed: false });
+      }
+    });
+    const formattedDaysSorted = formattedDays.sort((o1, o2) => {
+    
+      // "debutUTC": "2018-02-14T08:15:00Z",
+      const a = moment(o1.date, 'YYYY-MM-DD');
+      const b = moment(o2.date, 'YYYY-MM-DD');
+      const res = a.diff(b) > 0 ? 1 : -1;
+      return res;
+    });
+
+  
+    return {
+      ...myLocal,
+      days: formattedDaysSorted.map((item, index) => ({
+        ...item, type: RESERVATION, key: index, index,
+      })),
+    };
+  }
+
+  return myLocal;
+};
+
+const completeLoadingLocalData = (localId, dataReservations, dispatch, getState) => {
+  const { reservations } = getState().bilune;
+  const days = dataReservations.Query.Horaire.jour ? dataReservations.Query.Horaire.jour : [];
+  reservations[localId] = days;
+  const dataLocals = getState().bilune.locals;
+  dataLocals.forEach((currLocal) => {
+    if (parseInt(currLocal.attributes.LOC_ID, 10) === localId) {
+      const localWithReservations = formatedLocalReservationDataForList({
+        ...currLocal, days, query: '',
+      });
+
+      dispatch({
+        type: types.ENRICH_BILUNE_LOCAL_RESERVATIONS,
+        payload: { localWithReservations, reservations },
+      });
+    }
+  });
+};
 const loadAllLocalData = localId =>
   async (dispatch, getState) => {
     const moment = require('moment');
@@ -224,24 +290,21 @@ const loadAllLocalData = localId =>
     } else {
       try {
         const dataReservations = await reservationListAxios(localId, startDate, endDate);
-        console.log(JSON.stringify(dataReservations.Query.Horaire, null, 3));
-        reservations[localId] = dataReservations.Query.Horaire;
-        dispatch({
-          type: types.SET_RESERVATIONS_BILUNE_LOCALS,
-          payload: { reservations },
-        });
+        completeLoadingLocalData(localId, dataReservations, dispatch, getState);
       } catch (e) {
+        // todo add default message when an error is occured like reservation data is not available!
         if (e.response) {
           if (e.response.status === 401) {
             console.error(`Error loadAllLocalData -reservationListAxios ${e} `);
           }
         } else {
-          // network error
-          console.error(`Error loadAllLocalData -reservationListAxios ${e.request._response} `);
+          console.error(`Error loadAllLocalData -reservationListAxios ${e.request} `);
         }
       }
     }
   };
+
+
 const loadAllBuildingData = buildingId =>
   async (dispatch, getState) => {
     try {
@@ -288,7 +351,7 @@ const loadAllBuildingData = buildingId =>
         const buildings = [];
         dataBuildings.forEach((currBuilding) => {
           if (currBuilding.id === buildingId) {
-            const buidlingFormated = formatedDataForList({
+            const buidlingFormated = formatedBuildingDataForList({
               ...currBuilding, locals, floors, query: '',
             });
             buildings.push(buidlingFormated);
@@ -366,7 +429,7 @@ const searchInBuilding = (buildingId, searchQuery) =>
         });
 
         const tobeFormatted = { ...currBuilding, query: searchQuery, locals };
-        const formated = formatedDataForList(tobeFormatted);
+        const formated = formatedBuildingDataForList(tobeFormatted);
         // expaned the floors after the search
         const expanded = formated.floors.map(f => ({ ...f, collapsed: false }));
         buildings.push({ ...formated, floors: expanded });
