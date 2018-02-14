@@ -9,7 +9,7 @@ import I18n from 'react-native-i18n';
 import { biluneActions } from './actions';
 import { Card, CardSection, InputFlex } from './common';
 import BuildingLocalItem from './BuildingLocalItem';
-import BuildingSummary from './BuildingSummary';
+import LocalSummary from './LocalSummary';
 
 
 const styles = StyleSheet.create({
@@ -143,20 +143,6 @@ class Local extends Component {
       }).start();
     }
   }
-   renderNameAddress = (abreviation, addressLines, localite, npa) => (
-     <TouchableOpacity onPress={() => console.log(' show the map')}>
-       <View style={[{ height: 20 }]}>
-         <Text style={[textStyle, touchable]}>{abreviation}</Text>
-       </View>
-       <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>
-         <View style={addressStyle}>
-           <Text style={[touchable]}>{`${addressLines}
-${npa} ${localite}`}
-           </Text>
-         </View>
-       </View>
-     </TouchableOpacity>
-   );
 
    renderItem = ({ item }) => (
      <BuildingLocalItem
@@ -173,7 +159,7 @@ ${npa} ${localite}`}
    );
 
    render() {
-     console.log('Building.js');
+    
      const frontAnimatedStyle = {
        transform: [
          { rotateY: this.frontInterpolate },
@@ -188,13 +174,14 @@ ${npa} ${localite}`}
      const {
        abreviation, adresseLigne1, localite, npa,
      } = this.props.currentBuilding;
+     
      return (
        <View>
 
          <Animated.View style={[styles.flipCard, frontAnimatedStyle]}>
            <Image
              style={{ width: viewportWidth, height: viewportHeight * 0.33 }}
-             source={{ uri: this.props.currentBuilding.image }}
+             source={{ uri: this.props.images[this.props.currentLocal.attributes.OBJECTID] }}
            />
            <View >
              <TouchableOpacity
@@ -223,7 +210,6 @@ ${npa} ${localite}`}
 
          <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
            <View style={{ width: viewportWidth }}>
-             <BuildingSummary currentBuilding={this.props.currentBuilding} />
            </View>
          </Animated.View>
 
@@ -238,7 +224,7 @@ ${npa} ${localite}`}
                style={{
               height: 40, borderRadius: 5, borderWidth: 1, borderColor: '#dfdfdf',
             }}
-               placeholder={I18n.t('search.placeholderBlding')}
+               placeholder={I18n.t('search.placeholderLocal')}
                value={this.props.currentBuilding.query}
                onChangeText={this.onSearch}
              />
@@ -262,7 +248,8 @@ const mapStateToProps = state => (
   {
     images: state.bilune.images,
     currentBuilding: state.bilune.buildings.find(b => b.id === state.bilune.id),
-    visibleFloors: state.bilune.buildings.find(b => b.id === state.bilune.id).floors.filter(f => !f.collapsed),
+    currentLocal: state.bilune.locals.find(l => l.attributes.LOC_ID === state.bilune.locId),
+    locId: state.bilune.locId,
   }
 );
 

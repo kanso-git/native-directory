@@ -3,33 +3,44 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
+import * as _ from 'lodash';
 import { biluneActions } from './actions';
 import { sliderWidth, itemWidth } from './SliderEntryStyle';
 import SliderEntry from './SliderEntry';
 import styles from './indexStyle';
 
-
+let refCarousel;
 class Slider extends Component {
     state={
       entries: this.props.entries || [],
     }
-
     componentWillReceiveProps(nextProps) {
       this.setState(() => ({
         entries: nextProps.entries,
       }));
     }
-    handleSnapToItem = (index) => {
-      console.log(`slide to silde index:${index}`);
-      const bat = this.state.entries[index];
-      this.props.zoomToBat(bat);
+    // methods can then be called this way
+    jumpToSlide= (buidlingId) => {
+      const refCarousel = this.refs.carousel;
+      if (buidlingId && refCarousel && buidlingId > 0) {
+        const currentSlideIndex = refCarousel.currentIndex;
+        const currentBuildingIndex = _.findIndex(this.state.entries, { id: buidlingId });
+        if (currentBuildingIndex !== currentSlideIndex) {
+          refCarousel.snapToItem(currentBuildingIndex, false);
+        }
+      }
     }
- 
+    handleSnapToItem = (index) => {
+      const bat = this.state.entries[index];
+      this.props.setBuildingId(bat);
+    }
+
     layoutExample(number, title, type) {
       return (
         <View style={[styles.exampleContainer, styles.exampleContainerLight]}>
 
           <Carousel
+            ref={'carousel'}
             data={this.state.entries}
             renderItem={this.renderItem}
             sliderWidth={sliderWidth}
@@ -47,7 +58,7 @@ class Slider extends Component {
    renderItem = ({ item, index }) => <SliderEntry data={item} even={(index + 1) % 2 === 0} />
    render() {
      const example3 = this.layoutExample(3, '"Stack of cards" layout | Loop', 'stack');
-
+     setTimeout(() => this.jumpToSlide(this.props.id), 500);
      return (
        <View style={styles.container}>
          { example3 }
@@ -55,5 +66,9 @@ class Slider extends Component {
      );
    }
 }
+const mapStateToProps = state => (
+  {
+    id: state.bilune.id,
+  });
 
-export default connect(null, { ...biluneActions })(Slider);
+export default connect(mapStateToProps, { ...biluneActions })(Slider);

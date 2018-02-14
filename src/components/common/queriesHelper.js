@@ -1,4 +1,4 @@
-import { API_BILUNE, API_BDL } from 'react-native-dotenv';
+import { API_BILUNE, API_BDL, API_GLIWS_BILUNE } from 'react-native-dotenv';
 
 const buildingPrefix = `${API_BILUNE}/0/query?`;
 const localPrefix = `${API_BILUNE}/2/query?`;
@@ -53,6 +53,12 @@ const localsByBuildingIdAndFloorId = (bId, fId) => {
   return localPrefix + url + commonPart();
 };
 
+const reservationsByLocalId = (locId, startDate, endDate) => {
+  // date format YYYY-mm-dd e.g 2018-02-13
+  const url = `?salleid=${locId}&debut=${startDate}&fin=${endDate}`;
+  return API_GLIWS_BILUNE + url;
+};
+
 export {
   buildings,
   buildingById,
@@ -61,7 +67,8 @@ export {
   localsByBuildingIdAndFloorId,
   bdlBuildings,
   bdlBuildingFloors,
-  buildingsEnteries };
+  buildingsEnteries,
+  reservationsByLocalId };
 
 /*
 

@@ -6,7 +6,7 @@
     "search" : {
         "placeholder" : "Personne, département, n° de tél...",
         "placeholderBlding" : "Local code, aula, salle informatique ....",
-        
+        "placeholderLocal": "Professor, course",
         "showAll" : "Charger tout...",
         "feedback":"Nous avons trouvé ",
         "result":" résultat",
@@ -54,6 +54,7 @@
         "pageTitle" : "Carte"
     },
     "local" : {
+        "pageTitle" : "Local",
         "title" : "Local",
         "floor" : "Étage",
         "type" : "Type"

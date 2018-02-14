@@ -6,6 +6,7 @@
     "search" : {
         "placeholder" : "Person, department, phone number...",
         "placeholderBlding" : "Local code, aula, salle informatique ....",
+        "placeholderLocal": "Professeur, matière",
         "showAll" : "Show all...",
         "feedback":"We have found ",
         "result":" result",
@@ -56,6 +57,7 @@
         "pageTitle" : "Map"
     },
     "local" : {
+        "pageTitle" : "Local",
         "title" : "Local",
         "floor" : "Floor",
         "type" : "Type"

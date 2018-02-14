@@ -6,6 +6,7 @@ import Home from './components/Home';
 import MemberDetails from './components/MemberDetails';
 import UnitDetails from './components/UnitDetails';
 import BuildingDetails from './components/BuildingDetails';
+import LocalDetails from './components/LocalDetails';
 import MapPage from './components/MapPage';
 import NetworkError from './components/NetworkError';
 
@@ -69,6 +70,16 @@ const RouterComponent = () => (
           backTitle=" "
           component={BuildingDetails}
           title={I18n.t('building.pageTitle')}
+          titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
+          backButtonTintColor="white"
+          navigationBarStyle={styles.navStyle}
+        />
+
+        <Scene
+          key="localDetails"
+          backTitle=" "
+          component={LocalDetails}
+          title={I18n.t('local.pageTitle')}
           titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}

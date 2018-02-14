@@ -1,13 +1,16 @@
 /* eslint-disable react/prop-types,no-empty */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import { Spinner, Chromatic } from './common';
 import { biluneActions } from './actions';
-import Building from './Building';
+import Local from './Local';
 
 
-class BuidlingDetails extends Component {
+class LocalDetails extends Component {
+  componentDidMount() {
+    this.props.loadAllLocalData(this.props.bilune.locId);
+  }
   renderSpinner = () => (
     <View style={{ flex: 1 }}>
       <Chromatic />
@@ -16,31 +19,23 @@ class BuidlingDetails extends Component {
       </View>
     </View>
   );
-   renderBuilding = () => {
-     console.log('renderBuilding in BuildingDetails.js');
-     const myBuilding = this.props.bilune.buildings.filter(b => b.id === this.props.bilune.id);
-
-     if (myBuilding && myBuilding[0] && myBuilding[0].locals) {
-       return (
-         <View>
-           <Chromatic />
-           <ScrollView>
-             <Building />
-           </ScrollView>
-         </View>
-       );
-     }
-     this.props.loadAllBuildingData(this.props.bilune.id);
-     return this.renderSpinner();
-   }
-   render() {
-     return this.props.bilune.state !== 'BDL_LOADED' ? this.renderSpinner() : this.renderBuilding();
-   }
+  renderLocal = () => (
+    <View>
+      <Chromatic />
+      <ScrollView>
+        <Local />
+      </ScrollView>
+    </View>
+  )
+  render() {
+    return !this.props.reservations[this.props.bilune.locId] ? this.renderSpinner() : this.renderLocal();
+  }
 }
 
 const mapStateToProps = state => (
   {
     bilune: state.bilune,
+    reservations: state.bilune.reservations,
   });
 
-export default connect(mapStateToProps, { ...biluneActions })(BuidlingDetails);
+export default connect(mapStateToProps, { ...biluneActions })(LocalDetails);

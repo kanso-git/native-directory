@@ -2,6 +2,7 @@
 /* eslint global-require: "off" */
 
 import axios from 'axios';
+
 import { BDL_SECURITY_TOKEN,
   BDL_SECURITY_TOKEN_VAL,
   API_BDL, LOCAL, BUILDING,
@@ -53,7 +54,8 @@ const getBdlBuildingFloorsAxios = async (floorBuildingId) => {
   let res;
   try {
     res = await axios.get(queries.bdlBuildingFloors(floorBuildingId), { headers });
-    return res.data.map(f => ({ ...f, collapsed: false }));
+    const collapsed = false;
+    return res.data.map(f => ({ ...f, collapsed }));
   } catch (e) {
     console.error(`error occured getBdlBuildingFloorsAxios ${e}`);
     throw e;
@@ -196,7 +198,50 @@ const formatedDataForList = (myBuilding) => {
   }
   return building;
 };
+const reservationListAxios = async (lId, sD, eD) => {
+  let res;
+  try {
+    const url = queries.reservationsByLocalId(lId, sD, eD);
+    console.info(`url reservationListAxios ${url}`);
+    res = await axios.get(url);
+    return res.data;
+  } catch (e) {
+    console.error(`error reservationListAxios ${e}`);
+    throw e;
+  }
+};
+const loadAllLocalData = localId =>
+  async (dispatch, getState) => {
+    const moment = require('moment');
+    const now = moment();
+    const startDate = now.format('YYYY-MM-DD');
+    const endDate = now.add(7, 'd').format('YYYY-MM-DD');
+    const { reservations } = getState().bilune;
 
+    if (reservations && reservations[localId]) {
+      // up to date
+      // addintional check to be done mainly if request was on error or start date is < today
+    } else {
+      try {
+        const dataReservations = await reservationListAxios(localId, startDate, endDate);
+        console.log(JSON.stringify(dataReservations.Query.Horaire, null, 3));
+        reservations[localId] = dataReservations.Query.Horaire;
+        dispatch({
+          type: types.SET_RESERVATIONS_BILUNE_LOCALS,
+          payload: { reservations },
+        });
+      } catch (e) {
+        if (e.response) {
+          if (e.response.status === 401) {
+            console.error(`Error loadAllLocalData -reservationListAxios ${e} `);
+          }
+        } else {
+          // network error
+          console.error(`Error loadAllLocalData -reservationListAxios ${e.request._response} `);
+        }
+      }
+    }
+  };
 const loadAllBuildingData = buildingId =>
   async (dispatch, getState) => {
     try {
@@ -460,12 +505,16 @@ const searchBilune = query =>
     });
   };
 
-const zoomToBat = ({ id }) => ({ type: types.SET_DEFAULT_BAT_ID, payload: { id } });
+const setBuildingId = ({ id }) => ({ type: types.SET_DEFAULT_BAT_ID, payload: { id } });
+const setLocalId = (locId, id) => ({ type: types.SET_DEFAULT_LOC_ID, payload: { locId, id } });
+
 export {
   loadSpatialData,
   loadAllBuildingData,
+  loadAllLocalData,
   searchBilune,
-  zoomToBat,
+  setBuildingId,
   showHideBuildingFloor,
   searchInBuilding,
+  setLocalId,
 };

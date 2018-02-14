@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { FlatList, Keyboard, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import { PERSON, UNIT, BUILDING } from 'react-native-dotenv';
+import { PERSON, UNIT, BUILDING, LOCAL } from 'react-native-dotenv';
 import { searchActions, biluneActions } from './actions';
 import SearchItem from './SearchItem';
 
@@ -20,8 +20,12 @@ class SearchList extends Component {
         Actions.push('unitDetails', { unitDetails: item });
         break;
       case BUILDING:
-        this.props.zoomToBat(item);
+        this.props.setBuildingId(item);
         Actions.push('buildingDetails');
+        break;
+      case LOCAL:
+        this.props.setLocalId(item.attributes.LOC_ID, item.attributes.BAT_ID);
+        Actions.push('localDetails');
         break;
       default:
         break;

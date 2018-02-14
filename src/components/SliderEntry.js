@@ -31,7 +31,7 @@ class SliderEntry extends Component {
         activeOpacity={1}
         style={styles.slideInnerContainer}
         onPress={() => {
-          this.props.zoomToBat({ id });
+          this.props.setBuildingId({ id });
           Actions.push('buildingDetails');
          }}
       >
