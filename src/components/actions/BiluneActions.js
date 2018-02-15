@@ -214,7 +214,7 @@ const formatedLocalReservationDataForList = (myLocal) => {
     const formattedDays = [];
     let num = 0;
     const missingDays = [];
-    while (num < 8) {
+    while (num < 6) {
       const date = moment().add(num, 'd').format('YYYY-MM-DD');
       const missingDayIndex = _.findIndex(myLocal.days, o => o.date === date);
       if (missingDayIndex === -1) {
@@ -294,6 +294,23 @@ const completeLoadingLocalData = (localId, dataReservations, dispatch, getState)
     }
   });
 };
+const showHideReservationDay = (localId, day) =>
+  async (dispatch, getState) => {
+    const myLocalWithReservations = getState().bilune.localWithReservations;
+    const days = myLocalWithReservations.days.map((f) => {
+      if (f.date === day) {
+        const collapsed = !f.collapsed;
+        return { ...f, collapsed };
+      }
+      return f;
+    });
+    debugger
+    const localWithReservations = { ...myLocalWithReservations, days };
+    dispatch({
+      type: types.ENRICH_BILUNE_LOCAL_RESERVATIONS,
+      payload: { localWithReservations },
+    });
+  };
 const loadAllLocalData = localId =>
   async (dispatch, getState) => {
     const moment = statics.momentStatic;
@@ -602,4 +619,5 @@ export {
   showHideBuildingFloor,
   searchInBuilding,
   setLocalId,
+  showHideReservationDay,
 };

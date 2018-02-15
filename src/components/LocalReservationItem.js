@@ -120,7 +120,7 @@ class LocalReservationItem extends Component {
   );
 
    renderSectionJsx = (dayDate, visibleDays) => (
-     <TouchableOpacity onPress={() => console.log('todo')}>
+     <TouchableOpacity onPress={() => this.props.showHideDay(dayDate)}>
        <CardSection style={{
        flexDirection: 'row',
        backgroundColor: '#E5EFF5',

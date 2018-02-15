@@ -118,8 +118,8 @@ class Local extends Component {
     });
   }
 
-  onShowHideDay = (dayId) => {
-    this.props.showHideReservationDay(this.props.locId, dayId);
+  onShowHideDay = (dateDay) => {
+    this.props.showHideReservationDay(this.props.locId, dateDay);
   }
   onPressItem = (item) => {
     console.log(JSON.stringify(item, null, 4));

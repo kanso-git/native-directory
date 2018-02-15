@@ -53,25 +53,29 @@ class BuildingLocalItem extends Component {
    renderSectionJsx = (text, floorId, visibleFloors) => (
      <TouchableOpacity onPress={() => this.props.showHideFloor(floorId)}>
        <CardSection style={{
-       flexDirection: 'row',
-       backgroundColor: '#E5EFF5',
-       shadowColor: '#000',
-       shadowOpacity: 0.5,
-       elevation: 2,
-        shadowOffset: { width: 0, height: 2 },
+        flexDirection: 'row',
+        backgroundColor: '#E5EFF5',
+        marginTop: 0,
+        marginBottom: -5,
+        shadowColor: '#000',
+        shadowOpacity: 0.5,
+        elevation: 2,
+         shadowOffset: { width: 0, height: 2 },
       }}
        >
          <Icon
            name={this.checkIfFloorIsVisible(visibleFloors, floorId) ? 'minus-square-o' : 'plus-square-o'}
            style={{
-        fontSize: 22,
-        padding: 5,
+            fontSize: 25,
+            padding: 0,
+            paddingLeft: 2,
+            paddingRight: 5,
 
       }}
          />
          <Text style={{
           fontSize: 18,
-          padding: 5,
+          padding: 0,
 
         }}
          >
