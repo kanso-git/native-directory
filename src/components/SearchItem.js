@@ -31,7 +31,7 @@ class SearchItem extends Component {
          <View style={{ flexDirection: 'row' }}>
            <Image
              style={{ width: 60, height: 60 }}
-             source={{ uri: image || statics.no_image_icon }}
+             source={{ uri: image || statics.noImageIcon }}
            />
            <View style={{ flexDirection: 'column', paddingLeft: 5 }}>
              <Text style={{ fontSize: 16 }}>{`${item.attributes.LOC_CODE}, ${item.building.abreviation}, (${item.attributes.LOC_TYPE_DESIGNATION})`} </Text>
@@ -58,7 +58,7 @@ class SearchItem extends Component {
          <View style={{ flexDirection: 'row' }}>
            <Image
              style={{ width: 60, height: 60 }}
-             source={{ uri: image || statics.no_image_icon }}
+             source={{ uri: image || statics.noImageIcon }}
            />
            <View style={{ flexDirection: 'column', paddingLeft: 5 }}>
              <Text style={{ fontSize: 16 }}>{item.abreviation} </Text>

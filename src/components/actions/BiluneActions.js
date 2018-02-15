@@ -35,7 +35,7 @@ const getImageUsingBlob = async (url) => {
     const mimetype = 'image/jpg';
     const base64Str = res.base64();
     return (res.base64() && res.base64().length > 0) ?
-      `data:${mimetype};base64,${base64Str}` : statics.no_image_icon;
+      `data:${mimetype};base64,${base64Str}` : statics.noImageIcon;
   } catch (e) {
     console.error(`error occured getImageUsingBlob ${e}`);
     throw e;
@@ -209,7 +209,7 @@ const reservationListAxios = async (lId, sD, eD) => {
 };
 
 const formatedLocalReservationDataForList = (myLocal) => {
-  const moment = require('moment');
+  const moment = statics.momentStatic;
   if (myLocal && myLocal.days) {
     const formattedDays = [];
     let num = 0;
@@ -296,7 +296,7 @@ const completeLoadingLocalData = (localId, dataReservations, dispatch, getState)
 };
 const loadAllLocalData = localId =>
   async (dispatch, getState) => {
-    const moment = require('moment');
+    const moment = statics.momentStatic;
     const now = moment();
     const startDate = now.format('YYYY-MM-DD');
     const endDate = now.add(7, 'd').format('YYYY-MM-DD');

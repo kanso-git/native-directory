@@ -9,7 +9,7 @@ import { RESERVATION, RESERVATION_PIRES, RESERVATION_PIDHO, RESERVATION_EMPTY } 
 
 import I18n from 'react-native-i18n';
 
-import { CardSection } from './common';
+import { CardSection, statics } from './common';
 
 class LocalReservationItem extends Component {
   checkIfDayIsVisible = (days, dayDate) => {
@@ -27,9 +27,7 @@ class LocalReservationItem extends Component {
    }
 
    formatDate = (date) => {
-     const moment = require('moment');
-     require('moment/locale/fr');
-     moment.locale('fr');
+     const moment = statics.momentStatic;
      return moment(date, 'YYYY-MM-DD').format('dddd, LL');
    };
 

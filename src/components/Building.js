@@ -122,8 +122,8 @@ class Local extends Component {
     this.props.showHideBuildingFloor(this.props.currentBuilding.id, parseInt(floorId, 10));
   }
   onPressItem = (item) => {
-    console.log(JSON.stringify(item, null, 4));
-    // Actions.replace('memberDetails', { memberDetails: item });
+    this.props.setLocalId(item.attributes.LOC_ID, item.attributes.BAT_ID);
+    Actions.push('localDetails');
   };
   onSearch = (value) => {
     this.props.searchInBuilding(this.props.currentBuilding.id, value);

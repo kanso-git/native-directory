@@ -128,9 +128,7 @@ class Local extends Component {
     this.props.searchInLocalReservations(this.props.locId, value);
   }
   formatCalenderDate = () => {
-    const moment = require('moment');
-    require('moment/locale/fr');
-    moment.locale('fr');
+    const moment = statics.momentStatic;
     return `du ${moment().format('DD MMM')}  au  ${moment().add(7, 'd').format('DD MMM')}`;
   }
   flipCard = () => {
@@ -175,7 +173,7 @@ class Local extends Component {
          <View style={[styles.flipCard]}>
            <Image
              style={{ width: viewportWidth, height: viewportHeight * 0.33 }}
-             source={{ uri: this.props.images[this.props.localWithReservations.attributes.OBJECTID] || statics.no_image_icon }}
+             source={{ uri: this.props.images[this.props.localWithReservations.attributes.OBJECTID] || statics.noImageIcon }}
            />
            <View >
              <TouchableOpacity

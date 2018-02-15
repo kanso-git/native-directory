@@ -29,7 +29,7 @@ class BuildingLocalItem extends Component {
          <View style={{ flexDirection: 'row' }}>
            <Image
              style={{ width: 60, height: 60 }}
-             source={{ uri: image || statics.no_image_icon }}
+             source={{ uri: image || statics.noImageIcon }}
            />
            <View style={{ flexDirection: 'column', paddingLeft: 5 }}>
              <Text style={{ fontSize: 16 }}>Local code: {`${item.attributes.LOC_CODE}`} </Text>
