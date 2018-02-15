@@ -276,6 +276,29 @@ const formatedLocalReservationDataForList = (myLocal) => {
   return myLocal;
 };
 
+const searchInLocalReservations = (localId, searchQuery) =>
+  (dispatch, getState) => {
+    const { reservations, localWithReservations } = getState().bilune;
+    const days = reservations[localId];
+    const q = searchQuery.toLowerCase();
+
+    const filterdDays = days
+      .filter((d) => {
+        const res = d.date.includes(q); 
+        return res;
+      });
+
+    const newLocalWithReservations = formatedLocalReservationDataForList({
+      ...localWithReservations, days: filterdDays, query: searchQuery,
+    });
+
+    dispatch({
+      type: types.ENRICH_BILUNE_LOCAL_RESERVATIONS,
+      payload: { localWithReservations: newLocalWithReservations },
+    });
+  };
+
+
 const completeLoadingLocalData = (localId, dataReservations, dispatch, getState) => {
   const { reservations } = getState().bilune;
   const days = dataReservations.Query.Horaire.jour ? dataReservations.Query.Horaire.jour : [];
@@ -304,7 +327,6 @@ const showHideReservationDay = (localId, day) =>
       }
       return f;
     });
-    debugger
     const localWithReservations = { ...myLocalWithReservations, days };
     dispatch({
       type: types.ENRICH_BILUNE_LOCAL_RESERVATIONS,
@@ -620,4 +642,5 @@ export {
   searchInBuilding,
   setLocalId,
   showHideReservationDay,
+  searchInLocalReservations,
 };

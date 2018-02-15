@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Animated } from 'react-native';
 import Icon from 'react-native-fa-icons';
 import Communications from 'react-native-communications';
+import { RESERVATION_EMPTY } from 'react-native-dotenv';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
@@ -217,7 +218,7 @@ ${npa} ${localite}`}
            </CardSection>
            <Text style={{ padding: 5, fontSize: 20 }}> Calendries  {this.formatCalenderDate()} </Text>
            <FlatList
-             data={this.props.localWithReservations.days}
+             data={this.props.localWithReservations.query.length ===0 ? this.props.localWithReservations.days : this.props.localWithReservations.days.filter(d => d.typeoccupation !== RESERVATION_EMPTY)}
              extraData={this.props.visibleDays}
              renderItem={this.renderItem}
            />
