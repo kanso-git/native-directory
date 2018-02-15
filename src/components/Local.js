@@ -172,7 +172,7 @@ class Local extends Component {
 
          <View style={[styles.flipCard]}>
            <Image
-             style={{ width: viewportWidth, height: viewportHeight * 0.33 }}
+             style={{ width: viewportWidth, height: viewportHeight * 0.33, backgroundColor: '#034d7c' }}
              source={{ uri: this.props.images[this.props.localWithReservations.attributes.OBJECTID] || statics.noImageIcon }}
            />
            <View >

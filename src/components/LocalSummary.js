@@ -47,7 +47,7 @@ const LocalSummary = props => (
   <ScrollView style={[styles.containerStyle, { height: (viewportHeight * 0.33) + 85 }]}>
     <CardSection style={{ flexDirection: 'row', paddingTop: 10 }}>
       <Image
-        style={{ width: 60, height: 60 }}
+        style={{ width: 60, height: 60, backgroundColor: '#034d7c' }}
         source={{ uri: props.currentBuilding.image }}
       />
       <TouchableOpacity onPress={() => console.log(' show the map')}>

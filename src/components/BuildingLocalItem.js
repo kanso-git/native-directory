@@ -28,7 +28,7 @@ class BuildingLocalItem extends Component {
        <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
          <View style={{ flexDirection: 'row' }}>
            <Image
-             style={{ width: 60, height: 60 }}
+             style={{ width: 60, height: 60, backgroundColor: '#034d7c' }}
              source={{ uri: image || statics.noImageIcon }}
            />
            <View style={{ flexDirection: 'column', paddingLeft: 5 }}>

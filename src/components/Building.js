@@ -193,7 +193,7 @@ ${npa} ${localite}`}
 
          <Animated.View style={[styles.flipCard, frontAnimatedStyle]}>
            <Image
-             style={{ width: viewportWidth, height: viewportHeight * 0.33 }}
+             style={{ width: viewportWidth, height: viewportHeight * 0.33, backgroundColor: '#034d7c'}}
              source={{ uri: this.props.currentBuilding.image }}
            />
            <View >
