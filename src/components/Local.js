@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types,no-empty */
+/* eslint global-require: "off" */
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Animated } from 'react-native';
 import Icon from 'react-native-fa-icons';
@@ -6,11 +7,10 @@ import Communications from 'react-native-communications';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
-import { biluneActions } from './actions';
-import { Card, CardSection, InputFlex } from './common';
-import LocalReservationItem from './LocalReservationItem';
-import LocalSummary from './LocalSummary';
 
+import { biluneActions } from './actions';
+import { Card, CardSection, InputFlex, statics } from './common';
+import LocalReservationItem from './LocalReservationItem';
 
 const styles = StyleSheet.create({
   textStyle: {
@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     flex: 11,
     height: 20,
-    width: 100,
   },
   textStyleElem: {
     color: '#000',
@@ -118,6 +117,7 @@ class Local extends Component {
       outputRange: ['180deg', '360deg'],
     });
   }
+
   onShowHideDay = (dayId) => {
     this.props.showHideReservationDay(this.props.locId, dayId);
   }
@@ -126,6 +126,12 @@ class Local extends Component {
   };
   onSearch = (value) => {
     this.props.searchInLocalReservations(this.props.locId, value);
+  }
+  formatCalenderDate = () => {
+    const moment = require('moment');
+    require('moment/locale/fr');
+    moment.locale('fr');
+    return `du ${moment().format('DD MMM')}  au  ${moment().add(7, 'd').format('DD MMM')}`;
   }
   flipCard = () => {
     if (this.value >= 90) {
@@ -156,28 +162,20 @@ class Local extends Component {
 
    render() {
      console.log(this.props.localWithReservations);
-     const frontAnimatedStyle = {
-       transform: [
-         { rotateY: this.frontInterpolate },
-       ],
-     };
-     const backAnimatedStyle = {
-       transform: [
-         { rotateY: this.backInterpolate },
-       ],
-     };
-
      const {
-       abreviation, adresseLigne1, localite, npa,
+       adresseLigne1, localite, npa,
      } = this.props.currentBuilding;
-     
+
+     const { LOC_TYPE_DESIGNATION, LOC_CODE, ETG_DESIGNATION } = this.props.localWithReservations.attributes;
+
+
      return (
        <View>
 
-         <Animated.View style={[styles.flipCard, frontAnimatedStyle]}>
+         <View style={[styles.flipCard]}>
            <Image
              style={{ width: viewportWidth, height: viewportHeight * 0.33 }}
-             source={{ uri: this.props.images[this.props.localWithReservations.attributes.OBJECTID] }}
+             source={{ uri: this.props.images[this.props.localWithReservations.attributes.OBJECTID] || statics.no_image_icon }}
            />
            <View >
              <TouchableOpacity
@@ -187,32 +185,26 @@ class Local extends Component {
               paddingTop: 10,
               backgroundColor: '#DFDFDF',
               justifyContent: 'flex-end',
-              alignItems: 'flex-start' }}
+              alignItems: 'flex-start',
+}}
                onPress={() => console.log(' show the map')}
              >
                <View style={[{ height: 20 }]}>
-                 <Text style={[textStyle, touchable]}>{abreviation}</Text>
+                 <Text style={[textStyle, touchable]}>{LOC_TYPE_DESIGNATION} ({LOC_CODE})</Text>
                </View>
-               <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>
+               <View style={[{ marginBottom: 5, height: 40 }, touchableContainer]}>
                  <View style={addressStyle}>
-                   <Text style={[touchable]}>{`${adresseLigne1}
+                   <Text style={[touchable]}>{`${ETG_DESIGNATION}
+${adresseLigne1}
 ${npa} ${localite}`}
                    </Text>
                  </View>
                </View>
              </TouchableOpacity>
            </View>
-         </Animated.View>
+         </View>
 
-         <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
-           <View style={{ width: viewportWidth }}>
-           </View>
-         </Animated.View>
-
-         <TouchableOpacity style={styles.flipBtn} onPress={() => this.flipCard()}>
-           <Icon name="cog" style={{ fontSize: 20 }} allowFontScaling />
-         </TouchableOpacity>
-
+         { (this.props.localWithReservations.days && this.props.localWithReservations.days.length > 0) &&
          <Card>
            <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
              <InputFlex
@@ -225,16 +217,13 @@ ${npa} ${localite}`}
                onChangeText={this.onSearch}
              />
            </CardSection>
-
-           { (this.props.localWithReservations.days && this.props.localWithReservations.days.length > 0) &&
+           <Text style={{ padding: 5, fontSize: 20 }}> Calendries  {this.formatCalenderDate()} </Text>
            <FlatList
              data={this.props.localWithReservations.days}
              extraData={this.props.visibleDays}
              renderItem={this.renderItem}
            />
-        }
-
-         </Card>
+         </Card>}
        </View>
      );
    }
