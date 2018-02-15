@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types,no-empty */
+/* eslint-disable consistent-return */
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image } from 'react-native';
 import { PERSON, UNIT, LOCAL, BUILDING } from 'react-native-dotenv';
