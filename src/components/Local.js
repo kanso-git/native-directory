@@ -93,6 +93,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
   },
 });
+
+
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 const {
   textStyle,
@@ -188,7 +190,7 @@ class Local extends Component {
 }}
                onPress={() => console.log(' show the map')}
              >
-               <View style={[{ height: 20 }]}>
+               <View style={[{ height: 24 }]}>
                  <Text style={[textStyle, touchable]}>{LOC_TYPE_DESIGNATION} ({LOC_CODE})</Text>
                </View>
                <View style={[{ marginBottom: 5, height: 40 }, touchableContainer]}>

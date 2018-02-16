@@ -87,3 +87,4 @@ Total de locaux :235 (5229.6 m² )
 remove unsed code
 
 
+https://github.com/lelandrichardson/react-native-parallax-view

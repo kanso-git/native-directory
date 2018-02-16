@@ -4481,6 +4481,12 @@ react-native-measureme@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/react-native-measureme/-/react-native-measureme-0.0.1.tgz#8b1c5595cdbb1cfdf85bff98fe36d33e98b6162c"
 
+react-native-parallax-view@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-parallax-view/-/react-native-parallax-view-2.0.6.tgz#7de78edb7a2a0aba6c01b99fce828d387cec3e93"
+  dependencies:
+    react-native-scrollable-mixin "^1.0.1"
+
 react-native-randombytes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-native-randombytes/-/react-native-randombytes-3.0.0.tgz#8327464f227a2c42d6ef013b7586b0ad4385ae61"
@@ -4499,6 +4505,10 @@ react-native-router-flux@4.0.0-beta.24:
     path-to-regexp "^2.1.0"
     prop-types "^15.6.0"
     react-navigation "^1.0.0-beta.19"
+
+react-native-scrollable-mixin@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-scrollable-mixin/-/react-native-scrollable-mixin-1.0.1.tgz#34a32167b64248594154fd0d6a8b03f22740548e"
 
 react-native-snap-carousel@^3.6.0:
   version "3.6.0"

@@ -222,8 +222,10 @@ const formatedLocalReservationDataForList = (myLocal) => {
           date,
           occupation: {
             date,
+            dateUnix: moment().add(num, 'd').unix(),
             typeoccupation: RESERVATION_EMPTY,
             debutUTC: moment().add(num, 'd').format(moment().ISO_8601),
+            debutUTCUnix: moment().add(num, 'd').unix(),
           },
         });
       }
@@ -234,36 +236,28 @@ const formatedLocalReservationDataForList = (myLocal) => {
     alldays.forEach((d) => {
       const section = d.date;
       if ((d.occupation && d.occupation.length > 0)) {
-        const occupations = d.occupation.sort((o1, o2) => {
-          // "debutUTC": "2018-02-14T08:15:00Z",
-          const a = moment(o1.debutUTC, moment.ISO_8601);
-          const b = moment(o2.debutUTC, moment.ISO_8601);
-          const res = a.diff(b) > 0 ? 1 : -1;
-          return res;
-        });
+        const occupations = _.sortBy(d.occupation, [function (o) { return moment(o.debutUTC, moment.ISO_8601).unix(); }]);
         occupations.forEach((oc, i) => {
+          const dateUnix = moment(oc.date, 'YYYY-MM-DD').unix();
+          const debutUTCUnix = moment(oc.debutUTC, moment.ISO_8601).unix();
           if (i === 0) {
-            formattedDays.push({ ...oc, section, collapsed: false });
+            formattedDays.push({
+              ...oc, dateUnix, debutUTCUnix, section, collapsed: false,
+            });
           } else {
-            formattedDays.push({ ...oc });
+            formattedDays.push({ ...oc, dateUnix, debutUTCUnix });
           }
         });
       } else if (_.isObject(d.occupation)) {
-        formattedDays.push({ ...d.occupation, section, collapsed: false });
+        const dateUnix = moment(d.occupation.date, 'YYYY-MM-DD').unix();
+        const debutUTCUnix = moment(d.occupation.debutUTC, moment.ISO_8601).unix();
+        formattedDays.push({
+          ...d.occupation, dateUnix, debutUTCUnix, section, collapsed: false,
+        });
       }
     });
 
-    const formattedDaysSorted = formattedDays.sort((o1, o2) => {
-      // "debutUTC": "2018-02-14T08:15:00Z",
-      const a = moment(o1.date, 'YYYY-MM-DD');
-      const b = moment(o2.date, 'YYYY-MM-DD');
-      if (a.diff(b) > 0) {
-        return 1;
-      } else if (a.diff(b) === 0) {
-        return o1.secrtion ? 0 : 1;
-      }
-      return -1;
-    });
+    const formattedDaysSorted = _.sortBy(formattedDays, ['dateUnix']);
 
     return {
       ...myLocal,
@@ -284,7 +278,7 @@ const searchInLocalReservations = (localId, searchQuery) =>
 
     const filterdDays = days
       .filter((d) => {
-        const res = d.date.includes(q); 
+        const res = d.date.includes(q);
         return res;
       });
 
@@ -341,27 +335,22 @@ const loadAllLocalData = localId =>
     const endDate = now.add(7, 'd').format('YYYY-MM-DD');
     const { reservations } = getState().bilune;
 
-    if (reservations && reservations[localId]) {
-      // up to date
-      // addintional check to be done mainly if request was on error or start date is < today
-    } else {
-      try {
-        const dataReservations = await reservationListAxios(localId, startDate, endDate);
-        completeLoadingLocalData(localId, dataReservations, dispatch, getState);
-      } catch (e) {
-        // todo add default message when an error is occured like reservation data is not available!
-        const dataLocals = getState().bilune.locals;
-        dataLocals.forEach((currLocal) => {
-          if (parseInt(currLocal.attributes.LOC_ID, 10) === localId) {
-            const localWithReservations = { ...currLocal, days: [], query: '' };
-            reservations[localId] = RESERVATION_NA;
-            dispatch({
-              type: types.ENRICH_BILUNE_LOCAL_RESERVATIONS,
-              payload: { localWithReservations, reservations },
-            });
-          }
-        });
-      }
+    try {
+      const dataReservations = await reservationListAxios(localId, startDate, endDate);
+      completeLoadingLocalData(localId, dataReservations, dispatch, getState);
+    } catch (e) {
+      // todo add default message when an error is occured like reservation data is not available!
+      const dataLocals = getState().bilune.locals;
+      dataLocals.forEach((currLocal) => {
+        if (parseInt(currLocal.attributes.LOC_ID, 10) === localId) {
+          const localWithReservations = { ...currLocal, days: [], query: '' };
+          reservations[localId] = RESERVATION_NA;
+          dispatch({
+            type: types.ENRICH_BILUNE_LOCAL_RESERVATIONS,
+            payload: { localWithReservations, reservations },
+          });
+        }
+      });
     }
   };
 

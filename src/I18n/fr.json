@@ -1,7 +1,9 @@
 {
     "global" : {
         "title" : "Annuaire UniNE",
-        "loading" : "Chargement..."
+        "loading" : "Chargement...",
+		"footerLine1": " Annuaire Version 2.3 - février 2018",
+		"footerLine2": " © 2016 - 2018 SITEL - Université de Neuchâtel"
     },
     "search" : {
         "placeholder" : "Personne, département, n° de tél...",

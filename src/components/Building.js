@@ -208,7 +208,7 @@ class Local extends Component {
                   Actions.push('mapPage');
                 }}
               >
-                <View style={[{ height: 20 }]}>
+                <View style={[{ height: 24 }]}>
                   <Text style={[textStyle, touchable]}>{abreviation}</Text>
                 </View>
                 <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>

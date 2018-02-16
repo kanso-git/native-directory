@@ -11,6 +11,7 @@ import I18n from 'react-native-i18n';
 
 import { CardSection, statics } from './common';
 
+
 class LocalReservationItem extends Component {
   checkIfDayIsVisible = (days, dayDate) => {
     const currentDay = days.filter(f => f.date === dayDate);
