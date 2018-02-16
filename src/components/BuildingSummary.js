@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types,no-empty */
 /* eslint global-require:"off" */
 import React from 'react';
+import { Actions } from 'react-native-router-flux';
 import { ScrollView, View, Text, Image, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
 import { CardSection } from './common';
 
@@ -50,7 +51,7 @@ const BuildingSummary = props => (
         style={{ width: 60, height: 60, backgroundColor: '#034d7c' }}
         source={{ uri: props.currentBuilding.image }}
       />
-      <TouchableOpacity onPress={() => console.log(' show the map')}>
+      <TouchableOpacity onPress={() => Actions.push('mapPage')}>
         <View >
           <Text style={{ marginLeft: 5, fontSize: 18, marginBottom: 5, color: '#007aff' }}>
             {props.currentBuilding.abreviation}

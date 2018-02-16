@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Animated } from 'react-native';
 import Icon from 'react-native-fa-icons';
-import Communications from 'react-native-communications';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
@@ -63,8 +62,6 @@ const styles = StyleSheet.create({
   },
   flipCard: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     backfaceVisibility: 'hidden',
   },
   flipCardBack: {
@@ -103,6 +100,9 @@ const {
 
 
 class Local extends Component {
+  state={
+    showDetails: true,
+  }
   componentWillMount() {
     this.animatedValue = new Animated.Value(0);
     this.value = 0;
@@ -118,6 +118,7 @@ class Local extends Component {
       outputRange: ['180deg', '360deg'],
     });
   }
+
   onShowHideFloor = (floorId) => {
     this.props.showHideBuildingFloor(this.props.currentBuilding.id, parseInt(floorId, 10));
   }
@@ -135,28 +136,16 @@ class Local extends Component {
         friction: 8,
         tension: 10,
       }).start();
+      this.setState(() => ({ showDetails: true }));
     } else {
       Animated.spring(this.animatedValue, {
         toValue: 180,
         friction: 8,
         tension: 10,
       }).start();
+      this.setState(() => ({ showDetails: false }));
     }
   }
-   renderNameAddress = (abreviation, addressLines, localite, npa) => (
-     <TouchableOpacity onPress={() => console.log(' show the map')}>
-       <View style={[{ height: 20 }]}>
-         <Text style={[textStyle, touchable]}>{abreviation}</Text>
-       </View>
-       <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>
-         <View style={addressStyle}>
-           <Text style={[touchable]}>{`${addressLines}
-${npa} ${localite}`}
-           </Text>
-         </View>
-       </View>
-     </TouchableOpacity>
-   );
 
    renderItem = ({ item }) => (
      <BuildingLocalItem
@@ -191,46 +180,51 @@ ${npa} ${localite}`}
      return (
        <View>
 
-         <Animated.View style={[styles.flipCard, frontAnimatedStyle]}>
-           <Image
-             style={{ width: viewportWidth, height: viewportHeight * 0.33, backgroundColor: '#034d7c'}}
-             source={{ uri: this.props.currentBuilding.image }}
-           />
-           <View >
-             <TouchableOpacity
-               style={{
-              width: viewportWidth,
-              paddingLeft: 5,
-              paddingTop: 10,
-              backgroundColor: '#DFDFDF',
-              justifyContent: 'flex-end',
-              alignItems: 'flex-start' }}
-               onPress={() => console.log(' show the map')}
-             >
-               <View style={[{ height: 20 }]}>
-                 <Text style={[textStyle, touchable]}>{abreviation}</Text>
-               </View>
-               <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>
-                 <View style={addressStyle}>
-                   <Text style={[touchable]}>{`${adresseLigne1}
-${npa} ${localite}`}
-                   </Text>
-                 </View>
-               </View>
-             </TouchableOpacity>
-           </View>
-         </Animated.View>
+         <View style={{ height: (viewportHeight * 0.33) + 60 }} >
+           <Animated.View style={[styles.flipCard, frontAnimatedStyle]}>
+             <Image
+               style={{ width: viewportWidth, height: viewportHeight * 0.33, backgroundColor: '#034d7c' }}
+               source={{ uri: this.props.currentBuilding.image }}
+             />
+           </Animated.View>
 
-         <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
-           <View style={{ width: viewportWidth }}>
-             <BuildingSummary currentBuilding={this.props.currentBuilding} />
-           </View>
-         </Animated.View>
+           <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
+             <View style={{ width: viewportWidth }}>
+               <BuildingSummary currentBuilding={this.props.currentBuilding} />
+             </View>
+           </Animated.View>
+           {
+            this.state.showDetails && (
+              <TouchableOpacity
+                style={{
+                        width: viewportWidth,
+                        position: 'absolute',
+                        top: viewportHeight * 0.33,
+                        paddingLeft: 5,
+                        paddingTop: 10,
+                      }}
+                onPress={() => {
+                  Actions.push('mapPage');
+                }}
+              >
+                <View style={[{ height: 20 }]}>
+                  <Text style={[textStyle, touchable]}>{abreviation}</Text>
+                </View>
+                <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>
+                  <View style={addressStyle}>
+                    <Text style={[touchable]}>{`${adresseLigne1}
+ ${npa} ${localite}`}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            )
+          }
+           <TouchableOpacity style={styles.flipBtn} onPress={() => this.flipCard()}>
+             <Icon name="cog" style={{ fontSize: 20 }} allowFontScaling />
+           </TouchableOpacity>
 
-         <TouchableOpacity style={styles.flipBtn} onPress={() => this.flipCard()}>
-           <Icon name="cog" style={{ fontSize: 20 }} allowFontScaling />
-         </TouchableOpacity>
-
+         </View>
          <Card>
            <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
              <InputFlex
@@ -262,7 +256,9 @@ const mapStateToProps = state => (
   {
     images: state.bilune.images,
     currentBuilding: state.bilune.buildings.find(b => b.id === state.bilune.id),
-    visibleFloors: state.bilune.buildings.find(b => b.id === state.bilune.id).floors.filter(f => !f.collapsed),
+    visibleFloors: state.bilune.buildings
+      .find(b => b.id === state.bilune.id)
+      .floors.filter(f => !f.collapsed),
   }
 );
 
