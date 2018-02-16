@@ -9,7 +9,6 @@ import I18n from 'react-native-i18n';
 import { CardSection, Chromatic, statics } from './common';
 
 class BuildingLocalItem extends Component {
- 
    checkIfFloorIsVisible = (floors, floorId) => {
      const id = parseInt(floorId, 10);
      const currentFloor = floors.filter(f => f.id === id);
@@ -32,9 +31,9 @@ class BuildingLocalItem extends Component {
              source={{ uri: image || statics.noImageIcon }}
            />
            <View style={{ flexDirection: 'column', paddingLeft: 5 }}>
-             <Text style={{ fontSize: 16 }}>Local code: {`${item.attributes.LOC_CODE}`} </Text>
-             <Text style={{ fontSize: 13, paddingTop: 2 }}>Type: {`${item.attributes.LOC_TYPE_DESIGNATION}`} </Text>
-             <Text style={{ fontSize: 13, paddingTop: 5 }}>Étage: {`${item.attributes.ETG_DESIGNATION}`} </Text>
+             <Text style={{ fontSize: 16 }}>{`${I18n.t('local.localCode')}: ${item.attributes.LOC_CODE}`} </Text>
+             <Text style={{ fontSize: 13, paddingTop: 2 }}>{`${I18n.t('local.type')}: ${item.attributes.LOC_TYPE_DESIGNATION}`} </Text>
+             <Text style={{ fontSize: 13, paddingTop: 5 }}>{`${I18n.t('local.floor')}: ${item.attributes.ETG_DESIGNATION}`} </Text>
            </View>
          </View>
          <View style={{

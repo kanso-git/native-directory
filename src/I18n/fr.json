@@ -50,6 +50,11 @@
         "address" : "Adresse",
         "members" : "Membres de l'unité"
     },
+    "building" :{ 
+        "pageTitle" : "Bâtiment",
+		"floorNumber": "Nombre d'étages",
+		"localTotalNumber": "Total de locaux"
+    },
     "mapPage" : {
         "pageTitle" : "Carte"
     },

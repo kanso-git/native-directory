@@ -1,7 +1,9 @@
 {
     "global" : {
         "title" : "UniNE Directory",
-        "loading" : "Loading..."
+        "loading" : "Loading...",
+		"footerLine1": " Annuaire Version 2.3 - février 2018",
+		"footerLine2": " © 2016 - 2018 SITEL - Université de Neuchâtel"
     },
     "search" : {
         "placeholder" : "Person, department, phone number...",
@@ -51,7 +53,9 @@
         "members" : "Unit members"
     },
     "building" :{ 
-        "pageTitle" : "Building"
+        "pageTitle" : "Building",
+		"floorNumber": "Number of floors",
+		"localTotalNumber": "Total of locals"
     },
     "mapPage" : {
         "pageTitle" : "Map"
@@ -60,7 +64,8 @@
         "pageTitle" : "Local",
         "title" : "Local",
         "floor" : "Floor",
-        "type" : "Type"
+        "type" : "Type",
+		"localCode": "Local code"
     },
     "section" : {
         "personUnit": "Persons and organizational units",

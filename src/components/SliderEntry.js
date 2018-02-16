@@ -4,17 +4,15 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { biluneActions } from './actions';
-// import PropTypes from 'prop-types';
 import styles from './SliderEntryStyle';
 
 class SliderEntry extends Component {
-  componentWillReceiveProps(nextProps) {
-    // console.log(`componentWillReceiveProps :${ nextProps.data.image}`);
+  componentDidMount() {
   }
   render() {
     const {
       data: {
-        id, abreviation, adresseLigne1, localite, npa, locals,
+        id, abreviation, adresseLigne1, localite, npa,
       }, even,
     } = this.props;
     const uppercaseTitle = abreviation ? (

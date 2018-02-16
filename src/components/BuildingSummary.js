@@ -2,6 +2,7 @@
 /* eslint global-require:"off" */
 import React from 'react';
 import { Actions } from 'react-native-router-flux';
+import I18n from 'react-native-i18n';
 import { ScrollView, View, Text, Image, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
 import { CardSection } from './common';
 
@@ -53,7 +54,13 @@ const BuildingSummary = props => (
       />
       <TouchableOpacity onPress={() => Actions.push('mapPage')}>
         <View >
-          <Text style={{ marginLeft: 5, fontSize: 18, marginBottom: 5, color: '#007aff' }}>
+          <Text style={{
+            marginLeft: 5,
+            fontSize: 18,
+            marginBottom: 5,
+            color: '#007aff',
+          }}
+          >
             {props.currentBuilding.abreviation}
           </Text>
         </View>
@@ -67,10 +74,10 @@ ${props.currentBuilding.npa} ${props.currentBuilding.localite}`}
       </TouchableOpacity>
     </CardSection>
     <CardSection>
-      <Text>Nombre d'étages : {props.currentBuilding.floors.length}</Text>
+      <Text>{I18n.t('building.floorNumber')}: {props.currentBuilding.floors.length}</Text>
     </CardSection>
     <CardSection>
-      <Text>Total de locaux : {props.currentBuilding.locals.length}</Text>
+      <Text>{I18n.t('building.localTotalNumber')}: {props.currentBuilding.locals.length}</Text>
     </CardSection>
     { getBuildingTypes(props.currentBuilding.locals)}
   </ScrollView>

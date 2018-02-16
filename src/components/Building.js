@@ -213,7 +213,7 @@ class Local extends Component {
                 <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>
                   <View style={addressStyle}>
                     <Text style={[touchable]}>{`${adresseLigne1}
- ${npa} ${localite}`}
+${npa} ${localite}`}
                     </Text>
                   </View>
                 </View>

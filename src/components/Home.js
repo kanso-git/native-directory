@@ -119,8 +119,8 @@ class Home extends Component {
 }}
     >
       <Footer
-        footerTitle1=" Annuaire Version 2.3 - février 2018"
-        footerTitle2=" © 2016 - 2018 SITEL - Université de Neuchâtel"
+        footerTitle1={I18n.t('global.footerLine1')}
+        footerTitle2={I18n.t('global.footerLine2')}
       />
     </View>
   )
