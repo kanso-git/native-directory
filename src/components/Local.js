@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types,no-empty */
 /* eslint global-require: "off" */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Animated } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Animated, NativeModules } from 'react-native';
 import Icon from 'react-native-fa-icons';
 import Communications from 'react-native-communications';
+import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import { RESERVATION_EMPTY } from 'react-native-dotenv';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
@@ -103,7 +104,6 @@ const {
   addressStyle,
 } = styles;
 
-
 class Local extends Component {
   componentWillMount() {
     this.animatedValue = new Animated.Value(0);
@@ -120,6 +120,31 @@ class Local extends Component {
       outputRange: ['180deg', '360deg'],
     });
   }
+  onSaveEventInCalendar = (event) => {
+    const debutUTC = statics.momentStatic.utc(event.debutUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+    const finUTC = statics.momentStatic.utc(event.finUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+
+    const eventConfig = {
+      title: 'Event added by annuaire',
+      startDate: debutUTC,
+      endDate: finUTC,
+    };
+debugger;
+    
+    AddCalendarEvent.presentNewCalendarEventDialog(eventConfig)
+      .then((eventId) => {
+        // handle success (receives event id) or dismissing the modal (receives false)
+        if (eventId) {
+          console.warn(eventId);
+        } else {
+          console.warn('dismissed');
+        }
+      })
+      .catch((error: string) => {
+        // handle error such as when user rejected permissions
+        console.warn(error);
+      });
+  };
 
   onShowHideDay = (dateDay) => {
     this.props.showHideReservationDay(this.props.locId, dateDay);
@@ -150,6 +175,7 @@ class Local extends Component {
     }
   }
 
+
    renderItem = ({ item }) => (
      <LocalReservationItem
        item={item}
@@ -158,6 +184,7 @@ class Local extends Component {
        listLen={this.props.localWithReservations.days.length}
        pressFn={this.onPressItem}
        showHideDay={this.onShowHideDay}
+       saveEventInCalendar={this.onSaveEventInCalendar}
      />
    );
 

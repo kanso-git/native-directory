@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types,no-empty */
 /* eslint global-require: "off" */
+/* eslint-disable consistent-return */
 
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
@@ -18,10 +19,11 @@ class LocalReservationItem extends Component {
     return !!currentDay.length;
   }
 
-   switchOnType = (item, visibleDays, pressFn, listLen) => {
+   switchOnType = (item, visibleDays) => {
      switch (item.type) {
        case RESERVATION:
-         return this.checkIfDayIsVisible(visibleDays, item.date) && this.renderReservationItem(item, listLen);
+         return this.checkIfDayIsVisible(visibleDays, item.date)
+         && this.renderReservationItem(item);
        default:
          break;
      }
@@ -108,18 +110,35 @@ class LocalReservationItem extends Component {
          break;
      }
    }
-  renderReservationItem = (item, listLen) => (
+
+
+   renderSaveToCalendar = item => (
+     <View style={{
+            alignItems: 'flex-end',
+            justifyContent: 'flex-end',
+           }}
+     >
+       <TouchableOpacity onPress={() => this.props.saveEventInCalendar(item)}>
+         <Icon name="calendar-check-o" style={{ fontSize: 16, paddingRight: 5, paddingBottom: 5 }} />
+       </TouchableOpacity>
+     </View>
+   )
+
+
+  renderReservationItem = item => (
     <CardSection style={{ paddingTop: 1, paddingBottom: 0 }} >
       <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
         <View style={{ flexDirection: 'row' }}>
 
           { item.typeoccupation === RESERVATION_EMPTY ?
-             this.renderDashed(true, item.typeoccupation) : this.renderDashed(false, item.typeoccupation)
+             this.renderDashed(true, item.typeoccupation) :
+              this.renderDashed(false, item.typeoccupation)
           }
 
           { this.renderReservationBody(item)}
         </View>
       </View>
+      {item.typeoccupation !== RESERVATION_EMPTY && this.renderSaveToCalendar(item)}
     </CardSection>
   );
 
@@ -165,12 +184,12 @@ class LocalReservationItem extends Component {
 
    render() {
      const {
-       item, pressFn, listLen, visibleDays,
+       item, pressFn, visibleDays,
      } = this.props;
      return (
        <View>
          { this.renderSection(item, visibleDays) }
-         { this.switchOnType(item, visibleDays, pressFn, listLen) }
+         { this.switchOnType(item, visibleDays, pressFn) }
        </View>
      );
    }
