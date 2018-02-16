@@ -65,8 +65,20 @@
         "title" : "Local",
         "floor" : "Floor",
         "type" : "Type",
-		"localCode": "Local code"
+		"localCode": "Local code",
+		"bookingSchedule":"Booking schedule",
+		"scheduleFrom": "from",
+		"scheduleTo": "to"
     },
+	"bookingItem" : {
+		"from":"From",
+		"to":"to",
+		"course":"Course",
+		"prof":"Professor(s)",
+		"for":"Booked for",
+		"remark":"Note",
+		"free":"Free"
+	},
     "section" : {
         "personUnit": "Persons and organizational units",
         "local":"Locals",

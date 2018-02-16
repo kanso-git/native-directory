@@ -62,8 +62,20 @@
         "pageTitle" : "Local",
         "title" : "Local",
         "floor" : "Étage",
-        "type" : "Type"
+        "type" : "Type",
+		"bookingSchedule":"Calendrier de réservation",
+		"scheduleFrom": "du",
+		"scheduleTo": "au"
     },
+	"bookingItem" : {
+		"from":"De",
+		"to":"à",
+		"course":"Matière",
+		"prof":"Professeur(s)",
+		"for":"Réservée pour",
+		"remark":"Remarque",
+		"free":"Libre"
+	},
     "section" : {
         "personUnit": "Personnes et Structures Organisationnelles",
         "local":"Locaux",

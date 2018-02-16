@@ -53,13 +53,13 @@ class BuildingLocalItem extends Component {
      <TouchableOpacity onPress={() => this.props.showHideFloor(floorId)}>
        <CardSection style={{
         flexDirection: 'row',
-        backgroundColor: '#E5EFF5',
+        backgroundColor: '#DFDFDF',
         marginTop: 0,
         marginBottom: -5,
         shadowColor: '#000',
         shadowOpacity: 0.5,
-        elevation: 2,
-         shadowOffset: { width: 0, height: 2 },
+        elevation: 4,
+         shadowOffset: { width: 2, height: 2 },
       }}
        >
          <Icon
@@ -69,12 +69,14 @@ class BuildingLocalItem extends Component {
             padding: 0,
             paddingLeft: 2,
             paddingRight: 5,
+            color: '#007aff',
 
       }}
          />
          <Text style={{
           fontSize: 18,
           padding: 0,
+          color: '#007aff',
 
         }}
          >

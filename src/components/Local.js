@@ -130,7 +130,7 @@ class Local extends Component {
   }
   formatCalenderDate = () => {
     const moment = statics.momentStatic;
-    return `du ${moment().format('DD MMM')}  au  ${moment().add(7, 'd').format('DD MMM')}`;
+    return `${I18n.t('local.scheduleFrom')} ${moment().format('DD MMM')} ${I18n.t('local.scheduleTo')}  ${moment().add(7, 'd').format('DD MMM')}`;
   }
   flipCard = () => {
     if (this.value >= 90) {
@@ -216,9 +216,16 @@ ${npa} ${localite}`}
                onChangeText={this.onSearch}
              />
            </CardSection>
-           <Text style={{ padding: 5, fontSize: 20 }}> Calendries  {this.formatCalenderDate()} </Text>
+           <Text style={{
+             paddingLeft: 5,
+             paddingTop: 10,
+             paddingBottom: 10,
+             fontSize: 18,
+            }}
+           >{I18n.t('local.bookingSchedule')}: [{this.formatCalenderDate()}]
+           </Text>
            <FlatList
-             data={this.props.localWithReservations.query.length ===0 ? this.props.localWithReservations.days : this.props.localWithReservations.days.filter(d => d.typeoccupation !== RESERVATION_EMPTY)}
+             data={this.props.localWithReservations.query.length === 0 ? this.props.localWithReservations.days : this.props.localWithReservations.days.filter(d => d.typeoccupation !== RESERVATION_EMPTY)}
              extraData={this.props.visibleDays}
              renderItem={this.renderItem}
            />

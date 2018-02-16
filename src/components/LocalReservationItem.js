@@ -36,6 +36,7 @@ class LocalReservationItem extends Component {
        <Dash
          dashThickness={4}
          dashLength={4}
+         dashColor="#a9a9a9"
          style={{
         width: 1,
         height: isEmpty ? 15 : 45,
@@ -48,6 +49,7 @@ class LocalReservationItem extends Component {
          name={typeOcc === RESERVATION_PIDHO ? 'graduation-cap' : 'dot-circle-o'}
          style={{
         fontSize: 20,
+        color: '#a9a9a9',
         paddingLeft: typeOcc === RESERVATION_PIDHO ? 1 : 4,
         paddingTop: typeOcc === RESERVATION_PIDHO ? 2 : 2,
         paddingBottom: 1,
@@ -56,6 +58,7 @@ class LocalReservationItem extends Component {
 
        <Dash
          dashThickness={4}
+         dashColor="#a9a9a9"
          dashLength={4}
          style={{
       width: 1,
@@ -72,23 +75,23 @@ class LocalReservationItem extends Component {
        case RESERVATION_PIRES:
          return (
            <View style={{
- flexDirection: 'column', paddingLeft: 5, marginRight: 5, justifyContent: 'center',
+ flexDirection: 'column', paddingLeft: 5, marginRight: 25, justifyContent: 'center',
 }}
            >
-             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{`De ${item.heure.split('-')[0]} à ${item.heure.split('-')[1]}`}  </Text>
-             <Text style={{ fontSize: 13, paddingTop: 2 }}>Réserver pour: {`${item.matiere} ( ${item.prof} )`} </Text>
-             <Text style={{ fontSize: 13, paddingTop: 5 }}>Remarque: {`${item.remarque}`} </Text>
+             <Text style={{ fontSize: 18, fontWeight: 'bold', paddingBottom: 1 }}>{`${I18n.t('bookingItem.from')} ${item.heure.split('-')[0]} ${I18n.t('bookingItem.to')} ${item.heure.split('-')[1]}`}  </Text>
+             <Text style={{ fontSize: 13, paddingTop: 2 }}>{I18n.t('bookingItem.for')}: {`${item.matiere} ( ${item.prof} )`} </Text>
+             <Text style={{ fontSize: 13, paddingTop: 5 }}>{I18n.t('bookingItem.remark')}: {`${item.remarque}`} </Text>
            </View>
          );
        case RESERVATION_PIDHO:
          return (
            <View style={{
- flexDirection: 'column', paddingLeft: 5, marginRight: 5, justifyContent: 'center',
+ flexDirection: 'column', paddingLeft: 5, marginRight: 25, justifyContent: 'center',
 }}
            >
-             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{`De ${item.heure.split('-')[0]} à ${item.heure.split('-')[1]}`}  </Text>
-             <Text style={{ fontSize: 13, paddingTop: 2 }}>Matière: {`${item.matiere}`} </Text>
-             <Text style={{ fontSize: 13, paddingTop: 5 }}>Professeur: {`${item.prof}`} </Text>
+             <Text style={{ fontSize: 18, fontWeight: 'bold', paddingBottom: 1 }}>{`${I18n.t('bookingItem.from')} ${item.heure.split('-')[0]} ${I18n.t('bookingItem.to')} ${item.heure.split('-')[1]}`}  </Text>
+             <Text style={{ fontSize: 13, paddingTop: 2, marginRight: 35 }}>{I18n.t('bookingItem.course')}: {`${item.matiere}`} </Text>
+             <Text style={{ fontSize: 13, paddingTop: 5, marginRight: 35 }}>{I18n.t('bookingItem.prof')}: {`${item.prof}`} </Text>
            </View>
          );
        case RESERVATION_EMPTY:
@@ -97,7 +100,7 @@ class LocalReservationItem extends Component {
  flexDirection: 'column', paddingLeft: 5, marginRight: 5, justifyContent: 'center',
 }}
            >
-             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Libre</Text>
+             <Text style={{ paddingLeft: 5, fontSize: 16, fontWeight: 'bold' }}>{I18n.t('bookingItem.free')}</Text>
            </View>
          );
        default:
@@ -123,7 +126,7 @@ class LocalReservationItem extends Component {
      <TouchableOpacity onPress={() => this.props.showHideDay(dayDate)}>
        <CardSection style={{
        flexDirection: 'row',
-       backgroundColor: '#E5EFF5',
+       backgroundColor: '#DFDFDF',
        marginTop: 0,
        marginBottom: -5,
        shadowColor: '#000',
@@ -136,6 +139,7 @@ class LocalReservationItem extends Component {
            name={this.checkIfDayIsVisible(visibleDays, dayDate) ? 'minus-circle' : 'plus-circle'}
            style={{
         fontSize: 25,
+        color: '#007aff',
         padding: 0,
         paddingLeft: 2,
         paddingRight: 5,
@@ -144,7 +148,7 @@ class LocalReservationItem extends Component {
          <Text style={{
           fontSize: 18,
           padding: 0,
-
+          color: '#007aff',
         }}
          >
            {this.formatDate(dayDate)}
@@ -165,9 +169,7 @@ class LocalReservationItem extends Component {
      return (
        <View>
          { this.renderSection(item, visibleDays) }
-         <TouchableOpacity onPress={() => pressFn(item)}>
-           { this.switchOnType(item, visibleDays, pressFn, listLen) }
-         </TouchableOpacity>
+         { this.switchOnType(item, visibleDays, pressFn, listLen) }
        </View>
      );
    }

@@ -202,6 +202,7 @@ class Local extends Component {
                         top: viewportHeight * 0.33,
                         paddingLeft: 5,
                         paddingTop: 10,
+                        backgroundColor: '#DFDFDF',
                       }}
                 onPress={() => {
                   Actions.push('mapPage');

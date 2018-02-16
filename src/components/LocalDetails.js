@@ -27,7 +27,7 @@ class LocalDetails extends Component {
     </View>
   )
   render() {
-    return (this.props.bilune.state !== 'BDL_LOADED' || !this.props.reservations[this.props.bilune.locId]) ?
+    return (this.props.bilune.state !== 'BDL_LOADED' || !this.props.reservations[this.props.bilune.locId]) ?
       this.renderSpinner() : this.renderLocal();
   }
 }
