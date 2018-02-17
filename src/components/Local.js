@@ -2,9 +2,7 @@
 /* eslint global-require: "off" */
 /* eslint-disable consistent-return */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Animated, NativeModules } from 'react-native';
-import Icon from 'react-native-fa-icons';
-import Communications from 'react-native-communications';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Animated } from 'react-native';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import { RESERVATION_EMPTY } from 'react-native-dotenv';
 import { Actions } from 'react-native-router-flux';
@@ -63,37 +61,6 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingBottom: 10,
   },
-  flipCard: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backfaceVisibility: 'hidden',
-  },
-  flipCardBack: {
-    backgroundColor: '#E5EFF5',
-    position: 'absolute',
-    top: 0,
-  },
-  flipText: {
-    fontSize: 20,
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  flipBtn: {
-    position: 'absolute',
-    top: 10,
-    right: 8,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    padding: 6,
-    borderRadius: 10,
-    width: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: '#ddd',
-    borderBottomWidth: 0,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-  },
 });
 
 
@@ -128,7 +95,8 @@ class Local extends Component {
       adresseLigne1, localite, npa,
     } = this.props.currentBuilding;
 
-    const { LOC_TYPE_DESIGNATION, LOC_CODE, ETG_DESIGNATION } = this.props.localWithReservations.attributes;
+    const { LOC_TYPE_DESIGNATION, LOC_CODE, ETG_DESIGNATION } =
+    this.props.localWithReservations.attributes;
 
     const eventConfig = {
       title: `${event.matiere} (${event.prof})`,
@@ -170,23 +138,6 @@ ${npa} ${localite}
     const moment = utile.momentStatic;
     return `${I18n.t('local.scheduleFrom')} ${moment().format('DD MMM')} ${I18n.t('local.scheduleTo')}  ${moment().add(7, 'd').format('DD MMM')}`;
   }
-  flipCard = () => {
-    if (this.value >= 90) {
-      Animated.spring(this.animatedValue, {
-        toValue: 0,
-        friction: 8,
-        tension: 10,
-      }).start();
-    } else {
-      Animated.spring(this.animatedValue, {
-        toValue: 180,
-        friction: 8,
-        tension: 10,
-      }).start();
-    }
-  }
-
-
    renderItem = ({ item }) => (
      <LocalReservationItem
        item={item}
@@ -205,7 +156,8 @@ ${npa} ${localite}
        adresseLigne1, localite, npa,
      } = this.props.currentBuilding;
 
-     const { LOC_TYPE_DESIGNATION, LOC_CODE, ETG_DESIGNATION } = this.props.localWithReservations.attributes;
+     const { LOC_TYPE_DESIGNATION, LOC_CODE, ETG_DESIGNATION } =
+     this.props.localWithReservations.attributes;
 
 
      return (
@@ -214,7 +166,11 @@ ${npa} ${localite}
          <View style={[styles.flipCard]}>
            <Image
              style={{ width: viewportWidth, height: viewportHeight * 0.33, backgroundColor: '#034d7c' }}
-             source={{ uri: this.props.images[this.props.localWithReservations.attributes.OBJECTID] || utile.noImageIcon }}
+             source={{
+             uri:
+              this.props
+              .images[this.props.localWithReservations.attributes.OBJECTID] || utile.noImageIcon,
+            }}
            />
            <View >
              <TouchableOpacity
@@ -243,36 +199,40 @@ ${npa} ${localite}`}
            </View>
          </View>
 
-         { (this.props.localWithReservations.days && this.props.localWithReservations.days.length > 0) &&
-         <Card>
-           <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
-             <InputFlex
-               icon="&#x1F50E;"
-               style={{
+         { (this.props.localWithReservations.days
+          && this.props.localWithReservations.days.length > 0) &&
+          <Card>
+            <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
+              <InputFlex
+                icon="&#x1F50E;"
+                style={{
               height: 40, borderRadius: 5, borderWidth: 1, borderColor: '#dfdfdf',
             }}
-               placeholder={I18n.t('search.placeholderLocal')}
-               value={this.props.localWithReservations.query}
-               onChangeText={this.onSearch}
-             />
-           </CardSection>
-           <TouchableOpacity onPress={() => Actions.push('sampleParallaxView')} >
-             <Text>just for test</Text>
-           </TouchableOpacity>
-           <Text style={{
+                placeholder={I18n.t('search.placeholderLocal')}
+                value={this.props.localWithReservations.query}
+                onChangeText={this.onSearch}
+              />
+            </CardSection>
+            <TouchableOpacity onPress={() => Actions.push('sampleParallaxView')} >
+              <Text>just for test</Text>
+            </TouchableOpacity>
+            <Text style={{
              paddingLeft: 5,
              paddingTop: 10,
              paddingBottom: 10,
              fontSize: 18,
             }}
-           >{I18n.t('local.bookingSchedule')}: [{this.formatCalenderDate()}]
-           </Text>
-           <FlatList
-             data={this.props.localWithReservations.query.length === 0 ? this.props.localWithReservations.days : this.props.localWithReservations.days.filter(d => d.typeoccupation !== RESERVATION_EMPTY)}
-             extraData={this.props.visibleDays}
-             renderItem={this.renderItem}
-           />
-         </Card>}
+            >{I18n.t('local.bookingSchedule')}: [{this.formatCalenderDate()}]
+            </Text>
+            <FlatList
+              data={this.props.localWithReservations.query.length === 0 ?
+               this.props.localWithReservations.days :
+               this.props.localWithReservations
+               .days.filter(d => d.typeoccupation !== RESERVATION_EMPTY)}
+              extraData={this.props.visibleDays}
+              renderItem={this.renderItem}
+            />
+          </Card>}
        </View>
      );
    }
