@@ -10,6 +10,8 @@ import LocalDetails from './components/LocalDetails';
 import MapPage from './components/MapPage';
 import NetworkError from './components/NetworkError';
 
+import SampleParallaxView from './components/SampleParallaxView';
+
 const styles = StyleSheet.create({
   navStyle: {
     backgroundColor: '#034d7c',
@@ -94,6 +96,17 @@ const RouterComponent = () => (
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}
         />
+
+        <Scene
+          key="sampleParallaxView"
+          backTitle=" "
+          component={SampleParallaxView}
+          title="SampleParallaxView"
+          titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
+          backButtonTintColor="white"
+          navigationBarStyle={styles.navStyle}
+        />
+
       </Scene>
       <Scene key="error" >
         <Scene

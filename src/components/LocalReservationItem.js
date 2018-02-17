@@ -3,7 +3,7 @@
 /* eslint-disable consistent-return */
 
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, Image, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-fa-icons';
 import Dash from 'react-native-dash';
 import { RESERVATION, RESERVATION_PIRES, RESERVATION_PIDHO, RESERVATION_EMPTY } from 'react-native-dotenv';
@@ -39,10 +39,10 @@ class LocalReservationItem extends Component {
        <Dash
          dashThickness={4}
          dashLength={4}
-         dashColor="#a9a9a9"
+         dashColor="#034d7c"
          style={{
         width: 1,
-        height: isEmpty ? 15 : 45,
+        height: isEmpty ? 15 : 55,
         paddingRight: 10,
         paddingLeft: 10,
         flexDirection: 'column',
@@ -52,7 +52,7 @@ class LocalReservationItem extends Component {
          name={typeOcc === RESERVATION_PIDHO ? 'graduation-cap' : 'dot-circle-o'}
          style={{
         fontSize: 20,
-        color: '#a9a9a9',
+        color: '#034d7c',
         paddingLeft: typeOcc === RESERVATION_PIDHO ? 1 : 4,
         paddingTop: typeOcc === RESERVATION_PIDHO ? 2 : 2,
         paddingBottom: 1,
@@ -61,11 +61,11 @@ class LocalReservationItem extends Component {
 
        <Dash
          dashThickness={4}
-         dashColor="#a9a9a9"
+         dashColor="#034d7c"
          dashLength={4}
          style={{
       width: 1,
-      height: isEmpty ? 15 : 45,
+      height: isEmpty ? 15 : 55,
       paddingRight: 10,
       paddingLeft: 10,
       flexDirection: 'column',
@@ -119,7 +119,10 @@ class LocalReservationItem extends Component {
            }}
      >
        <TouchableOpacity onPress={() => this.props.saveEventInCalendar(item)}>
-         <Icon name="calendar-check-o" style={{ fontSize: 16, paddingRight: 5, paddingBottom: 5 }} />
+         <Image
+           style={{ width: 28, height: 30, marginBottom: 5 }}
+           source={{ uri: statics.addToCalendarIcon }}
+         />
        </TouchableOpacity>
      </View>
    )
@@ -159,7 +162,7 @@ class LocalReservationItem extends Component {
            name={this.checkIfDayIsVisible(visibleDays, dayDate) ? 'minus-circle' : 'plus-circle'}
            style={{
         fontSize: 25,
-        color: '#007aff',
+        color: '#034d7c',
         padding: 0,
         paddingLeft: 2,
         paddingRight: 5,
@@ -168,7 +171,7 @@ class LocalReservationItem extends Component {
          <Text style={{
           fontSize: 18,
           padding: 0,
-          color: '#007aff',
+          color: '#034d7c',
         }}
          >
            {this.formatDate(dayDate)}

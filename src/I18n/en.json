@@ -11,8 +11,8 @@
         "placeholderLocal": "Professeur, matière",
         "showAll" : "Show all...",
         "feedback":"We have found ",
-        "result":" result",
-        "results":" results"
+        "result":"result",
+        "results":"results"
     },
     "person" : {
         "pageTitle" : "Person Details",
@@ -66,7 +66,7 @@
         "floor" : "Floor",
         "type" : "Type",
 		"localCode": "Local code",
-		"bookingSchedule":"Booking schedule",
+		"bookingSchedule":"Booking",
 		"scheduleFrom": "from",
 		"scheduleTo": "to"
     },

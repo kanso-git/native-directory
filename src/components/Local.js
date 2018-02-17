@@ -123,24 +123,34 @@ class Local extends Component {
   onSaveEventInCalendar = (event) => {
     const debutUTC = statics.momentStatic.utc(event.debutUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
     const finUTC = statics.momentStatic.utc(event.finUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+    const {
+      adresseLigne1, localite, npa,
+    } = this.props.currentBuilding;
+
+    const { LOC_TYPE_DESIGNATION, LOC_CODE, ETG_DESIGNATION } = this.props.localWithReservations.attributes;
 
     const eventConfig = {
-      title: 'Event added by annuaire',
+      title: `${event.matiere} (${event.prof})`,
       startDate: debutUTC,
       endDate: finUTC,
+      location: `${adresseLigne1} ${npa} ${localite}`,
+      notes: `${LOC_TYPE_DESIGNATION} (${LOC_CODE})
+${ETG_DESIGNATION}
+${adresseLigne1}
+${npa} ${localite}
+  `,
     };
-debugger;
-    
+
     AddCalendarEvent.presentNewCalendarEventDialog(eventConfig)
       .then((eventId) => {
         // handle success (receives event id) or dismissing the modal (receives false)
         if (eventId) {
-          console.warn(eventId);
+          // console.warn(eventId);
         } else {
-          console.warn('dismissed');
+          // console.warn('dismissed');
         }
       })
-      .catch((error: string) => {
+      .catch((error) => {
         // handle error such as when user rejected permissions
         console.warn(error);
       });
@@ -245,6 +255,9 @@ ${npa} ${localite}`}
                onChangeText={this.onSearch}
              />
            </CardSection>
+           <TouchableOpacity onPress={() => Actions.push('sampleParallaxView')} >
+             <Text>just for test</Text>
+           </TouchableOpacity>
            <Text style={{
              paddingLeft: 5,
              paddingTop: 10,
