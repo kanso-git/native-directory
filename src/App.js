@@ -4,6 +4,7 @@ import { View, Platform, BackHandler, NetInfo, StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import axios from 'axios';
 import SplashScreen from 'react-native-splash-screen';
 import { Actions } from 'react-native-router-flux';
 import './I18n/I18n';
@@ -54,14 +55,24 @@ class App extends Component {
     );
   }
 
-  reConfirmOffline = () => {
-    NetInfo.isConnected.fetch().then((isConnected) => {
-      console.info(`First, is ${isConnected ? 'online' : 'offline'}`);
-      if (!isConnected) {
-        Actions.reset('error');
-        setTimeout(() => this.handleFirstConnectivityChange(), 300);
+  testConnection= async () => {
+    try {
+      const res = await axios.get('https://google.com');
+      if (res.data) {
+        return true;
       }
-    });
+    } catch (e) {
+      return false;
+    }
+  }
+  reConfirmOffline = async () => {
+    const test = await this.testConnection();
+    if (test) {
+      this.handleFirstConnectivityChange(true);
+    } else {
+      Actions.reset('error');
+      this.handleFirstConnectivityChange(false);
+    }
   }
   handleFirstConnectivityChange = (isConnected) => {
     const networkStatus = isConnected ? 'online' : 'offline';
