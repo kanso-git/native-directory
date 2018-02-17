@@ -2640,6 +2640,10 @@ hoek@4.x.x:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.0.tgz#72d9d0754f7fe25ca2d01ad8f8f9a9449a89526d"
 
+hoist-non-react-statics@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
+
 hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.2.1, hoist-non-react-statics@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.3.1.tgz#343db84c6018c650778898240135a1420ee22ce0"
@@ -4485,6 +4489,14 @@ react-native-measureme@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/react-native-measureme/-/react-native-measureme-0.0.1.tgz#8b1c5595cdbb1cfdf85bff98fe36d33e98b6162c"
 
+react-native-offline@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/react-native-offline/-/react-native-offline-3.6.2.tgz#21d89351a65f46bd3af241688a866b276b798502"
+  dependencies:
+    hoist-non-react-statics "^1.2.0"
+    lodash "^4.17.4"
+    redux-saga "^0.16.0"
+
 react-native-parallax-scroll-view@^0.20.1:
   version "0.20.1"
   resolved "https://registry.yarnpkg.com/react-native-parallax-scroll-view/-/react-native-parallax-scroll-view-0.20.1.tgz#7fad3411df8632b7c99fed5d0a5c0a8f97007b38"
@@ -4722,6 +4734,10 @@ rechoir@^0.6.2:
   resolved "https://registry.yarnpkg.com/rechoir/-/rechoir-0.6.2.tgz#85204b54dba82d5742e28c96756ef43af50e3384"
   dependencies:
     resolve "^1.1.6"
+
+redux-saga@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.16.0.tgz#0a231db0a1489301dd980f6f2f88d8ced418f724"
 
 redux-thunk@^2.2.0:
   version "2.2.0"

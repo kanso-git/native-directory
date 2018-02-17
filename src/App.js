@@ -21,6 +21,7 @@ class App extends Component {
     if (SplashScreen && SplashScreen.hide) {
       SplashScreen.hide();
     }
+    // todo add internet check at this level
     this.myStore.dispatch(authActions.register());
     // load bilune data, from BDL services
     setTimeout(() => this.myStore.dispatch(biluneActions.loadSpatialData()), 0);
@@ -64,15 +65,19 @@ class App extends Component {
   }
   handleFirstConnectivityChange = (isConnected) => {
     const networkStatus = isConnected ? 'online' : 'offline';
-
+    let reConfirmOfflineTimeOut = null;
     switch (networkStatus) {
       case 'online':
         if (Actions.currentScene === 'networkError') {
+          if (reConfirmOfflineTimeOut) {
+            console.info(' connection is back clear the timeout ');
+            clearTimeout(reConfirmOfflineTimeOut);
+          }
           Actions.reset('main');
         }
         break;
       case 'offline':
-        setTimeout(() => this.reConfirmOffline(), 3000);
+        reConfirmOfflineTimeOut = setTimeout(() => this.reConfirmOffline(), 3000);
         break;
       default:
         break;
