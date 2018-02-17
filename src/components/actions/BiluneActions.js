@@ -1,5 +1,6 @@
 /* eslint no-console: ["error", { allow: ["info", "warn", "error"] }] */
 /* eslint global-require: "off" */
+/* eslint-disable consistent-return */
 
 import axios from 'axios';
 import * as _ from 'lodash';
@@ -14,7 +15,7 @@ import { BDL_SECURITY_TOKEN,
   BDL_ERROR } from 'react-native-dotenv';
 import * as types from './Types';
 import * as queries from '../common/queriesHelper';
-import * as statics from '../common/static';
+import * as utile from '../common/utile';
 
 const headers = {};
 headers[`${BDL_SECURITY_TOKEN}`] = BDL_SECURITY_TOKEN_VAL;
@@ -26,7 +27,7 @@ const filterGeometryForBuilding = (enteries, bId) => enteries
 
 const filterBuildingById = (blArr, id) => blArr.filter(b => b.id === id)[0];
 
-const getImageUsingBlob = async (url) => {
+const getImageUsingBlob = async (dispatch, url) => {
   try {
     const RNFetchBlob = require('react-native-fetch-blob').default;
     const res = await RNFetchBlob.fetch('GET', url, {
@@ -35,55 +36,97 @@ const getImageUsingBlob = async (url) => {
     const mimetype = 'image/jpg';
     const base64Str = res.base64();
     return (res.base64() && res.base64().length > 0) ?
-      `data:${mimetype};base64,${base64Str}` : statics.noImageIcon;
+      `data:${mimetype};base64,${base64Str}` : utile.noImageIcon;
   } catch (e) {
-    console.error(`error occured getImageUsingBlob ${e}`);
-    throw e;
+    console.warn(`error occured getImageUsingBlob ${e}`);
+    const isConnected = await utile.isConnected();
+    const service = 'getImageUsingBlob';
+    return dispatch({
+      type: types.UPDATE_CONNECTION_STATE,
+      payload: {
+        isConnected,
+        service,
+        error: e,
+      },
+    });
   }
 };
 
-const getBdlBuildingListAxios = async () => {
+const getBdlBuildingListAxios = async (dispatch) => {
   let res;
   try {
     res = await axios.get(queries.bdlBuildings(), { headers });
     return res.data;
   } catch (e) {
-    console.error(`error occured getBdlBuildingFloorsAxios ${e}`);
-    throw e;
+    console.warn(`error occured getBdlBuildingFloorsAxios ${e}`);
+    const isConnected = await utile.isConnected();
+    const service = 'getBdlBuildingListAxios';
+    return dispatch({
+      type: types.UPDATE_CONNECTION_STATE,
+      payload: {
+        isConnected,
+        service,
+        error: e,
+      },
+    });
   }
 };
 
-const getBdlBuildingFloorsAxios = async (floorBuildingId) => {
+const getBdlBuildingFloorsAxios = async (dispatch, floorBuildingId) => {
   let res;
   try {
     res = await axios.get(queries.bdlBuildingFloors(floorBuildingId), { headers });
     const collapsed = false;
     return res.data.map(f => ({ ...f, collapsed }));
   } catch (e) {
-    console.error(`error occured getBdlBuildingFloorsAxios ${e}`);
-    throw e;
+    console.warn(`error occured getBdlBuildingFloorsAxios ${e}`);
+    const isConnected = await utile.isConnected();
+    return dispatch({
+      type: types.UPDATE_CONNECTION_STATE,
+      payload: {
+        isConnected,
+        service: 'getBdlBuildingFloorsAxios',
+        error: e,
+      },
+    });
   }
 };
 
-const getBiluneLocalsWithSpatialDataAxios = async () => {
+const getBiluneLocalsWithSpatialDataAxios = async (dispatch) => {
   try {
     const locals = await axios.get(queries.locals('BAT_ID>0'));
     console.info(`found ${locals.data.features.length} locals`);
     return locals.data.features;
   } catch (e) {
-    console.error(`error getBiluneLocalsWithSpatialDataAxios ${e}`);
-    throw e;
+    console.warn(`error getBiluneLocalsWithSpatialDataAxios ${e}`);
+    const isConnected = await utile.isConnected();
+    return dispatch({
+      type: types.UPDATE_CONNECTION_STATE,
+      payload: {
+        isConnected,
+        service: 'getBiluneLocalsWithSpatialDataAxios',
+        error: e,
+      },
+    });
   }
 };
 
-const getBiluneBuildingEnteriesAxios = async () => {
+const getBiluneBuildingEnteriesAxios = async (dispatch) => {
   let res;
   try {
     res = await axios.get(queries.buildingsEnteries());
     return res.data ? res.data.features : res.data;
   } catch (e) {
-    console.error(`error getBiluneBuildingEnteriesAxios ${e}`);
-    throw e;
+    console.warn(`error getBiluneBuildingEnteriesAxios ${e}`);
+    const isConnected = await utile.isConnected();
+    return dispatch({
+      type: types.UPDATE_CONNECTION_STATE,
+      payload: {
+        isConnected,
+        service: 'getBiluneBuildingEnteriesAxios',
+        error: e,
+      },
+    });
   }
 };
 
@@ -99,9 +142,9 @@ const loadSpatialData = () =>
     });
 
     try {
-      const bdlBuildings = await getBdlBuildingListAxios();
+      const bdlBuildings = await getBdlBuildingListAxios(dispatch);
       // const biluneBuildings = await getBiluneBuildingListAxios();
-      const buildingsEnteries = await getBiluneBuildingEnteriesAxios();
+      const buildingsEnteries = await getBiluneBuildingEnteriesAxios(dispatch);
 
       const buildings = bdlBuildings.map((b) => {
         const enteries = filterGeometryForBuilding(buildingsEnteries, b.id);
@@ -123,7 +166,7 @@ const loadSpatialData = () =>
         // image is not loaded
         if (!images[b.id]) {
           imagesId.push(b.id);
-          imagesPromise.push(getImageUsingBlob(`${API_BDL}/batiments/${b.id}/photo/mini`));
+          imagesPromise.push(getImageUsingBlob(dispatch, `${API_BDL}/batiments/${b.id}/photo/mini`));
         }
       });
       console.info(`loadSpatialData loading images for ${imagesId.length} buildings`);
@@ -137,10 +180,10 @@ const loadSpatialData = () =>
             type: types.SET_IMAGE_BILUNE,
             payload: { images },
           });
-        }).catch(err => console.error(`err loading image:${err}`));
+        }).catch(err => console.warn(`err loading image:${err}`));
       }
       // const locals = await getBiluneLocalsOneByOneAxios(bdlBuildings);
-      const locals = await getBiluneLocalsWithSpatialDataAxios();
+      const locals = await getBiluneLocalsWithSpatialDataAxios(dispatch);
 
       dispatch({
         type: types.SET_BILUNE_DATA,
@@ -168,7 +211,7 @@ const loadSpatialData = () =>
       });
       if (e.response) {
         if (e.response.status === 401) {
-          console.error(`Error getBuildingList ${e} `);
+          console.warn(`Error getBuildingList ${e} `);
         }
       }
     }
@@ -209,7 +252,7 @@ const reservationListAxios = async (lId, sD, eD) => {
 };
 
 const formatedLocalReservationDataForList = (myLocal) => {
-  const moment = statics.momentStatic;
+  const moment = utile.momentStatic;
   if (myLocal && myLocal.days) {
     const formattedDays = [];
     let num = 0;
@@ -329,7 +372,7 @@ const showHideReservationDay = (localId, day) =>
   };
 const loadAllLocalData = localId =>
   async (dispatch, getState) => {
-    const moment = statics.momentStatic;
+    const moment = utile.momentStatic;
     const now = moment();
     const startDate = now.format('YYYY-MM-DD');
     const endDate = now.add(7, 'd').format('YYYY-MM-DD');
@@ -358,7 +401,7 @@ const loadAllLocalData = localId =>
 const loadAllBuildingData = buildingId =>
   async (dispatch, getState) => {
     try {
-      const floors = await getBdlBuildingFloorsAxios(buildingId);
+      const floors = await getBdlBuildingFloorsAxios(dispatch, buildingId);
       const dataLocals = getState().bilune.locals;
       const { images } = getState().bilune;
       let locals = [];
@@ -380,7 +423,7 @@ const loadAllBuildingData = buildingId =>
           if (!images[loc.attributes.OBJECTID] &&
               ((typeCode === 10 || typeCode === 11 || typeCode === 12 || typeCode === 3))) {
             imagesId.push(loc.attributes.OBJECTID);
-            imagesPromise.push(getImageUsingBlob(`${API_BDL}/locaux/${loc.attributes.LOC_ID}/photo/mini`));
+            imagesPromise.push(getImageUsingBlob(dispatch, `${API_BDL}/locaux/${loc.attributes.LOC_ID}/photo/mini`));
           }
         });
         console.info(`loadAllBuildingData loading images for ${imagesId.length} locals`);
@@ -394,7 +437,7 @@ const loadAllBuildingData = buildingId =>
               type: types.SET_IMAGE_BILUNE,
               payload: { images },
             });
-          }).catch(err => console.error(`err loading image:${err}`));
+          }).catch(err => console.warn(`err loading image:${err}`));
         }
 
         const dataBuildings = getState().bilune.buildings;
@@ -418,7 +461,7 @@ const loadAllBuildingData = buildingId =>
     } catch (e) {
       if (e.response) {
         if (e.response.status === 401) {
-          console.error(`Error buildingFloors ${e} `);
+          console.warn(`Error buildingFloors ${e} `);
         }
       }
     }
@@ -526,7 +569,7 @@ const searchBilune = query =>
           // image is not loaded
           if (!images[b.id]) {
             imagesId.push(b.id);
-            imagesPromise.push(getImageUsingBlob(`${API_BDL}/batiments/${b.id}/photo/mini`));
+            imagesPromise.push(getImageUsingBlob(dispatch, `${API_BDL}/batiments/${b.id}/photo/mini`));
           }
         });
         console.info(`searchBilune loading images for ${imagesId.length} buildings`);
@@ -540,7 +583,7 @@ const searchBilune = query =>
               type: types.SET_IMAGE_BILUNE,
               payload: { images },
             });
-          }).catch(err => console.error(`err loading image:${err}`));
+          }).catch(err => console.warn(`err loading image:${err}`));
         }
       }
       // as we can find local with length 2
@@ -564,7 +607,7 @@ const searchBilune = query =>
           if (!images[loc.attributes.OBJECTID] &&
             ((typeCode === 10 || typeCode === 11 || typeCode === 12 || typeCode === 3))) {
             imagesId.push(loc.attributes.OBJECTID);
-            imagesPromise.push(getImageUsingBlob(`${API_BDL}/locaux/${loc.attributes.LOC_ID}/photo/mini`));
+            imagesPromise.push(getImageUsingBlob(dispatch, `${API_BDL}/locaux/${loc.attributes.LOC_ID}/photo/mini`));
           }
         });
         console.info(`searchBilune loading images for ${imagesId.length} locals`);
@@ -578,7 +621,7 @@ const searchBilune = query =>
               type: types.SET_IMAGE_BILUNE,
               payload: { images },
             });
-          }).catch(err => console.error(`err loading image:${err}`));
+          }).catch(err => console.warn(`err loading image:${err}`));
         }
       }
 

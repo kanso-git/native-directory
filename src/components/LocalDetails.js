@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types,no-empty */
+/* eslint-disable consistent-return */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ScrollView } from 'react-native';

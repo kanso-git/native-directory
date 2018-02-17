@@ -1,4 +1,6 @@
 /* eslint-disable react/prop-types,no-empty */
+/* eslint-disable consistent-return */
+
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-fa-icons';
@@ -6,7 +8,7 @@ import { LOCAL } from 'react-native-dotenv';
 
 import I18n from 'react-native-i18n';
 
-import { CardSection, Chromatic, statics } from './common';
+import { CardSection, Chromatic, utile } from './common';
 
 class BuildingLocalItem extends Component {
    checkIfFloorIsVisible = (floors, floorId) => {
@@ -28,7 +30,7 @@ class BuildingLocalItem extends Component {
          <View style={{ flexDirection: 'row' }}>
            <Image
              style={{ width: 60, height: 60, backgroundColor: '#034d7c' }}
-             source={{ uri: image || statics.noImageIcon }}
+             source={{ uri: image || utile.noImageIcon }}
            />
            <View style={{ flexDirection: 'column', paddingLeft: 5 }}>
              <Text style={{ fontSize: 16 }}>{`${I18n.t('local.localCode')}: ${item.attributes.LOC_CODE}`} </Text>

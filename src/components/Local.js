@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types,no-empty */
 /* eslint global-require: "off" */
+/* eslint-disable consistent-return */
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Animated, NativeModules } from 'react-native';
 import Icon from 'react-native-fa-icons';
@@ -11,7 +12,7 @@ import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
 
 import { biluneActions } from './actions';
-import { Card, CardSection, InputFlex, statics } from './common';
+import { Card, CardSection, InputFlex, utile } from './common';
 import LocalReservationItem from './LocalReservationItem';
 
 const styles = StyleSheet.create({
@@ -121,8 +122,8 @@ class Local extends Component {
     });
   }
   onSaveEventInCalendar = (event) => {
-    const debutUTC = statics.momentStatic.utc(event.debutUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-    const finUTC = statics.momentStatic.utc(event.finUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+    const debutUTC = utile.momentStatic.utc(event.debutUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+    const finUTC = utile.momentStatic.utc(event.finUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
     const {
       adresseLigne1, localite, npa,
     } = this.props.currentBuilding;
@@ -166,7 +167,7 @@ ${npa} ${localite}
     this.props.searchInLocalReservations(this.props.locId, value);
   }
   formatCalenderDate = () => {
-    const moment = statics.momentStatic;
+    const moment = utile.momentStatic;
     return `${I18n.t('local.scheduleFrom')} ${moment().format('DD MMM')} ${I18n.t('local.scheduleTo')}  ${moment().add(7, 'd').format('DD MMM')}`;
   }
   flipCard = () => {
@@ -213,7 +214,7 @@ ${npa} ${localite}
          <View style={[styles.flipCard]}>
            <Image
              style={{ width: viewportWidth, height: viewportHeight * 0.33, backgroundColor: '#034d7c' }}
-             source={{ uri: this.props.images[this.props.localWithReservations.attributes.OBJECTID] || statics.noImageIcon }}
+             source={{ uri: this.props.images[this.props.localWithReservations.attributes.OBJECTID] || utile.noImageIcon }}
            />
            <View >
              <TouchableOpacity

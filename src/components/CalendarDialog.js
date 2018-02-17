@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { NativeModules, Platform, PermissionsAndroid } from 'react-native';
 
 const AddCalendarEvent = NativeModules.AddCalendarEvent;

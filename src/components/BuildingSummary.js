@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types,no-empty */
 /* eslint global-require:"off" */
+/* eslint-disable consistent-return */
 import React from 'react';
 import { Actions } from 'react-native-router-flux';
 import I18n from 'react-native-i18n';

@@ -1,5 +1,6 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable react/prop-types,no-empty */
+/* eslint-disable consistent-return */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';

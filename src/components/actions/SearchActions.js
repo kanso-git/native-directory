@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import axios from 'axios';
 import { API_ENDPOINT,
   SECURITY_HEADER_NAME,

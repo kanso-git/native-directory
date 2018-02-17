@@ -6,7 +6,7 @@ import { PERSON, UNIT, LOCAL, BUILDING } from 'react-native-dotenv';
 
 import I18n from 'react-native-i18n';
 
-import { CardSection, Chromatic, statics } from './common';
+import { CardSection, Chromatic, utile } from './common';
 
 class SearchItem extends Component {
    switchOnType = (item, pressFn, listLen, style, image) => {
@@ -31,7 +31,7 @@ class SearchItem extends Component {
          <View style={{ flexDirection: 'row' }}>
            <Image
              style={{ width: 60, height: 60, backgroundColor: '#034d7c' }}
-             source={{ uri: image || statics.noImageIcon }}
+             source={{ uri: image || utile.noImageIcon }}
            />
            <View style={{ flexDirection: 'column', paddingLeft: 5 }}>
              <Text style={{ fontSize: 16 }}>{`${item.attributes.LOC_CODE}, ${item.building.abreviation}, (${item.attributes.LOC_TYPE_DESIGNATION})`} </Text>
@@ -58,7 +58,7 @@ class SearchItem extends Component {
          <View style={{ flexDirection: 'row' }}>
            <Image
              style={{ width: 60, height: 60, backgroundColor: '#034d7c' }}
-             source={{ uri: image || statics.noImageIcon }}
+             source={{ uri: image || utile.noImageIcon }}
            />
            <View style={{ flexDirection: 'column', paddingLeft: 5 }}>
              <Text style={{ fontSize: 16 }}>{item.abreviation} </Text>

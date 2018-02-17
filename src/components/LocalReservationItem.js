@@ -10,7 +10,7 @@ import { RESERVATION, RESERVATION_PIRES, RESERVATION_PIDHO, RESERVATION_EMPTY } 
 
 import I18n from 'react-native-i18n';
 
-import { CardSection, statics } from './common';
+import { CardSection, utile } from './common';
 
 
 class LocalReservationItem extends Component {
@@ -30,7 +30,7 @@ class LocalReservationItem extends Component {
    }
 
    formatDate = (date) => {
-     const moment = statics.momentStatic;
+     const moment = utile.momentStatic;
      return moment(date, 'YYYY-MM-DD').format('dddd, LL');
    };
 
@@ -121,7 +121,7 @@ class LocalReservationItem extends Component {
        <TouchableOpacity onPress={() => this.props.saveEventInCalendar(item)}>
          <Image
            style={{ width: 28, height: 30, marginBottom: 5 }}
-           source={{ uri: statics.addToCalendarIcon }}
+           source={{ uri: utile.addToCalendarIcon }}
          />
        </TouchableOpacity>
      </View>

@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types,no-empty */
+/* eslint-disable consistent-return */
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Animated } from 'react-native';
 import Icon from 'react-native-fa-icons';

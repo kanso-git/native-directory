@@ -1,7 +1,9 @@
 /* eslint no-console: ["error", { allow: ["info", "warn", "error"] }] */
+/* eslint-disable consistent-return */
 import axios from 'axios';
 import { API_ENDPOINT } from 'react-native-dotenv';
 import * as types from './Types';
+import * as utile from '../common/utile';
 
 const hash = require('sjcl-hash-sha256/hash');
 
@@ -32,7 +34,8 @@ const clamp = (a, len) => {
 
 
 const fromBits = function (arr) {
-  let out = '',i;
+  let out = '',
+    i;
   for (i = 0; i < arr.length; i++) {
     out += ((arr[i] | 0) + 0xF00000000000).toString(16).substr(4);
   }
@@ -42,7 +45,9 @@ const fromBits = function (arr) {
 /** Convert from a UTF-8 string to a bitArray. */
 const toBitsUTF8 = (str) => {
   str = unescape(encodeURIComponent(str));
-  let out = [], i, tmp = 0;
+  let out = [],
+    i,
+    tmp = 0;
   for (i = 0; i < str.length; i++) {
     tmp = tmp << 8 | str.charCodeAt(i);
     if ((i & 3) === 3) {
@@ -57,7 +62,9 @@ const toBitsUTF8 = (str) => {
 };
 
 const toBits = (str) => {
-  let i, out = [], len;
+  let i,
+    out = [],
+    len;
   str = str.replace(/\s|0x/g, '');
   len = str.length;
   str += '00000000';
@@ -86,7 +93,7 @@ const resetRetry = () => ({
 const register = () =>
   // Return a function that  accepts `dispatch` so we can dispatch later.
   // Thunk middleware knows how to turn thunk async actions into actions.
-  async (dispatch ) => {
+  async (dispatch) => {
     try {
       const obs = await axios.post(`${API_ENDPOINT}/reg`, {});
       return dispatch({
@@ -96,13 +103,17 @@ const register = () =>
         },
       });
     } catch (e) {
-      console.error('register auth error', JSON.stringify(e, null, 3));
-      if (e.request) {
-        console.error(`register e.request.status :${e.request.status}`);
-      }
-      if (e.response) {
-        console.error(`register e.response.status :${e.response.status}`);
-      }
+      // console.error('register auth error', e);
+      const isConnected = await utile.isConnected();
+      const service = 'register';
+      return dispatch({
+        type: types.UPDATE_CONNECTION_STATE,
+        payload: {
+          isConnected,
+          service,
+          error: e,
+        },
+      });
     }
   };
 

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import * as types from './../actions/Types';
 
 const INITIAL_STATE = {
