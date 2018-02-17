@@ -11,7 +11,7 @@ This is the Unine directory, built using react-native
 3 - re-render the locals list when images got loaded ..
 
 4 - implement the image stretch ctrl when pulling down ( to avoid seeing blank background when pulling down)
-    https://github.com/lelandrichardson/react-native-parallax-view
+    https://github.com/i6mi6/react-native-parallax-scroll-view
 
 
 # Here are 10 fundamental React-Native commands you might find helpful
