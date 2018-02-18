@@ -2,7 +2,7 @@
 /* eslint-disable consistent-return */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import { Spinner, Chromatic } from './common';
 import { biluneActions } from './actions';
 import Local from './Local';
@@ -20,11 +20,8 @@ class LocalDetails extends Component {
     </View>
   );
   renderLocal = () => (
-    <View>
-      <Chromatic />
-      <ScrollView>
-        <Local />
-      </ScrollView>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <Local />
     </View>
   )
   render() {

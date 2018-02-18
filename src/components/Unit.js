@@ -167,6 +167,8 @@ const Unit = (props) => {
         </View>
       </CardSection>
       <FlatList
+        keyboardShouldPersistTaps="always"
+        keyboardDismissMode="on-drag"
         data={props.unitMembers}
         extraData={props.unitMembers}
         renderItem={renderItem}

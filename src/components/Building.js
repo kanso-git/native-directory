@@ -242,6 +242,8 @@ ${npa} ${localite}`}
 
            { (this.props.currentBuilding.locals && this.props.currentBuilding.locals.length > 0) &&
            <FlatList
+             keyboardShouldPersistTaps="always"
+             keyboardDismissMode="on-drag"
              data={this.props.currentBuilding.locals}
              extraData={this.props.currentBuilding.floors}
              renderItem={this.renderItem}
