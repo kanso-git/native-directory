@@ -65,7 +65,7 @@
         "title" : "Local",
         "floor" : "Étage",
         "type" : "Type",
-		"bookingSchedule":"Calendrier de réservation",
+		"bookingSchedule":"Calendrier",
 		"scheduleFrom": "du",
 		"scheduleTo": "au"
     },

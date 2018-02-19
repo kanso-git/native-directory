@@ -1,16 +1,14 @@
 /* eslint-disable react/prop-types,no-empty */
 /* eslint-disable consistent-return */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Animated } from 'react-native';
-import Icon from 'react-native-fa-icons';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Platform } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
+import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { biluneActions } from './actions';
-import { Card, CardSection, InputFlex } from './common';
+import { Card, CardSection, InputFlex, Chromatic } from './common';
 import BuildingLocalItem from './BuildingLocalItem';
-import BuildingSummary from './BuildingSummary';
-
 
 const styles = StyleSheet.create({
   textStyle: {
@@ -52,7 +50,7 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
   },
   touchable: {
-    color: '#007aff',
+    color: 'white',
   },
   touchableContainer: {
     marginBottom: 15,
@@ -61,34 +59,29 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingBottom: 10,
   },
-  flipCard: {
-    flex: 1,
-    backfaceVisibility: 'hidden',
+  stickySection: {
+    backgroundColor: 'rgba(52, 52, 52, 0.5)',
   },
-  flipCardBack: {
-    backgroundColor: '#E5EFF5',
-    position: 'absolute',
-    top: 0,
-  },
-  flipText: {
+  stickySectionText: {
+    color: 'white',
     fontSize: 20,
-    color: 'black',
-    fontWeight: 'bold',
+    margin: 10,
+    backgroundColor: 'rgba(52, 52, 52, 0.5)',
   },
-  flipBtn: {
+  fixedSection: {
     position: 'absolute',
-    top: 10,
-    right: 8,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    padding: 6,
-    borderRadius: 10,
-    width: 60,
+    bottom: 10,
+    right: 10,
+    backgroundColor: 'rgba(52, 52, 52, 0.5)',
+  },
+  fixedSectionText: {
+    color: '#999',
+    fontSize: 18,
+  },
+  parallaxHeader: {
     alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: '#ddd',
-    borderBottomWidth: 0,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    flex: 1,
+    flexDirection: 'column',
   },
 });
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -101,23 +94,7 @@ const {
 
 
 class Local extends Component {
-  state={
-    showDetails: true,
-  }
   componentWillMount() {
-    this.animatedValue = new Animated.Value(0);
-    this.value = 0;
-    this.animatedValue.addListener(({ value }) => {
-      this.value = value;
-    });
-    this.frontInterpolate = this.animatedValue.interpolate({
-      inputRange: [0, 180],
-      outputRange: ['0deg', '180deg'],
-    });
-    this.backInterpolate = this.animatedValue.interpolate({
-      inputRange: [0, 180],
-      outputRange: ['180deg', '360deg'],
-    });
   }
 
   onShowHideFloor = (floorId) => {
@@ -130,136 +107,147 @@ class Local extends Component {
   onSearch = (value) => {
     this.props.searchInBuilding(this.props.currentBuilding.id, value);
   }
-  flipCard = () => {
-    if (this.value >= 90) {
-      Animated.spring(this.animatedValue, {
-        toValue: 0,
-        friction: 8,
-        tension: 10,
-      }).start();
-      this.setState(() => ({ showDetails: true }));
-    } else {
-      Animated.spring(this.animatedValue, {
-        toValue: 180,
-        friction: 8,
-        tension: 10,
-      }).start();
-      this.setState(() => ({ showDetails: false }));
-    }
-  }
+
 
    renderItem = ({ item }) => (
      <BuildingLocalItem
        item={item}
        visibleFloors={this.props.visibleFloors}
-       image={item.attributes ?
-          this.props.images[item.attributes.OBJECTID] : this.props.images[item.id]}
        building={this.props.currentBuilding}
        style={{ paddingLeft: 10 }}
-       listLen={this.props.currentBuilding.locals.length}
+       listLen={this.props.currentBuilding.totalLocalsLen}
        pressFn={this.onPressItem}
        showHideFloor={this.onShowHideFloor}
      />
    );
-
-   render() {
-     console.log('Building.js');
-     const frontAnimatedStyle = {
-       transform: [
-         { rotateY: this.frontInterpolate },
-       ],
-     };
-     const backAnimatedStyle = {
-       transform: [
-         { rotateY: this.backInterpolate },
-       ],
-     };
-
+   renderHeader = () => {
      const {
        abreviation, adresseLigne1, localite, npa,
      } = this.props.currentBuilding;
+
      return (
-       <View>
-
-         <View style={{ height: (viewportHeight * 0.33) + 60 }} >
-           <Animated.View style={[styles.flipCard, frontAnimatedStyle]}>
-             <Image
-               style={{ width: viewportWidth, height: viewportHeight * 0.33, backgroundColor: '#034d7c' }}
-               source={{ uri: this.props.currentBuilding.image }}
-             />
-           </Animated.View>
-
-           <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
-             <View style={{ width: viewportWidth }}>
-               <BuildingSummary currentBuilding={this.props.currentBuilding} />
-             </View>
-           </Animated.View>
-           {
-            this.state.showDetails && (
-              <TouchableOpacity
-                style={{
-                        width: viewportWidth,
-                        position: 'absolute',
-                        top: viewportHeight * 0.33,
-                        paddingLeft: 5,
-                        paddingTop: 10,
-                        backgroundColor: '#DFDFDF',
-                      }}
-                onPress={() => {
+       <TouchableOpacity
+         style={{
+        width: viewportWidth,
+        paddingLeft: 5,
+        paddingTop: 10,
+        backgroundColor: 'rgba(52, 52, 52, 0.5)',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+        }}
+         onPress={() => {
                   Actions.push('mapPage');
                 }}
-              >
-                <View style={[{ height: 24 }]}>
-                  <Text style={[textStyle, touchable]}>{abreviation}</Text>
-                </View>
-                <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>
-                  <View style={addressStyle}>
-                    <Text style={[touchable]}>{`${adresseLigne1}
-${npa} ${localite}`}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            )
-          }
-           <TouchableOpacity style={styles.flipBtn} onPress={() => this.flipCard()}>
-             <Icon name="cog" style={{ fontSize: 20 }} allowFontScaling />
-           </TouchableOpacity>
-
+       >
+         <View style={[{ height: 24 }]}>
+           <Text style={[textStyle, touchable]}>{abreviation}</Text>
          </View>
-         <Card>
-           <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
-             <InputFlex
-               icon="&#x1F50E;"
-               style={{
-              height: 40, borderRadius: 5, borderWidth: 1, borderColor: '#dfdfdf',
-            }}
-               placeholder={I18n.t('search.placeholderBlding')}
-               value={this.props.currentBuilding.query}
-               onChangeText={this.onSearch}
-             />
-           </CardSection>
+         <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>
+           <View style={addressStyle}>
+             <Text style={[touchable]}>{`${adresseLigne1}
+${npa} ${localite}`}
+             </Text>
+           </View>
+         </View>
+       </TouchableOpacity>
+     );
+   }
+   render() {
+     const { onScroll = () => {} } = this.props;
 
-           { (this.props.currentBuilding.locals && this.props.currentBuilding.locals.length > 0) &&
-           <FlatList
-             keyboardShouldPersistTaps="always"
-             keyboardDismissMode="on-drag"
-             data={this.props.currentBuilding.locals}
-             extraData={this.props.currentBuilding.floors}
-             renderItem={this.renderItem}
-           />
+     return (
+       <ParallaxScrollView
+         onScroll={onScroll}
+         headerBackgroundColor="transparent"
+         stickyHeaderHeight={80}
+         parallaxHeaderHeight={(viewportHeight * 0.25) + 80}
+         backgroundSpeed={10}
+         keyboardShouldPersistTaps="always"
+         keyboardDismissMode="on-drag"
+         renderBackground={() => (
+           <View key="background">
+             <Chromatic />
+             <Image
+               style={{ width: viewportWidth, height: (viewportHeight * 0.25) + 80, backgroundColor: '#034d7c' }}
+               source={{ uri: this.props.currentBuilding.image }}
+             />
+             <View style={{
+           position: 'absolute',
+                                        top: 0,
+                                        width: window.width,
+                                        backgroundColor: 'rgba(52, 52, 52, 0.5)',
+                                        height: (viewportHeight * 0.25),
+          }}
+             />
+
+           </View>
+       )}
+
+         renderForeground={() => (
+           <View key="parallax-header" style={[styles.parallaxHeader, { paddingTop: (viewportHeight * 0.25), width: viewportWidth }]}>
+             {this.renderHeader()}
+           </View>
+     )}
+         renderStickyHeader={() => (
+           <View key="sticky-header" style={styles.stickySection}>
+             {this.renderHeader()}
+           </View>
+       )}
+
+         renderFixedHeader={() => (
+           <View key="fixed-header" style={styles.fixedSection} />
+       )}
+       >
+         <View>
+           <Card>
+             <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
+               <InputFlex
+                 icon="&#x1F50E;"
+                 style={{
+                    height: Platform.OS === 'android' ? 50 : 40,
+                    borderRadius: 5,
+                    borderWidth: 1,
+                    borderColor: '#dfdfdf',
+                 }}
+                 placeholder={I18n.t('search.placeholderBlding')}
+                 value={this.props.currentBuilding.query}
+                 onChangeText={this.onSearch}
+               />
+             </CardSection>
+
+             { (this.props.currentBuilding.locals && this.props.currentBuilding.locals.length > 0) &&
+             <FlatList
+               keyboardShouldPersistTaps="always"
+               keyboardDismissMode="on-drag"
+               data={this.props.currentBuilding.locals}
+               extraData={this.props.currentBuilding.floors}
+               renderItem={this.renderItem}
+             />
         }
 
-         </Card>
-       </View>
+           </Card>
+         </View>
+       </ParallaxScrollView>
      );
    }
 }
-
+const setImagesForLocals = (buildings, currentBuildingId, images) => {
+  const currentBuilding = buildings.find(b => b.id === currentBuildingId);
+  const currentLocals = currentBuilding.locals.map((l) => {
+    const image = images[l.attributes.OBJECTID];
+    return { ...l, image };
+  });
+  const totalLocalsLen = currentLocals.length;
+  const optimisedLocals = currentLocals.filter((l) => {
+    const myFloor = currentBuilding.floors ? currentBuilding.floors.find(f => f.id === parseInt(l.attributes.ETG_ID, 10)) : {};
+    return l.attributes.section || !myFloor.collapsed;
+  });
+  return { ...currentBuilding, locals: optimisedLocals, totalLocalsLen  };
+};
 const mapStateToProps = state => (
   {
     images: state.bilune.images,
-    currentBuilding: state.bilune.buildings.find(b => b.id === state.bilune.id),
+    currentBuilding: setImagesForLocals(state.bilune.buildings, state.bilune.id, state.bilune.images),
     visibleFloors: state.bilune.buildings
       .find(b => b.id === state.bilune.id)
       .floors.filter(f => !f.collapsed),

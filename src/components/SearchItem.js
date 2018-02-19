@@ -30,7 +30,12 @@ class SearchItem extends Component {
        <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
          <View style={{ flexDirection: 'row' }}>
            <Image
-             style={{ width: 60, height: 60, backgroundColor: '#034d7c' }}
+             style={{
+              width: 60,
+              height: 60,
+              backgroundColor: '#034d7c',
+              opacity: image ? 1 : 0.5,
+             }}
              source={{ uri: image || utile.noImageIcon }}
            />
            <View style={{ flexDirection: 'column', paddingLeft: 5 }}>
@@ -57,7 +62,12 @@ class SearchItem extends Component {
        <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
          <View style={{ flexDirection: 'row' }}>
            <Image
-             style={{ width: 60, height: 60, backgroundColor: '#034d7c' }}
+             style={{
+               width: 60,
+               height: 60,
+               backgroundColor: '#034d7c',
+               opacity: image ? 1 : 0.5,
+              }}
              source={{ uri: image || utile.noImageIcon }}
            />
            <View style={{ flexDirection: 'column', paddingLeft: 5 }}>

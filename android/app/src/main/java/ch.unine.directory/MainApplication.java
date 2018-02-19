@@ -13,6 +13,7 @@ import com.facebook.soloader.SoLoader;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.airbnb.android.react.maps.MapsPackage;
+import com.vonovak.AddCalendarEventPackage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
               new SplashScreenReactPackage(),
               new RandomBytesPackage(),
               new RNI18nPackage(),
-              new MapsPackage()
+              new MapsPackage(),
+              new AddCalendarEventPackage()
       );
     }
 

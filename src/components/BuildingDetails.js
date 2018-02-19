@@ -2,7 +2,7 @@
 /* eslint-disable consistent-return */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import { Spinner, Chromatic } from './common';
 import { biluneActions } from './actions';
 import Building from './Building';
@@ -18,16 +18,11 @@ class BuidlingDetails extends Component {
     </View>
   );
    renderBuilding = () => {
-     console.log('renderBuilding in BuildingDetails.js');
      const myBuilding = this.props.bilune.buildings.filter(b => b.id === this.props.bilune.id);
-
      if (myBuilding && myBuilding[0] && myBuilding[0].locals) {
        return (
-         <View>
-           <Chromatic />
-           <ScrollView>
-             <Building />
-           </ScrollView>
+         <View style={{ flex: 1 }}>
+           <Building />
          </View>
        );
      }

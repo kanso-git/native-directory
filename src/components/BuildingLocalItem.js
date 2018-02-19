@@ -16,21 +16,26 @@ class BuildingLocalItem extends Component {
      const currentFloor = floors.filter(f => f.id === id);
      return !!currentFloor.length;
    }
-   switchOnType = (item, building, visibleFloors, pressFn, listLen, style, image) => {
+   switchOnType = (item, building, visibleFloors, pressFn, listLen) => {
      switch (item.type) {
        case LOCAL:
-         return this.checkIfFloorIsVisible(visibleFloors, item.attributes.ETG_ID) && this.renderLocalWithImageItem(item, building, listLen, image);
+         return this.checkIfFloorIsVisible(visibleFloors, item.attributes.ETG_ID) && this.renderLocalWithImageItem(item, building, listLen);
        default:
          break;
      }
    };
-   renderLocalWithImageItem = (item, building, listLen, image) => (
+   renderLocalWithImageItem = (item, building, listLen) => (
      <CardSection >
        <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
          <View style={{ flexDirection: 'row' }}>
            <Image
-             style={{ width: 60, height: 60, backgroundColor: '#034d7c' }}
-             source={{ uri: image || utile.noImageIcon }}
+             style={{
+               width: 60,
+               height: 60,
+               backgroundColor: '#034d7c',
+               opacity: item.image ? 1 : 0.5,
+              }}
+             source={{ uri: item.image || utile.noImageIcon }}
            />
            <View style={{ flexDirection: 'column', paddingLeft: 5 }}>
              <Text style={{ fontSize: 16 }}>{`${I18n.t('local.localCode')}: ${item.attributes.LOC_CODE}`} </Text>
@@ -96,13 +101,13 @@ class BuildingLocalItem extends Component {
 
    render() {
      const {
-       item, pressFn, listLen, style, image, building, visibleFloors,
+       item, pressFn, listLen, building, visibleFloors,
      } = this.props;
      return (
        <View>
          { this.renderSection(item, visibleFloors) }
          <TouchableOpacity onPress={() => pressFn(item)}>
-           { this.switchOnType(item, building, visibleFloors, pressFn, listLen, style, image) }
+           { this.switchOnType(item, building, visibleFloors, pressFn, listLen) }
          </TouchableOpacity>
        </View>
      );

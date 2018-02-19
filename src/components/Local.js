@@ -2,10 +2,9 @@
 /* eslint global-require: "off" */
 /* eslint-disable consistent-return */
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Animated } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Platform } from 'react-native';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import { RESERVATION_EMPTY } from 'react-native-dotenv';
-import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
@@ -98,21 +97,6 @@ const {
 } = styles;
 
 class Local extends Component {
-  componentWillMount() {
-    this.animatedValue = new Animated.Value(0);
-    this.value = 0;
-    this.animatedValue.addListener(({ value }) => {
-      this.value = value;
-    });
-    this.frontInterpolate = this.animatedValue.interpolate({
-      inputRange: [0, 180],
-      outputRange: ['0deg', '180deg'],
-    });
-    this.backInterpolate = this.animatedValue.interpolate({
-      inputRange: [0, 180],
-      outputRange: ['180deg', '360deg'],
-    });
-  }
   onSaveEventInCalendar = (event) => {
     const debutUTC = utile.momentStatic.utc(event.debutUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
     const finUTC = utile.momentStatic.utc(event.finUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
@@ -216,14 +200,15 @@ ${npa} ${localite}`}
          onScroll={onScroll}
          headerBackgroundColor="transparent"
          stickyHeaderHeight={90}
-         parallaxHeaderHeight={(viewportHeight * 0.33) + 90}
+         parallaxHeaderHeight={(viewportHeight * 0.25) + 90}
          backgroundSpeed={10}
-
+         keyboardShouldPersistTaps="always"
+         keyboardDismissMode="on-drag"
          renderBackground={() => (
            <View key="background">
              <Chromatic />
              <Image
-               style={{ width: viewportWidth, height: (viewportHeight * 0.33) + 90, backgroundColor: '#034d7c' }}
+               style={{ width: viewportWidth, height: (viewportHeight * 0.25) + 90, backgroundColor: '#034d7c' }}
                source={{
             uri:
              this.props
@@ -235,7 +220,7 @@ ${npa} ${localite}`}
                                            top: 0,
                                            width: window.width,
                                            backgroundColor: 'rgba(52, 52, 52, 0.5)',
-                                           height: (viewportHeight * 0.33),
+                                           height: (viewportHeight * 0.25),
              }}
              />
 
@@ -243,7 +228,7 @@ ${npa} ${localite}`}
           )}
 
          renderForeground={() => (
-           <View key="parallax-header" style={[styles.parallaxHeader, { paddingTop: (viewportHeight * 0.33), width: viewportWidth }]}>
+           <View key="parallax-header" style={[styles.parallaxHeader, { paddingTop: (viewportHeight * 0.25), width: viewportWidth }]}>
              {this.renderHeader()}
            </View>
         )}
@@ -265,8 +250,11 @@ ${npa} ${localite}`}
                 <InputFlex
                   icon="&#x1F50E;"
                   style={{
-              height: 40, borderRadius: 5, borderWidth: 1, borderColor: '#dfdfdf',
-            }}
+                    height: Platform.OS === 'android' ? 50 : 40,
+                    borderRadius: 5,
+                    borderWidth: 1,
+                    borderColor: '#dfdfdf',
+                  }}
                   placeholder={I18n.t('search.placeholderLocal')}
                   value={this.props.localWithReservations.query}
                   onChangeText={this.onSearch}

@@ -36,7 +36,7 @@ const getImageUsingBlob = async (dispatch, url) => {
     const mimetype = 'image/jpg';
     const base64Str = res.base64();
     return (res.base64() && res.base64().length > 0) ?
-      `data:${mimetype};base64,${base64Str}` : utile.noImageIcon;
+      `data:${mimetype};base64,${base64Str}` : null;
   } catch (e) {
     console.warn(`error occured getImageUsingBlob ${e}`);
     const isConnected = await utile.isConnected();
@@ -76,7 +76,8 @@ const getBdlBuildingFloorsAxios = async (dispatch, floorBuildingId) => {
   let res;
   try {
     res = await axios.get(queries.bdlBuildingFloors(floorBuildingId), { headers });
-    const collapsed = false;
+    // default collapsed value
+    const collapsed = true;
     return res.data.map(f => ({ ...f, collapsed }));
   } catch (e) {
     console.warn(`error occured getBdlBuildingFloorsAxios ${e}`);
