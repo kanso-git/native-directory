@@ -313,18 +313,49 @@ const formatedLocalReservationDataForList = (myLocal) => {
 
   return myLocal;
 };
-
+const searchInProf = (prof, q) => {
+  if (_.isArray(prof)) {
+    const resLen = prof.filter(p => p.toLowerCase().includes(q)).length;
+    return resLen > 0;
+  }
+  const profLowerCase = prof.toLowerCase();
+  return profLowerCase.includes(q);
+};
 const searchInLocalReservations = (localId, searchQuery) =>
   (dispatch, getState) => {
     const { reservations, localWithReservations } = getState().bilune;
     const days = reservations[localId];
     const q = searchQuery.toLowerCase();
 
-    const filterdDays = days
-      .filter((d) => {
-        const res = d.date.includes(q);
-        return res;
-      });
+    const filterdDays = [];
+    days.forEach((d) => {
+      const resInDate = d.date.includes(q);
+
+      let resInOccupation = false;
+      let resFromOcc = null;
+      if (d.occupation != null) {
+        if (_.isArray(d.occupation)) {
+          resFromOcc = d.occupation.filter((o) => {
+            const { matiere, prof, remarque } = o;
+            return matiere.includes(q)
+              || (remarque ? remarque.includes(q) : false) || searchInProf(prof, q);
+          });
+          resInOccupation = resFromOcc && resFromOcc.length > 0;
+        } else {
+          const { matiere, prof, remarque } = d.occupation;
+          resInOccupation = matiere.includes(q)
+            || (remarque ? remarque.includes(q) : false) || searchInProf(prof, q);
+          if (resInOccupation) {
+            resFromOcc = d.occupation;
+          }
+        }
+      }
+      if (resInDate) {
+        filterdDays.push(d);
+      } else if (resInOccupation) {
+        filterdDays.push({ ...d, occupation: resFromOcc });
+      }
+    });
 
     const newLocalWithReservations = formatedLocalReservationDataForList({
       ...localWithReservations, days: filterdDays, query: searchQuery,
