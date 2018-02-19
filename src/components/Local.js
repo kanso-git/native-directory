@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Platform } from 'react-native';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
-import { RESERVATION_EMPTY } from 'react-native-dotenv';
+import { RESERVATION_EMPTY, RESERVATION_PIDHO } from 'react-native-dotenv';
 import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
@@ -107,16 +107,22 @@ class Local extends Component {
     const { LOC_TYPE_DESIGNATION, LOC_CODE, ETG_DESIGNATION } =
     this.props.localWithReservations.attributes;
 
+    const title = event.typeoccupation === RESERVATION_PIDHO ? `${event.matiere} / ${event.prof}` : `${event.matiere} (${event.prof})`;
+    const fomrattedTitle = title.length > 40 ? `${title.substr(0, 39)} ...` : title;
+    const noteText = `${title}
+
+${LOC_TYPE_DESIGNATION} (${LOC_CODE})
+${ETG_DESIGNATION}
+${adresseLigne1}
+${npa} ${localite}`;
+
     const eventConfig = {
-      title: `${event.matiere} (${event.prof})`,
+      title: fomrattedTitle,
       startDate: debutUTC,
       endDate: finUTC,
       location: `${adresseLigne1} ${npa} ${localite}`,
-      notes: `${LOC_TYPE_DESIGNATION} (${LOC_CODE})
-${ETG_DESIGNATION}
-${adresseLigne1}
-${npa} ${localite}
-  `,
+      notes: noteText,
+      description: noteText,
     };
 
     AddCalendarEvent.presentNewCalendarEventDialog(eventConfig)
