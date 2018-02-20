@@ -78,7 +78,7 @@ const getBdlBuildingFloorsAxios = async (dispatch, floorBuildingId) => {
     res = await axios.get(queries.bdlBuildingFloors(floorBuildingId), { headers });
     // default collapsed value
     const collapsed = true;
-    return res.data.map(f => ({ ...f, collapsed }));
+    return res.data.map((f, index) => ({ ...f, collapsed, sortOrder: index + 1 }));
   } catch (e) {
     console.warn(`error occured getBdlBuildingFloorsAxios ${e}`);
     const isConnected = await utile.isConnected();
@@ -222,26 +222,33 @@ const formatedBuildingDataForList = (myBuilding) => {
   // handle data formating
   const locals = [];
   let building = {};
-
+  const totalLocalsLen = myBuilding.locals ? myBuilding.locals.length : 0;
   if (myBuilding && myBuilding.locals && myBuilding.floors) {
     myBuilding.floors.forEach((b) => {
       const localsPerFloor = myBuilding
         .locals.filter(l => parseInt(l.attributes.ETG_ID, 10) === b.id);
+
+      // remove the collaped locals keep only one for for the section
       if (localsPerFloor.length > 0) {
         const section = localsPerFloor[0].attributes.ETG_DESIGNATION;
         localsPerFloor[0].attributes.section = section;
-        locals.push(...localsPerFloor);
+        if (b.collapsed) {
+          locals.push(localsPerFloor[0]);
+        } else {
+          locals.push(...localsPerFloor);
+        }
       }
     });
 
     building = {
       ...myBuilding,
+      totalLocalsLen,
       locals: locals.map((item, index) => ({
         ...item, type: LOCAL, key: item.attributes.LOC_ID, index,
       })),
     };
   } else {
-    building = { ...myBuilding };
+    building = { ...myBuilding, totalLocalsLen };
   }
   return building;
 };
@@ -337,14 +344,15 @@ const searchInLocalReservations = (localId, searchQuery) =>
         if (_.isArray(d.occupation)) {
           resFromOcc = d.occupation.filter((o) => {
             const { matiere, prof, remarque } = o;
+            const remarqueSearch = remarque != null ? remarque.toLowerCase().includes(q) : false;
             return matiere.includes(q)
-              || (remarque ? remarque.includes(q) : false) || searchInProf(prof, q);
+              || remarqueSearch || searchInProf(prof, q);
           });
           resInOccupation = resFromOcc && resFromOcc.length > 0;
         } else {
           const { matiere, prof, remarque } = d.occupation;
-          resInOccupation = matiere.includes(q)
-            || (remarque ? remarque.includes(q) : false) || searchInProf(prof, q);
+          const remarqueSearch = remarque != null ? remarque.toLowerCase().includes(q) : false;
+          resInOccupation = matiere.includes(q) || remarqueSearch || searchInProf(prof, q);
           if (resInOccupation) {
             resFromOcc = d.occupation;
           }
@@ -499,12 +507,70 @@ const loadAllBuildingData = buildingId =>
     }
   };
 
-const showHideBuildingFloor = (buildingId, floorId) =>
+const filterLocalsForBuilding = (dataLocals, buildingId, searchQuery) => {
+  const buildingsLocals = dataLocals.filter((l) => {
+    const builId = l.attributes.BAT_ID;
+    if (builId === buildingId) {
+      return true;
+    }
+    return false;
+  });
+
+  const locals = buildingsLocals.filter((l) => {
+    const locCode = l.attributes.LOC_CODE.toLowerCase();
+    const typeDes = l.attributes.LOC_TYPE_DESIGNATION.toLowerCase();
+    const q = searchQuery.toLowerCase();
+    const typeCode = l.attributes.LOC_TYPE_ID;
+    if (typeCode === 10 || typeCode === 11 || typeCode === 12 || typeCode === 3) {
+      return locCode.includes(q) || typeDes.includes(q);
+    }
+    return locCode.includes(q);
+  });
+  return locals;
+};
+const searchInBuilding = (buildingId, searchQuery) =>
   async (dispatch, getState) => {
     const dataBuildings = getState().bilune.buildings;
     const buildings = [];
+
     dataBuildings.forEach((currBuilding) => {
       if (currBuilding.id === buildingId) {
+        // dataLocals, buildingId, searchQuery
+        const dataLocals = getState().bilune.locals;
+        const locals = filterLocalsForBuilding(dataLocals, buildingId, searchQuery);
+
+        // expaned the floors after the search
+        const expanded = currBuilding.floors.map(f => ({ ...f, collapsed: false }));
+        const tobeFormatted = {
+          ...currBuilding, floors: expanded, query: searchQuery, locals,
+        };
+        const formated = formatedBuildingDataForList(tobeFormatted);
+        buildings.push(formated);
+      } else {
+        buildings.push(currBuilding);
+      }
+    });
+
+    dispatch({
+      type: types.ENRICH_BILUNE_BUILDING,
+      payload: { buildings },
+    });
+  };
+
+const expandCollapseBuildingFloor = (floorId, searchQuery) =>
+
+  async (dispatch, getState) => {
+    const dataBuildings = getState().bilune.buildings;
+    const buildingId = getState().bilune.id;
+    const buildings = [];
+
+    dataBuildings.forEach((currBuilding) => {
+      if (currBuilding.id === buildingId) {
+        // dataLocals, buildingId, searchQuery
+        const dataLocals = getState().bilune.locals;
+        const locals = filterLocalsForBuilding(dataLocals, buildingId, searchQuery);
+
+        // expaned the floors after the search
         const floors = currBuilding.floors.map((f) => {
           if (f.id === floorId) {
             const collapsed = !f.collapsed;
@@ -512,52 +578,11 @@ const showHideBuildingFloor = (buildingId, floorId) =>
           }
           return f;
         });
-        // currBuilding.floors = floors;
-        buildings.push({ ...currBuilding, floors });
-      } else {
-        buildings.push(currBuilding);
-      }
-    });
-
-    dispatch({
-      type: types.ENRICH_BILUNE_BUILDING,
-      payload: { buildings },
-    });
-  };
-
-const searchInBuilding = (buildingId, searchQuery) =>
-  async (dispatch, getState) => {
-    const dataBuildings = getState().bilune.buildings;
-    const buildings = [];
-    let buildingsLocals = [];
-
-    dataBuildings.forEach((currBuilding) => {
-      if (currBuilding.id === buildingId) {
-        const dataLocals = getState().bilune.locals;
-        buildingsLocals = dataLocals.filter((l) => {
-          const builId = l.attributes.BAT_ID;
-          if (builId === buildingId) {
-            return true;
-          }
-          return false;
-        });
-
-        const locals = buildingsLocals.filter((l) => {
-          const locCode = l.attributes.LOC_CODE.toLowerCase();
-          const typeDes = l.attributes.LOC_TYPE_DESIGNATION.toLowerCase();
-          const q = searchQuery.toLowerCase();
-          const typeCode = l.attributes.LOC_TYPE_ID;
-          if (typeCode === 10 || typeCode === 11 || typeCode === 12 || typeCode === 3) {
-            return locCode.includes(q) || typeDes.includes(q);
-          }
-          return locCode.includes(q);
-        });
-
-        const tobeFormatted = { ...currBuilding, query: searchQuery, locals };
+        const tobeFormatted = {
+          ...currBuilding, floors, query: searchQuery, locals,
+        };
         const formated = formatedBuildingDataForList(tobeFormatted);
-        // expaned the floors after the search
-        const expanded = formated.floors.map(f => ({ ...f, collapsed: false }));
-        buildings.push({ ...formated, floors: expanded });
+        buildings.push(formated);
       } else {
         buildings.push(currBuilding);
       }
@@ -568,7 +593,6 @@ const searchInBuilding = (buildingId, searchQuery) =>
       payload: { buildings },
     });
   };
-
 const searchBilune = query =>
   async (dispatch, getState) => {
     const dataBuildings = getState().bilune.buildings;
@@ -702,7 +726,7 @@ export {
   loadAllLocalData,
   searchBilune,
   setBuildingId,
-  showHideBuildingFloor,
+  expandCollapseBuildingFloor,
   searchInBuilding,
   setLocalId,
   showHideReservationDay,

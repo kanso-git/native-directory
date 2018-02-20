@@ -107,11 +107,11 @@ class Local extends Component {
     const { LOC_TYPE_DESIGNATION, LOC_CODE, ETG_DESIGNATION } =
     this.props.localWithReservations.attributes;
 
-    const title = event.typeoccupation === RESERVATION_PIDHO ? `${event.matiere} / ${event.prof}` : `${event.matiere} (${event.prof})`;
+    const title = event.typeoccupation === RESERVATION_PIDHO ? `${event.matiere}  (${event.prof})` : `${event.matiere} (${event.prof})`;
     const fomrattedTitle = title.length > 40 ? `${title.substr(0, 39)} ...` : title;
     const noteText = `${title}
 
-${LOC_TYPE_DESIGNATION} (${LOC_CODE})
+${LOC_TYPE_DESIGNATION} - ${LOC_CODE}
 ${ETG_DESIGNATION}
 ${adresseLigne1}
 ${npa} ${localite}`;
@@ -184,7 +184,7 @@ alignItems: 'flex-start',
          onPress={() => console.log(' show the map')}
        >
          <View style={[{ height: 24 }]}>
-           <Text style={[textStyle, touchable]}>{LOC_TYPE_DESIGNATION} ({LOC_CODE})</Text>
+           <Text style={[textStyle, touchable]}>{LOC_TYPE_DESIGNATION} - {LOC_CODE}</Text>
          </View>
          <View style={[{ marginBottom: 5, height: 40 }, touchableContainer]}>
            <View style={addressStyle}>
@@ -272,7 +272,7 @@ ${npa} ${localite}`}
              paddingBottom: 10,
              fontSize: 18,
             }}
-              >{I18n.t('local.bookingSchedule')}: [{this.formatCalenderDate()}]
+              >{I18n.t('local.bookingSchedule')} [{this.formatCalenderDate()}]
               </Text>
               <FlatList
                 keyboardShouldPersistTaps="always"

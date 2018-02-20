@@ -98,7 +98,8 @@ class Local extends Component {
   }
 
   onShowHideFloor = (floorId) => {
-    this.props.showHideBuildingFloor(this.props.currentBuilding.id, parseInt(floorId, 10));
+    const sQuery = this.props.currentBuilding.query;
+    this.props.expandCollapseBuildingFloor(parseInt(floorId, 10), sQuery);
   }
   onPressItem = (item) => {
     this.props.setLocalId(item.attributes.LOC_ID, item.attributes.BAT_ID);
@@ -224,7 +225,6 @@ ${npa} ${localite}`}
                renderItem={this.renderItem}
              />
         }
-
            </Card>
          </View>
        </ParallaxScrollView>
@@ -233,16 +233,11 @@ ${npa} ${localite}`}
 }
 const setImagesForLocals = (buildings, currentBuildingId, images) => {
   const currentBuilding = buildings.find(b => b.id === currentBuildingId);
-  const currentLocals = currentBuilding.locals.map((l) => {
+  const localsWithImage = currentBuilding.locals.map((l) => {
     const image = images[l.attributes.OBJECTID];
     return { ...l, image };
   });
-  const totalLocalsLen = currentLocals.length;
-  const optimisedLocals = currentLocals.filter((l) => {
-    const myFloor = currentBuilding.floors ? currentBuilding.floors.find(f => f.id === parseInt(l.attributes.ETG_ID, 10)) : {};
-    return l.attributes.section || !myFloor.collapsed;
-  });
-  return { ...currentBuilding, locals: optimisedLocals, totalLocalsLen  };
+  return { ...currentBuilding, locals: localsWithImage };
 };
 const mapStateToProps = state => (
   {

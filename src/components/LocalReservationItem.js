@@ -34,7 +34,7 @@ class LocalReservationItem extends Component {
      return moment(date, 'YYYY-MM-DD').format('dddd, LL');
    };
 
-   renderDashed = (isEmpty, typeOcc) => (
+   renderDashed = (isEmpty, item) => (
      <View>
        <Dash
          dashThickness={4}
@@ -48,16 +48,18 @@ class LocalReservationItem extends Component {
         flexDirection: 'column',
     }}
        />
-       <Icon
-         name={typeOcc === RESERVATION_PIDHO ? 'graduation-cap' : 'dot-circle-o'}
-         style={{
+       <TouchableOpacity onPress={() => !isEmpty && this.props.saveEventInCalendar(item)}>
+         <Icon
+           name={item.typeoccupation === RESERVATION_PIDHO ? 'graduation-cap' : 'dot-circle-o'}
+           style={{
         fontSize: 20,
         color: '#034d7c',
-        paddingLeft: typeOcc === RESERVATION_PIDHO ? 1 : 4,
-        paddingTop: typeOcc === RESERVATION_PIDHO ? 2 : 2,
+        paddingLeft: item.typeoccupation === RESERVATION_PIDHO ? 1 : 4,
+        paddingTop: item.typeoccupation === RESERVATION_PIDHO ? 2 : 2,
         paddingBottom: 1,
      }}
-       />
+         />
+       </TouchableOpacity>
 
        <Dash
          dashThickness={4}
@@ -82,7 +84,7 @@ class LocalReservationItem extends Component {
 }}
            >
              <Text style={{ fontSize: 18, fontWeight: 'bold', paddingBottom: 1 }}>{`${I18n.t('bookingItem.from')} ${item.heure.split('-')[0]} ${I18n.t('bookingItem.to')} ${item.heure.split('-')[1]}`}  </Text>
-             <Text style={{ fontSize: 13, paddingTop: 2 }}>{I18n.t('bookingItem.for')}: {`${item.matiere} ( ${item.prof} )`} </Text>
+             <Text style={{ fontSize: 13, paddingTop: 2 }}>{I18n.t('bookingItem.for')}: {`${item.matiere} ( ${Array.isArray(item.prof) ? item.prof.join(', ') : item.prof} )`} </Text>
              <Text style={{ fontSize: 13, paddingTop: 5 }}>{I18n.t('bookingItem.remark')}: {`${item.remarque}`} </Text>
            </View>
          );
@@ -94,7 +96,7 @@ class LocalReservationItem extends Component {
            >
              <Text style={{ fontSize: 18, fontWeight: 'bold', paddingBottom: 1 }}>{`${I18n.t('bookingItem.from')} ${item.heure.split('-')[0]} ${I18n.t('bookingItem.to')} ${item.heure.split('-')[1]}`}  </Text>
              <Text style={{ fontSize: 13, paddingTop: 2, marginRight: 35 }}>{I18n.t('bookingItem.course')}: {`${item.matiere}`} </Text>
-             <Text style={{ fontSize: 13, paddingTop: 5, marginRight: 35 }}>{I18n.t('bookingItem.prof')}: {`${item.prof}`} </Text>
+             <Text style={{ fontSize: 13, paddingTop: 5, marginRight: 35 }}>{I18n.t('bookingItem.prof')}: {`${Array.isArray(item.prof) ? item.prof.join(', ') : item.prof}`} </Text>
            </View>
          );
        case RESERVATION_EMPTY:
@@ -134,8 +136,8 @@ class LocalReservationItem extends Component {
         <View style={{ flexDirection: 'row' }}>
 
           { item.typeoccupation === RESERVATION_EMPTY ?
-             this.renderDashed(true, item.typeoccupation) :
-              this.renderDashed(false, item.typeoccupation)
+             this.renderDashed(true, item) :
+              this.renderDashed(false, item)
           }
 
           { this.renderReservationBody(item)}
