@@ -258,7 +258,10 @@ const reservationListAxios = async (lId, sD, eD) => {
   const res = await axios.get(url);
   return res.data;
 };
-
+const sortByHeuredebutUTC = (o) => {
+  const moment = utile.momentStatic;
+  return moment(o.debutUTC, moment.ISO_8601).unix();
+};
 const formatedLocalReservationDataForList = (myLocal) => {
   const moment = utile.momentStatic;
   if (myLocal && myLocal.days) {
@@ -287,7 +290,7 @@ const formatedLocalReservationDataForList = (myLocal) => {
     alldays.forEach((d) => {
       const section = d.date;
       if ((d.occupation && d.occupation.length > 0)) {
-        const occupations = _.sortBy(d.occupation, [function (o) { return moment(o.debutUTC, moment.ISO_8601).unix(); }]);
+        const occupations = _.sortBy(d.occupation, [sortByHeuredebutUTC]);
         occupations.forEach((oc, i) => {
           const dateUnix = moment(oc.date, 'YYYY-MM-DD').unix();
           const debutUTCUnix = moment(oc.debutUTC, moment.ISO_8601).unix();
