@@ -11,6 +11,7 @@ import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { biluneActions } from './actions';
 import { Card, CardSection, InputFlex, utile, Chromatic } from './common';
 import LocalReservationItem from './LocalReservationItem';
+import { Actions } from 'react-native-router-flux';
 
 const styles = StyleSheet.create({
   textStyle: {
@@ -181,7 +182,7 @@ backgroundColor: 'rgba(52, 52, 52, 0.5)',
 justifyContent: 'flex-end',
 alignItems: 'flex-start',
 }}
-         onPress={() => console.log(' show the map')}
+         onPress={() => Actions.push('mapPage')}
        >
          <View style={[{ height: 24 }]}>
            <Text style={[textStyle, touchable]}>{LOC_TYPE_DESIGNATION} - {LOC_CODE}</Text>
