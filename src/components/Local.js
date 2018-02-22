@@ -182,7 +182,9 @@ backgroundColor: 'rgba(52, 52, 52, 0.5)',
 justifyContent: 'flex-end',
 alignItems: 'flex-start',
 }}
-         onPress={() => Actions.push('mapPage')}
+         onPress={() => {
+          Actions.push('mapPage');
+          }}
        >
          <View style={[{ height: 24 }]}>
            <Text style={[textStyle, touchable]}>{LOC_TYPE_DESIGNATION} - {LOC_CODE}</Text>

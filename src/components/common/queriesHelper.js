@@ -21,6 +21,8 @@ const commonPart = () => {
 
 const bdlBuildings = () => `${API_BDL}/batiments`;
 
+const occupentsInLocal = localId => `${API_BDL}/locaux/${localId}/personnes`;
+
 const bdlBuildingFloors = myBatId => `${API_BDL}/batiments/${myBatId}/etages`;
 
 const buildings = () => {
@@ -68,7 +70,9 @@ export {
   bdlBuildings,
   bdlBuildingFloors,
   buildingsEnteries,
-  reservationsByLocalId };
+  reservationsByLocalId,
+  occupentsInLocal,
+};
 
 /*
 

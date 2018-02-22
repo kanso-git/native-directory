@@ -9,7 +9,7 @@ import { Card, InputFlex, CardSection, Footer, Spinner, Chromatic } from './comm
 import { authActions, searchActions, biluneActions } from './actions';
 import SearchList from './SearchList';
 import Slider from './Slider';
-import MapPage from './MapPage';
+import MapHomePage from './MapHomePage';
 
 const styles = StyleSheet.create({
   container: {
@@ -147,7 +147,7 @@ class Home extends Component {
           {this.renderSectionJsx(labelBuildingSection)}
           <View style={sliderBox}><Slider entries={entries} /></View>
           <Chromatic height={2} />
-          <View style={mapBox}><MapPage /></View>
+          <View style={mapBox}><MapHomePage /></View>
         </View>
       );
     }

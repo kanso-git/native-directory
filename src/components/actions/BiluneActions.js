@@ -131,6 +131,27 @@ const getBiluneBuildingEnteriesAxios = async (dispatch) => {
   }
 };
 
+
+const getOccupentPerLocalAxios = async (dispatch, localId) => {
+  let res;
+  try {
+    const url = queries.occupentsInLocal(localId);
+    res = await axios.get(url, { headers });
+    return res.data;
+  } catch (e) {
+    console.warn(`error getOccupentPerLocalAxios ${e}`);
+    const isConnected = await utile.isConnected();
+    return dispatch({
+      type: types.UPDATE_CONNECTION_STATE,
+      payload: {
+        isConnected,
+        service: 'getOccupentPerLocalAxios',
+        error: e,
+      },
+    });
+  }
+};
+
 const loadSpatialData = () =>
 
   async (dispatch, getState) => {
@@ -440,6 +461,25 @@ const loadAllLocalData = localId =>
     }
   };
 
+const loadOccupentsPerLocal = localId =>
+  async (dispatch, getState) => {
+    try {
+      const { occupents } = getState().bilune;
+      if (occupents[localId]) {
+        return occupents[localId];
+      }
+      const occupentsList = await getOccupentPerLocalAxios(dispatch, localId);
+      occupents[localId] = occupentsList;
+      dispatch({
+        type: types.ENRICH_OCCUPENTS_PER_LOCAL,
+        payload: { occupents },
+      });
+      return occupentsList;
+    } catch (e) {
+      console.warn(`error in loadOccupentsPerLocal error:${e}`);
+    }
+  };
+
 
 const loadAllBuildingData = buildingId =>
   async (dispatch, getState) => {
@@ -734,4 +774,5 @@ export {
   setLocalId,
   showHideReservationDay,
   searchInLocalReservations,
+  loadOccupentsPerLocal,
 };

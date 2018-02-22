@@ -12,7 +12,8 @@ const INITIAL_STATE = {
   reservations: {},
   localWithReservations: {},
   id: null,
-  localId: null,
+  locId: null,
+  occupents: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -36,6 +37,8 @@ export default (state = INITIAL_STATE, action) => {
     case types.ENRICH_BILUNE_BUILDING:
       return { ...state, ...action.payload };
     case types.ENRICH_BILUNE_LOCAL_RESERVATIONS:
+      return { ...state, ...action.payload };
+    case types.ENRICH_OCCUPENTS_PER_LOCAL:
       return { ...state, ...action.payload };
     default:
       return state;
