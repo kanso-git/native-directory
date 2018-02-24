@@ -57,7 +57,6 @@ class MapHomePage extends Component {
     },
     mapMarkers: [],
   }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.id !== this.props.id) {
       this.zoomToBuilding(nextProps.id);

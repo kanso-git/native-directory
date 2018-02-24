@@ -2,8 +2,8 @@
 const originShift = (2 * Math.PI * 6378137) / 2.0;
 const typeLocal = require('./localTypes.json');
 
-const MAP_LATITUDE_DELTA = 0.0006;
-const MAP_LONGITUDE_DELTA = 0.0006;
+const MAP_LATITUDE_DELTA = 0.001;
+const MAP_LONGITUDE_DELTA = 0.001;
 
 const getBuilidngId = bilune => (bilune.id !== null ? bilune.id : bilune.buildings[0].id);
 const toWebMercatorY = (latitude) => {
