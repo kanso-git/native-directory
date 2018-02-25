@@ -64,7 +64,6 @@ const styles = StyleSheet.create({
   },
   customView: {
     width: 140,
-    height: 100,
   },
 });
 class MapPage extends Component {
@@ -249,7 +248,9 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
     if (targetLocId != null) {
       const targetLocal = filteredMaplocals
         .find(l => l.attributes.LOC_ID === targetLocId);
-      this.showLocalMarker(targetLocal);
+      if (targetLocal) {
+        this.showLocalMarker(targetLocal);
+      }
     }
     this.setState(() => ({ maplocals, mapMarkers: null }));
   }
@@ -271,8 +272,11 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
       calloutOffset={{ x: -8, y: 28 }}
       calloutAnchor={{ x: 0.5, y: 0.4 }}
     >
-      <Callout tooltip style={styles.customView}>
-        <CustomCallout>
+      <Callout
+        tooltip
+        style={[styles.customView, { height: 35 * (occupents.length < 2 ? 2 : occupents.length) }]}
+      >
+        <CustomCallout height={35 + (occupents.length === 0 ? 1 : occupents.length) * 15}>
           <Text style={{ color: 'white', fontSize: 11 }}>{ this.getCalloutInfo(occupents, targetLocal) }</Text>
         </CustomCallout>
       </Callout>

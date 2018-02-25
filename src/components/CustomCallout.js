@@ -11,20 +11,21 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     alignSelf: 'flex-start',
+    flex: 1,
   },
   bubble: {
     width: 140,
     flexDirection: 'row',
     alignSelf: 'flex-start',
     backgroundColor: '#034d7c',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+    paddingHorizontal: 5,
+    paddingVertical: 10,
     borderRadius: 6,
     borderColor: '#007a87',
     borderWidth: 0.5,
   },
   amount: {
-    flex: 1,
+    // flex: 1,
   },
   arrow: {
     backgroundColor: 'transparent',
@@ -50,8 +51,8 @@ class CustomCallout extends React.Component {
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
-        <View style={styles.bubble}>
-          <View style={styles.amount}>
+        <View style={[styles.bubble]}>
+          <View style={[styles.amount, { height: this.props.height - 20 }]} >
             {this.props.children}
           </View>
         </View>
