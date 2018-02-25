@@ -6,6 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "release-android": "yarn run bundle && cd android && ./gradlew assembleRelease",
+    "react-devtools": "react-devtools",
     "test": "jest"
   },
   "dependencies": {
@@ -51,6 +52,7 @@
     "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-react-native": "^3.2.0",
     "jest": "22.0.1",
+    "react-devtools": "^3.1.0",
     "react-test-renderer": "16.0.0"
   },
   "jest": {

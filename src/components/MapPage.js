@@ -72,7 +72,6 @@ class MapPage extends Component {
     maplocals: [],
     localMarker: null,
     showSpinner: false,
-    trackRegion: null,
     mapMarkers: null,
   }
 
@@ -218,7 +217,7 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
       const targetCoordinates = coordinates || mapHelper
         .polygonCenter(targetLocal.geometry.rings[0]);
       const localMarker = this.renderCustomMarker(targetCoordinates, list, targetLocal);
-      this.setState(() => ({ localMarker, region: this.state.trackRegion }));
+      this.setState(() => ({ localMarker }));
       setTimeout(() => this.marker1.showCallout(), 250);
     }
 
