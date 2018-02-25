@@ -37,7 +37,7 @@ const getBoundingBoxTr = region => ({
 });
 
 const newLocal = true;
-const inBoundingBox = (region, local) => {
+const localInBoundingBox = (region, local) => {
   // in case longitude 180 is inside the box
   const bl = getBoundingBoxBl(region);
   const tr = getBoundingBoxTr(region);
@@ -54,28 +54,33 @@ const inBoundingBox = (region, local) => {
       }
       const res = pLat >= bl.lat && pLat <= tr.lat && isLongInRange;
       if (res === true) {
-        // console.log(`inBoundingBox is true for local: ${JSON.stringify(local.attributes, null, 3)}`);
         return true;
       }
       return false;
     });
   return localExistInBound ? newLocal : false;
 };
+
+const buildingInBoundingBox = (region, building) => {
+  // in case longitude 180 is inside the box
+  const bl = getBoundingBoxBl(region);
+  const tr = getBoundingBoxTr(region);
+
+  let isLongInRange;
+  const pLong = toWebMercatorX(building.enteries[0].x);
+  const pLat = toWebMercatorY(building.enteries[0].y);
+
+  if (tr.long < bl.long) {
+    isLongInRange = pLong >= bl.long || pLong <= tr.long;
+  } else {
+    isLongInRange = pLong >= bl.long && pLong <= tr.long;
+  }
+  return pLat >= bl.lat && pLat <= tr.lat && isLongInRange;
+};
+
 const filterLocals = (locals, etgId, batId) =>
   locals.filter(l => (l.attributes.BAT_ID === batId
     && (parseInt(l.attributes.ETG_ID, 10) === etgId || etgId === null)));
-
-const getRegionForSelectedBat = (bilune) => {
-  const id = getBuilidngId(bilune);
-  const selectedBat = bilune.buildings.find(b => b.id === id);
-  const region = {
-    latitude: toWebMercatorY(selectedBat.enteries[0].y),
-    latitudeDelta: MAP_LATITUDE_DELTA,
-    longitude: toWebMercatorX(selectedBat.enteries[0].x),
-    longitudeDelta: MAP_LONGITUDE_DELTA,
-  };
-  return region;
-};
 
 const polygonCenter = (rings) => {
   const x = rings.map(c => toWebMercatorY(c[1]));
@@ -115,7 +120,8 @@ const getMarkersForSelectedBat = (locals) => {
   return markersForSelectedBat;
 };
 
-const getInitialRegionForSelectedBuilding = (bilune) => {
+
+const getRegionForVisibleFloorsInTheSelectedBuilding = (bilune) => {
   const { localId, locals } = bilune;
   const id = getBuilidngId(bilune);
   const mainLocals = [];
@@ -148,6 +154,20 @@ const getInitialRegionForSelectedBuilding = (bilune) => {
   return region;
 };
 
+const getRegionForSelectedBat = (bilune) => {
+  if (bilune.biluneState === 'BDL_LOADED') {
+    return getRegionForVisibleFloorsInTheSelectedBuilding(bilune);
+  }
+  const id = getBuilidngId(bilune);
+  const selectedBat = bilune.buildings.find(b => b.id === id);
+  const region = {
+    latitude: toWebMercatorY(selectedBat.enteries[0].y),
+    latitudeDelta: MAP_LATITUDE_DELTA,
+    longitude: toWebMercatorX(selectedBat.enteries[0].x),
+    longitudeDelta: MAP_LONGITUDE_DELTA,
+  };
+  return region;
+};
 const getCenteredRegionByFloor = (locals) => {
   const coordinates = floorCenter(getMarkersForSelectedBat(locals));
   const region = {
@@ -178,7 +198,7 @@ const getVisibleLocals = (bilune, region) => {
   otherBuildinsgs.forEach((b) => {
     const etageId = b.etageIdParDefaut;
     const tempLocals = filterLocals(locals, etageId, b.id)
-      .filter(l => inBoundingBox(region, l));
+      .filter(l => localInBoundingBox(region, l));
     visibleLocals.otherLocals.push(...tempLocals);
   });
 
@@ -186,12 +206,12 @@ const getVisibleLocals = (bilune, region) => {
     const local = locals.find(l => l.attributes.LOC_ID === localId);
     const etageId = parseInt(local.attributes.ETG_ID, 10);
     const tempLocals = filterLocals(locals, etageId, buildingForlocalId)
-      .filter(l => inBoundingBox(region, l));
+      .filter(l => localInBoundingBox(region, l));
     visibleLocals.mainLocals.push(...tempLocals);
   } else {
     const etageId = mainBuilding.etageIdParDefaut;
     const tempLocals = filterLocals(locals, etageId, mainBuilding.id)
-      .filter(l => inBoundingBox(region, l));
+      .filter(l => localInBoundingBox(region, l));
     visibleLocals.mainLocals.push(...tempLocals);
   }
 
@@ -213,9 +233,8 @@ export {
   getRegionForSelectedBat,
   getMarkersForSelectedBat,
   getCenteredRegionByFloor,
-  getInitialRegionForSelectedBuilding,
   polygonCenter,
   getZoomLevel,
   getBoundingBox,
-  inBoundingBox,
+  buildingInBoundingBox,
 };
