@@ -589,7 +589,10 @@ const searchInBuilding = (buildingId, searchQuery) =>
         const locals = filterLocalsForBuilding(dataLocals, buildingId, searchQuery);
 
         // expaned the floors after the search
-        const expanded = currBuilding.floors.map(f => ({ ...f, collapsed: false }));
+        const expanded = searchQuery.length > 0 ?
+          currBuilding.floors.map(f => ({ ...f, collapsed: false })) :
+          currBuilding.floors.map(f => ({ ...f, collapsed: true }));
+
         const tobeFormatted = {
           ...currBuilding, floors: expanded, query: searchQuery, locals,
         };
