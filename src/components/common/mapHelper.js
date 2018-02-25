@@ -19,6 +19,48 @@ const colorByLocType = (id) => {
   return locObj.length > 0 ? locObj[0].color : '#f7f7f7';
 };
 
+const getBoundingBox = region => ([
+  region.longitude - region.longitudeDelta / 2, // westLng - min lng
+  region.latitude - region.latitudeDelta / 2, // southLat - min lat
+  region.longitude + region.longitudeDelta / 2, // eastLng - max lng
+  region.latitude + region.latitudeDelta / 2, // northLat - max lat
+]);
+
+const getBoundingBoxBl = region => ({
+  long: region.longitude - region.longitudeDelta / 2, // westLng - min lng
+  lat: region.latitude - region.latitudeDelta / 2, // southLat - min lat
+});
+
+const getBoundingBoxTr = region => ({
+  long: region.longitude + region.longitudeDelta / 2, // eastLng - max lng
+  lat: region.latitude + region.latitudeDelta / 2, // northLat - max lat
+});
+
+const newLocal = true;
+const inBoundingBox = (region, local) => {
+  // in case longitude 180 is inside the box
+  const bl = getBoundingBoxBl(region);
+  const tr = getBoundingBoxTr(region);
+
+  const localExistInBound = local.geometry
+    .rings[0].find((p) => {
+      let isLongInRange;
+      const pLong = toWebMercatorX(p[0]);
+      const pLat = toWebMercatorY(p[1]);
+      if (tr.long < bl.long) {
+        isLongInRange = pLong >= bl.long || pLong <= tr.long;
+      } else {
+        isLongInRange = pLong >= bl.long && pLong <= tr.long;
+      }
+      const res = pLat >= bl.lat && pLat <= tr.lat && isLongInRange;
+      if (res === true) {
+        // console.log(`inBoundingBox is true for local: ${JSON.stringify(local.attributes, null, 3)}`);
+        return true;
+      }
+      return false;
+    });
+  return localExistInBound ? newLocal : false;
+};
 const filterLocals = (locals, etgId, batId) =>
   locals.filter(l => (l.attributes.BAT_ID === batId
     && (parseInt(l.attributes.ETG_ID, 10) === etgId || etgId === null)));
@@ -73,6 +115,39 @@ const getMarkersForSelectedBat = (locals) => {
   return markersForSelectedBat;
 };
 
+const getInitialRegionForSelectedBuilding = (bilune) => {
+  const { localId, locals } = bilune;
+  const id = getBuilidngId(bilune);
+  const mainLocals = [];
+
+  let buildingForlocalId = null;
+  if (localId != null) {
+    buildingForlocalId = id;
+  }
+
+  const mainBuilding = bilune.buildings.find(b => b.id === id);
+
+
+  if (buildingForlocalId && mainBuilding.id === buildingForlocalId) {
+    const local = locals.find(l => l.attributes.LOC_ID === localId);
+    const etageId = parseInt(local.attributes.ETG_ID, 10);
+    const tempLocals = filterLocals(locals, etageId, buildingForlocalId);
+    mainLocals.push(...tempLocals);
+  } else {
+    const etageId = mainBuilding.etageIdParDefaut;
+    const tempLocals = filterLocals(locals, etageId, mainBuilding.id);
+    mainLocals.push(...tempLocals);
+  }
+  const coordinates = floorCenter(getMarkersForSelectedBat(mainLocals));
+  const region = {
+    latitude: coordinates.latitude,
+    latitudeDelta: MAP_LATITUDE_DELTA,
+    longitude: coordinates.longitude,
+    longitudeDelta: MAP_LONGITUDE_DELTA,
+  };
+  return region;
+};
+
 const getCenteredRegionByFloor = (locals) => {
   const coordinates = floorCenter(getMarkersForSelectedBat(locals));
   const region = {
@@ -84,7 +159,7 @@ const getCenteredRegionByFloor = (locals) => {
   return region;
 };
 
-const getVisibleLocals = (bilune) => {
+const getVisibleLocals = (bilune, region) => {
   const { localId, locals } = bilune;
   const id = getBuilidngId(bilune);
   const visibleLocals = {
@@ -102,23 +177,33 @@ const getVisibleLocals = (bilune) => {
 
   otherBuildinsgs.forEach((b) => {
     const etageId = b.etageIdParDefaut;
-    const tempLocals = filterLocals(locals, etageId, b.id);
+    const tempLocals = filterLocals(locals, etageId, b.id)
+      .filter(l => inBoundingBox(region, l));
     visibleLocals.otherLocals.push(...tempLocals);
   });
 
   if (buildingForlocalId && mainBuilding.id === buildingForlocalId) {
     const local = locals.find(l => l.attributes.LOC_ID === localId);
     const etageId = parseInt(local.attributes.ETG_ID, 10);
-    const tempLocals = filterLocals(locals, etageId, buildingForlocalId);
+    const tempLocals = filterLocals(locals, etageId, buildingForlocalId)
+      .filter(l => inBoundingBox(region, l));
     visibleLocals.mainLocals.push(...tempLocals);
   } else {
     const etageId = mainBuilding.etageIdParDefaut;
-    const tempLocals = filterLocals(locals, etageId, mainBuilding.id);
+    const tempLocals = filterLocals(locals, etageId, mainBuilding.id)
+      .filter(l => inBoundingBox(region, l));
     visibleLocals.mainLocals.push(...tempLocals);
   }
 
   return visibleLocals;
 };
+
+const getZoomLevel = (region) => {
+  const angle = region.longitudeDelta;
+  const level = Math.round(Math.log(360 / angle) / Math.LN2);
+  return level;
+};
+
 
 export {
   toWebMercatorY,
@@ -128,6 +213,9 @@ export {
   getRegionForSelectedBat,
   getMarkersForSelectedBat,
   getCenteredRegionByFloor,
+  getInitialRegionForSelectedBuilding,
   polygonCenter,
-
+  getZoomLevel,
+  getBoundingBox,
+  inBoundingBox,
 };

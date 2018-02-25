@@ -94,8 +94,8 @@ class BuildingLocalItem extends Component {
      </TouchableOpacity>
    )
    renderSection = (item, visibleFloors) => {
-     if (item.attributes.section) {
-       return this.renderSectionJsx(item.attributes.section, item.attributes.ETG_ID, visibleFloors);
+     if (item.section) {
+       return this.renderSectionJsx(item.section, item.attributes.ETG_ID, visibleFloors);
      }
    }
 

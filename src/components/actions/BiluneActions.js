@@ -249,14 +249,20 @@ const formatedBuildingDataForList = (myBuilding) => {
       const localsPerFloor = myBuilding
         .locals.filter(l => parseInt(l.attributes.ETG_ID, 10) === b.id);
 
+
+      const localsPerFloorWithSection = localsPerFloor.map((l, i) => {
+        if (i === 0) {
+          const section = l.attributes.ETG_DESIGNATION;
+          return { ...l, section };
+        }
+        return l;
+      });
       // remove the collaped locals keep only one for for the section
-      if (localsPerFloor.length > 0) {
-        const section = localsPerFloor[0].attributes.ETG_DESIGNATION;
-        localsPerFloor[0].attributes.section = section;
+      if (localsPerFloorWithSection.length > 0) {
         if (b.collapsed) {
-          locals.push(localsPerFloor[0]);
+          locals.push(localsPerFloorWithSection[0]);
         } else {
-          locals.push(...localsPerFloor);
+          locals.push(...localsPerFloorWithSection);
         }
       }
     });

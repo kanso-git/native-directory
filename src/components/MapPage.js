@@ -1,17 +1,19 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable react/prop-types,no-empty */
 /* eslint-disable consistent-return */
+/* eslint global-require: "off" */
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Callout, Marker } from 'react-native-maps';
-
+import * as ldash from 'lodash';
 import { biluneActions } from './actions';
 import { Spinner } from './common';
 import CustomCallout from './CustomCallout';
 import * as mapHelper from './common/mapHelper';
 import MapPolygon from './MapPolygon';
+import MapMarker from './MapMarker';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -67,47 +69,63 @@ class MapPage extends Component {
     localMarker: null,
     showSpinner: false,
     trackRegion: null,
+    mapMarkers: null,
   }
 
   componentWillMount() {
-    if (this.props.biluneState === 'BDL_LOADED') {
-      data = mapHelper.getVisibleLocals({ ...this.props });
-      region = mapHelper.getCenteredRegionByFloor(data.mainLocals);
-    } else {
-      region = mapHelper.getRegionForSelectedBat({ ...this.props });
-    }
+    region = mapHelper.getRegionForSelectedBat({ ...this.props });
+   
   }
   componentDidMount() {
+    const myMap = this.map;
     if (this.props.biluneState === 'BDL_LOADED') {
-      this.renderLocals();
+      if (myMap) {
+        myMap.animateToRegion(region);
+      }
+      this.renderMapData();
+    }
+    if (myMap) {
+      setTimeout(() => myMap.animateToRegion(region), 0);
     }
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.biluneState !== this.props.biluneState) {
-      this.renderLocals();
+      const myMap = this.map;
+      if (myMap) {
+        myMap.animateToRegion(region);
+      }
+      this.renderMapData();
     }
   }
+
+  /*
   shouldComponentUpdate(nextProps, nextState) {
-    return true;
+    const update = ldash.isEqual(nextState.maplocals, this.state.maplocals);
+    debugger
+    return !update;
   }
+  */
+
   componentWillUnmount() {
     region = initialRegion;
   }
   onMapReady = () => {
 
   }
-  onLongPress = (c, p) => {
+  onLongPress = (c) => {
     // {longitude: 6.920538805425167, latitude: 46.990806853961715}
     // c.nativeEvent.coordinate;
     const { coordinate } = c.nativeEvent;
     const inside = require('point-in-polygon');
     const allLocals = [...data.mainLocals, ...data.otherLocals];
     const targetPolygon = allLocals.find((f) => {
-      const polygon = f.geometry.rings[0].map(p => [mapHelper.toWebMercatorX(p[0]), mapHelper.toWebMercatorY(p[1])]);
+      const polygon = f.geometry
+        .rings[0].map(p => [mapHelper.toWebMercatorX(p[0]), mapHelper.toWebMercatorY(p[1])]);
       const insidePoly = inside([coordinate.longitude, coordinate.latitude], polygon);
       if (insidePoly) {
         return true;
       }
+      return false;
     });
     if (targetPolygon) {
       this.handleOnLocalPress(targetPolygon.attributes.LOC_ID, coordinate);
@@ -135,7 +153,7 @@ class MapPage extends Component {
 
       let occupentsString = `Local: ${targetLocal.attributes.LOC_CODE}`;
       if (occupents.length > 0) {
-        occupents.map((o) => {
+        occupents.forEach((o) => {
           occupentsString += `
 ${o.nom} ${o.prenom.slice(0, 1)}`;
         });
@@ -149,6 +167,19 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
 
     handleRegionChange = (trackRegion) => {
       region = trackRegion;
+      data = mapHelper.getVisibleLocals({ ...this.props }, region);
+      this.renderMapData();
+      /*
+      const myMap = this.map;
+
+      if (myMap) {
+        const zoomLevel = mapHelper.getZoomLevel(region);
+        const boundingBox = mapHelper.getBoundingBox(region);
+        console.log(boundingBox);
+        console.log(zoomLevel);
+        data = mapHelper.getVisibleLocals({ ...this.props }, region);
+        setTimeout(() => this.setState(() => ({ maplocals: this.getMapLocals([...data.mainLocals, ...data.otherLocals]) })), 100);
+      } */
     }
 
     loadOccupent = async (targetLocal) => {
@@ -169,7 +200,8 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
     showLocalMarker = async (targetLocal, coordinates) => {
       this.setState(() => ({ localMarker: null }));
       const list = await this.loadOccupent(targetLocal);
-      const targetCoordinates = coordinates || mapHelper.polygonCenter(targetLocal.geometry.rings[0]);
+      const targetCoordinates = coordinates || mapHelper
+        .polygonCenter(targetLocal.geometry.rings[0]);
       const localMarker = this.renderCustomMarker(targetCoordinates, list, targetLocal);
       this.setState(() => ({ localMarker, region: this.state.trackRegion }));
       setTimeout(() => this.marker1.showCallout(), 250);
@@ -183,16 +215,16 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
         .find(l => l.attributes.LOC_ID === targetLocId);
       this.showLocalMarker(targetLocal);
     }
-    this.setState(() => ({ maplocals }));
+    // this.setState(() => ({ maplocals }));
   }
   renderOtherLocals = () => {
     const maplocals = this.getMapLocals(data.otherLocals);
     const allLocals = [...this.state.maplocals, ...maplocals];
     this.setState(() => ({ maplocals: allLocals }));
   }
-  renderLocals = () => {
+  renderLocals0 = () => {
     if (data.length === 0) {
-      data = mapHelper.getVisibleLocals({ ...this.props });
+      data = mapHelper.getVisibleLocals({ ...this.props }, region);
     }
     console.log(' *************** renderLocals  is called *************');
     // const region = mapHelper.getCenteredRegionByFloor(data.mainLocals);
@@ -201,6 +233,44 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
     setTimeout(() => {
       this.renderOtherLocals();
     }, 500);
+  }
+  renderAllBuildings = () => {
+    const { buildings } = this.props;
+    const mapMarkers = buildings.map(bat => (<MapMarker
+      key={bat.id}
+      coordinate={{
+          latitude: mapHelper.toWebMercatorY(bat.enteries[0].y),
+          longitude: mapHelper.toWebMercatorX(bat.enteries[0].x),
+        }}
+      title={` ${bat.abreviation}`}
+      description={`${bat.adresseLigne1}`}
+    />));
+    this.setState(() => ({ mapMarkers, localMarker: null, maplocals: null }));
+  }
+
+  renderVisibleLocals = () => {
+    data = mapHelper.getVisibleLocals({ ...this.props }, region);
+    const allLocals = [...data.mainLocals, ...data.otherLocals];
+    console.log(`renderVisibleLocals allLocals length:${allLocals.length}`);
+    const filteredMaplocals = ldash.uniqWith(allLocals, ldash.isEqual);
+    const maplocals = this.getMapLocals(filteredMaplocals);
+    console.log(`renderVisibleLocals maplocals length:${maplocals.length}`);
+    const targetLocId = this.props.localId;
+    if (targetLocId != null) {
+      const targetLocal = filteredMaplocals
+        .find(l => l.attributes.LOC_ID === targetLocId);
+      this.showLocalMarker(targetLocal);
+    }
+    this.setState(() => ({ maplocals, mapMarkers: null }));
+  }
+  renderMapData = () => {
+    const zoomLevel = mapHelper.getZoomLevel(region);
+    console.log(`renderMapData zoomLevel:${zoomLevel}`);
+    if (zoomLevel > 17) {
+      this.renderVisibleLocals();
+    } else {
+      this.renderAllBuildings();
+    }
   }
 
   renderCustomMarker = (localCoordinate, occupents, targetLocal) => (
@@ -231,11 +301,12 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         showsCompass
-        region={region}
-        onRegionChange={this.handleRegionChange}
+        initialRegion={region}
+        onRegionChangeComplete={this.handleRegionChange}
         onLongPress={this.onLongPress}
       >
         {this.state.maplocals}
+        {this.state.mapMarkers}
         {this.state.localMarker}
       </MapView>
       { this.props.biluneState !== 'BDL_LOADED' || this.state.showSpinner && this.renderSpinner()}
