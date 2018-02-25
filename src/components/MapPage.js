@@ -29,6 +29,7 @@ const initialRegion = {
   longitudeDelta: LONGITUDE_DELTA,
 };
 let data = [];
+let zoomLevel0 = 18;
 let region = initialRegion;
 const styles = StyleSheet.create({
   container: {
@@ -74,7 +75,6 @@ class MapPage extends Component {
 
   componentWillMount() {
     region = mapHelper.getRegionForSelectedBat({ ...this.props });
-   
   }
   componentDidMount() {
     const myMap = this.map;
@@ -166,6 +166,14 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
     }
 
     handleRegionChange = (trackRegion) => {
+      region = trackRegion;
+      const zoomLevel = mapHelper.getZoomLevel(region);
+      if (zoomLevel0 !== zoomLevel) {
+        data = mapHelper.getVisibleLocals({ ...this.props }, region);
+        this.renderMapData();
+      }
+    }
+    handleRegionChangeComplete = (trackRegion) => {
       region = trackRegion;
       data = mapHelper.getVisibleLocals({ ...this.props }, region);
       this.renderMapData();
@@ -265,6 +273,7 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
   }
   renderMapData = () => {
     const zoomLevel = mapHelper.getZoomLevel(region);
+    zoomLevel0 = zoomLevel;
     console.log(`renderMapData zoomLevel:${zoomLevel}`);
     if (zoomLevel > 17) {
       this.renderVisibleLocals();
@@ -302,7 +311,8 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
         provider={PROVIDER_GOOGLE}
         showsCompass
         initialRegion={region}
-        onRegionChangeComplete={this.handleRegionChange}
+        onRegionChange={this.handleRegionChange}
+        onRegionChangeComplete={this.handleRegionChangeComplete}
         onLongPress={this.onLongPress}
       >
         {this.state.maplocals}
