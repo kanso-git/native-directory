@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     right: 0,
     width,
     height,
+    flex: 1,
   },
   openBtn: {
     position: 'absolute',
@@ -82,19 +83,19 @@ class MapPage extends Component {
     const myMap = this.map;
     if (this.props.biluneState === 'BDL_LOADED') {
       if (myMap) {
-        myMap.animateToRegion(region);
+        // myMap.animateToRegion(region);
       }
       this.renderMapData();
     }
     if (myMap) {
-      setTimeout(() => myMap.animateToRegion(region), 0);
+      // setTimeout(() => myMap.animateToRegion(region), 0);
     }
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.biluneState !== this.props.biluneState) {
       const myMap = this.map;
       if (myMap) {
-        myMap.animateToRegion(region);
+        // myMap.animateToRegion(region);
       }
       this.renderMapData();
     }
@@ -112,7 +113,10 @@ class MapPage extends Component {
     region = initialRegion;
   }
   onMapReady = () => {
-
+    const myMap = this.map;
+    if (myMap) {
+      myMap.animateToRegion(region);
+    }
   }
   onLongPress = (c) => {
     // {longitude: 6.920538805425167, latitude: 46.990806853961715}
@@ -276,7 +280,7 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
   renderMapData = () => {
     const zoomLevel = mapHelper.getZoomLevel(region);
     zoomLevel0 = zoomLevel;
-    console.log(`renderMapData zoomLevel:${zoomLevel}`);
+    console.log(`renderMapData called with zoomLevel:${zoomLevel}`);
     if (zoomLevel > 17) {
       this.renderVisibleLocals();
     } else {
@@ -311,6 +315,7 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
         ref={(ref) => { this.map = ref; }}
         style={styles.map}
         provider={PROVIDER_GOOGLE}
+        onLayout={this.onMapReady}
         showsCompass
         initialRegion={region}
         onRegionChange={this.handleRegionChange}
