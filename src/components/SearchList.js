@@ -9,6 +9,16 @@ import { searchActions, biluneActions } from './actions';
 import SearchItem from './SearchItem';
 
 class SearchList extends Component {
+  onPressItemHelper = (item) => {
+    this.props.setLocalId(item.attributes.LOC_ID, item.attributes.BAT_ID);
+    const typeCode = item.attributes.LOC_TYPE_ID;
+    if (typeCode === 10 || typeCode === 11 || typeCode === 12 || typeCode === 3) {
+      Actions.push('localDetails');
+    } else {
+      Actions.push('mapPage', { buildingId: item.attributes.BAT_ID, localId: item.attributes.LOC_ID });
+    }
+  }
+
   onPressItem = (item) => {
     if (Platform.OS === 'android') {
       Keyboard.dismiss();
@@ -25,8 +35,7 @@ class SearchList extends Component {
         Actions.push('buildingDetails');
         break;
       case LOCAL:
-        this.props.setLocalId(item.attributes.LOC_ID, item.attributes.BAT_ID);
-        Actions.push('localDetails');
+        this.onPressItemHelper(item);
         break;
       default:
         break;

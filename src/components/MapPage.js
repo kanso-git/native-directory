@@ -189,8 +189,12 @@ getCalloutInfo = (occupents, targetLocal) => {
 ${formatedNomEtPernom}`;
     });
   } else {
+    let localType = targetLocal.attributes.LOC_TYPE_DESIGNATION;
+    if (targetLocal.attributes.LOC_TYPE_ID === 11) {
+      localType = 'Salle d\'ens.';
+    }
     occupentsString += `
-Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
+Type: ${localType}`;
   }
 
   return [extraLength, occupentsString];

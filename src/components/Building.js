@@ -103,7 +103,12 @@ class Local extends Component {
   }
   onPressItem = (item) => {
     this.props.setLocalId(item.attributes.LOC_ID, item.attributes.BAT_ID);
-    Actions.push('localDetails');
+    const typeCode = item.attributes.LOC_TYPE_ID;
+    if (typeCode === 10 || typeCode === 11 || typeCode === 12 || typeCode === 3) {
+      Actions.push('localDetails');
+    } else {
+      Actions.push('mapPage', { buildingId: item.attributes.BAT_ID, localId: item.attributes.LOC_ID });
+    }
   };
   onSearch = (value) => {
     this.props.searchInBuilding(this.props.currentBuilding.id, value);
