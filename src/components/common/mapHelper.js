@@ -168,6 +168,18 @@ const getRegionForSelectedBat = (bilune) => {
   };
   return region;
 };
+
+const getRegionForSelectedBatInHomePage = (bilune) => {
+  const id = getBuilidngId(bilune);
+  const selectedBat = bilune.buildings.find(b => b.id === id);
+  const region = {
+    latitude: toWebMercatorY(selectedBat.enteries[0].y),
+    latitudeDelta: MAP_LATITUDE_DELTA,
+    longitude: toWebMercatorX(selectedBat.enteries[0].x),
+    longitudeDelta: MAP_LONGITUDE_DELTA,
+  };
+  return region;
+};
 const getCenteredRegionByFloor = (locals) => {
   const coordinates = floorCenter(getMarkersForSelectedBat(locals));
   const region = {
@@ -252,6 +264,45 @@ const formatNomEtPrenom = (nom, prenom) => {
   return `${nom} ${formatedPernom}`;
 };
 
+const extractParams = (params, bilune) => {
+  const {
+    buildingId, localId, buildingCode, localCode,
+  } = params;
+
+  let myBuilding = null;
+  let myBuildingId = null;
+  let myLocal = null;
+  let myLocalId = null;
+
+
+  console.log(`buildingId:${buildingId}, 
+       localId:${localId}, 
+       localId:${localCode},
+       buildingCode:${buildingCode} `);
+
+  if (buildingCode && buildingCode != null) {
+    myBuilding = bilune.buildings.find(b => b.code === buildingCode);
+    myBuildingId = myBuilding.id;
+  }
+  if (localCode && localCode != null) {
+    myLocal = bilune.locals.find(l => l.attributes.LOC_CODE === localCode);
+    myLocalId = myLocal.attributes.LOC_ID;
+  }
+  if (buildingId && buildingId != null) {
+    myBuildingId = buildingId;
+  }
+  if (localId && localId != null) {
+    myLocalId = localId;
+  }
+  if (myBuildingId == null) {
+    myBuildingId = bilune.buildings[0].id;
+  }
+  console.log(`extractParams id:${myBuildingId}, localId:${myLocalId}`);
+  return {
+    id: myBuildingId,
+    localId: myLocalId,
+  };
+};
 
 export {
   toWebMercatorY,
@@ -266,4 +317,7 @@ export {
   getBoundingBox,
   buildingInBoundingBox,
   formatNomEtPrenom,
+  getRegionForSelectedBatInHomePage,
+  getBuilidngId,
+  extractParams,
 };

@@ -133,18 +133,20 @@ const renderEmail = email => (
 );
 
 const renderOfficeAddress = location => (
-  <View style={[containerStyle, { marginBottom: 15 }]}>
-    <View style={iconWrapper}>
-      <Icon name="building" style={iconStyle} allowFontScaling />
+  <TouchableOpacity onPress={() => Actions.push('mapPage', { buildingCode: location.building.code, localCode: location.local.code })}>
+    <View style={[containerStyle, touchableContainer, { marginBottom: 15 }]}>
+      <View style={iconWrapper}>
+        <Icon name="building" style={[iconStyle, touchable]} allowFontScaling />
+      </View>
+      <View style={addressStyle}>
+        <Text style={[touchable]}>{I18n.t('person.position.location.office')}: {location.local.code} </Text>
+        <Text style={[touchable]}>{I18n.t('person.position.location.floor')}: {location.floor.name} </Text>
+      </View>
     </View>
-    <View style={addressStyle}>
-      <Text>{I18n.t('person.position.location.office')}: {location.local.code} </Text>
-      <Text>{I18n.t('person.position.location.floor')}: {location.floor.name} </Text>
-    </View>
-  </View>
+  </TouchableOpacity>
 );
 const renderBuildingAddress = building => (
-  <TouchableOpacity onPress={() => Actions.push('mapPage', { code: building.code })}>
+  <TouchableOpacity onPress={() => Actions.push('mapPage', { buildingCode: building.code })}>
     <View style={[containerStyle, touchableContainer, { marginBottom: 15, height: building.name ? 50 : 40 }]}>
       <View style={iconWrapper}>
         <Icon name="map-marker" style={[iconStyle, touchable]} allowFontScaling />

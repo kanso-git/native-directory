@@ -47,19 +47,50 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+const initialRegion = {
+  latitude: LATITUDE,
+  longitude: LONGITUDE,
+  latitudeDelta: MAP_LATITUDE_DELTA,
+  longitudeDelta: MAP_LONGITUDE_DELTA,
+};
+let region = initialRegion;
+
 class MapHomePage extends Component {
   state={
-    region: {
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-      latitudeDelta: MAP_LATITUDE_DELTA,
-      longitudeDelta: MAP_LONGITUDE_DELTA,
-    },
-    mapMarkers: [],
+    buildingMarkers: [],
+  }
+
+  // called every time you access this component
+  componentWillMount() {
+    region = mapHelper.getRegionForSelectedBatInHomePage({ ...this.props });
+  }
+
+  // called every time you access this component right after componentWillMount
+  componentDidMount() {
+    const id = mapHelper.getBuilidngId({ ...this.props });
+    this.renderVisibleBuildings(id);
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.id !== this.props.id) {
-      this.zoomToBuilding(nextProps.id);
+      const myMap = this.map;
+      if (myMap) {
+        region = mapHelper.getRegionForSelectedBatInHomePage({ ...this.props, id: nextProps.id });
+        myMap.animateToRegion(region, 0);
+        this.renderVisibleBuildings(nextProps.id);
+      }
+    }
+  }
+  // called when about to leave the component
+  componentWillUnmount() {
+    region = initialRegion;
+  }
+
+  onLayoutMapReady = () => {
+    const myMap = this.map;
+    if (myMap) {
+      myMap.animateToRegion(region, 0);
     }
   }
 
@@ -88,45 +119,19 @@ class MapHomePage extends Component {
     />);
   }
 
-  mapReady = () => {
-    console.log(' mapHomePage map is ready ....');
-    this.renderBuildings();
-  }
-
-
-    zoomToBuilding = (id) => {
-      const f = this.props.buildings.filter(b => b.id === id);
-      const regionLatitude = mapHelper.toWebMercatorY(f[0].enteries[0].y);
-      const regionLongitude = mapHelper.toWebMercatorX(f[0].enteries[0].x);
-      const region = {
-        latitude: regionLatitude,
-        latitudeDelta: MAP_LATITUDE_DELTA,
-        longitude: regionLongitude,
-        longitudeDelta: MAP_LONGITUDE_DELTA,
-      };
-      const data = this.props.buildings;
-      const mapMarkers = data.map(b => this.generateMarker(b, id));
-      this.setState(() => ({ region, mapMarkers }));
-    }
-
-    renderBuildings = () => {
-      const data = this.props.buildings;
-      let zoomId = 0;
-      if (this.props.id != null) {
-        zoomId = this.props.id;
-        this.zoomToBuilding(zoomId);
-      } else {
-        zoomId = this.props.buildings[0].id;
-        this.zoomToBuilding(zoomId);
+    renderVisibleBuildings = (selectedBuilding) => {
+      const { buildings } = this.props;
+      const visibleBuildings = buildings.filter(b => mapHelper.buildingInBoundingBox(region, b));
+      if (visibleBuildings.length > 0) {
+        const buildingMarkers = visibleBuildings.map(bat => this.generateMarker(bat, selectedBuilding));
+        this.setState(() => ({ buildingMarkers }));
       }
-      const mapMarkers = data.map(f => this.generateMarker(f, zoomId));
-      this.setState(() => ({ mapMarkers }));
     }
 
   renderOpenMapButton = () => (
     <TouchableOpacity
       style={styles.openBtn}
-      onPress={() => Actions.push('mapPage')}
+      onPress={() => Actions.push('mapPage', { buildingId: this.props.id, localId: null })}
     >
       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>&#10063;</Text>
     </TouchableOpacity>
@@ -139,15 +144,13 @@ class MapHomePage extends Component {
           ref={(ref) => { this.map = ref; }}
           style={styles.map}
           provider={PROVIDER_GOOGLE}
-          onMapReady={this.mapReady}
+          onLayout={this.onLayoutMapReady}
           showsCompass
           showsScale
           loadingEnabled
-          cacheEnabled
           showsIndoorLevelPicker
-          region={this.state.region}
         >
-          { this.state.mapMarkers }
+          { this.state.buildingMarkers }
         </MapView>
         { this.renderOpenMapButton()}
       </View>

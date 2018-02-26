@@ -137,7 +137,7 @@ class Local extends Component {
         alignItems: 'flex-start',
         }}
          onPress={() => {
-                  Actions.push('mapPage');
+                  Actions.push('mapPage', { buildingId: this.props.currentBuilding.id, localId: null });
                 }}
        >
          <View style={[{ height: 24 }]}>

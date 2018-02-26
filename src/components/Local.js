@@ -183,7 +183,7 @@ justifyContent: 'flex-end',
 alignItems: 'flex-start',
 }}
          onPress={() => {
-          Actions.push('mapPage');
+          Actions.push('mapPage', { buildingId: this.props.currentBuilding.id, localId: this.props.locId });
           }}
        >
          <View style={[{ height: 24 }]}>

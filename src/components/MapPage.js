@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, Platform } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Callout, Marker } from 'react-native-maps';
 import * as ldash from 'lodash';
 import { biluneActions } from './actions';
@@ -31,6 +31,7 @@ const initialRegion = {
 let data = [];
 let zoomLevel0 = 18;
 let region = initialRegion;
+
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
@@ -72,6 +73,7 @@ class MapPage extends Component {
     localMarker: null,
     showSpinner: false,
     mapMarkers: null,
+    localId: null,
   }
 
   // called every time you access this component
@@ -79,7 +81,10 @@ class MapPage extends Component {
     /*
      the region for the selected Building is calculated
     */
-    region = mapHelper.getRegionForSelectedBat({ ...this.props });
+    console.log('.................. componentWillMount ................');
+    const initialState = mapHelper.extractParams(this.props.navigation.state.params, { ...this.props });
+    this.setState(() => ({ ...initialState }));
+    region = mapHelper.getRegionForSelectedBat({ ...this.props, id: initialState.id });
   }
 
   // called every time you access this component right after componentWillMount
@@ -88,8 +93,9 @@ class MapPage extends Component {
     when the user navigates to map after the locals get full loded
     the bilueState will be BDL_LOADED
     */
+    console.log('.................. componentDidMount ................');
     if (this.props.biluneState === 'BDL_LOADED') {
-      this.renderMapData();
+      // this.renderMapData();
     }
   }
   // called each time component revives new states or props values
@@ -100,8 +106,9 @@ class MapPage extends Component {
     are get loaded the componentWillReceiveProps will be called with
     BDL_LOADED as new state value
     */
+    console.log('.................. componentWillReceiveProps ................');
     if (nextProps.biluneState !== this.props.biluneState) {
-      this.renderMapData();
+      this.renderMapData('componentWillReceiveProps');
     }
   }
 
@@ -122,6 +129,7 @@ class MapPage extends Component {
  called on onLayout mapView method, to avoid carshing th app mainly on android
   */
 onLayoutMapReady = () => {
+  console.log(`>>>>>>>> onLayoutMapReady  id:${this.props.id}, localId:${this.props.localId} >>>>>`);
   const myMap = this.map;
   if (myMap) {
     myMap.animateToRegion(region, 0);
@@ -142,6 +150,7 @@ onLongPress = (c) => {
     return false;
   });
   if (targetPolygon) {
+    this.setState(() => ({ localId: targetPolygon.attributes.LOC_ID }));
     this.handleOnLocalPress(targetPolygon.attributes.LOC_ID, coordinate);
   }
 }
@@ -191,15 +200,15 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
       region = trackRegion;
       const zoomLevel = mapHelper.getZoomLevel(region);
       if (zoomLevel0 !== zoomLevel) {
-        data = mapHelper.getVisibleLocals({ ...this.props }, region);
-        this.renderMapData();
+        data = mapHelper.getVisibleLocals({ ...this.props, ...this.state }, region);
+        this.renderMapData('handleRegionChange');
       }
     }
 
     handleRegionChangeComplete = (trackRegion) => {
       region = trackRegion;
-      data = mapHelper.getVisibleLocals({ ...this.props }, region);
-      this.renderMapData();
+      data = mapHelper.getVisibleLocals({ ...this.props, ...this.state }, region);
+      this.renderMapData('handleRegionChangeComplete');
     }
 
     loadOccupent = async (targetLocal) => {
@@ -224,7 +233,11 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
         .polygonCenter(targetLocal.geometry.rings[0]);
       const localMarker = this.renderCustomMarker(targetCoordinates, list, targetLocal);
       this.setState(() => ({ localMarker }));
-      setTimeout(() => this.marker1.showCallout(), 250);
+      setTimeout(() => {
+        if (this.marker1) {
+          this.marker1.showCallout();
+        }
+      }, 250);
     }
 
  renderVisibleBuildings = () => {
@@ -245,26 +258,28 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
  }
 
   renderVisibleLocals = () => {
-    data = mapHelper.getVisibleLocals({ ...this.props }, region);
+    data = mapHelper.getVisibleLocals({ ...this.props, ...this.state }, region);
     const allLocals = [...data.mainLocals, ...data.otherLocals];
     console.log(`renderVisibleLocals allLocals length:${allLocals.length}`);
-    const filteredMaplocals = ldash.uniqWith(allLocals, ldash.isEqual);
-    const maplocals = this.getMapLocals(filteredMaplocals);
-    console.log(`renderVisibleLocals maplocals length:${maplocals.length}`);
-    const targetLocId = this.props.localId;
-    if (targetLocId != null) {
-      const targetLocal = filteredMaplocals
-        .find(l => l.attributes.LOC_ID === targetLocId);
-      if (targetLocal) {
-        this.showLocalMarker(targetLocal);
+    if (allLocals.length > 0) {
+      const filteredMaplocals = ldash.uniqWith(allLocals, ldash.isEqual);
+      const maplocals = this.getMapLocals(filteredMaplocals);
+      console.log(`renderVisibleLocals maplocals length:${maplocals.length}`);
+      const targetLocId = this.state.localId;
+      if (targetLocId != null) {
+        const targetLocal = filteredMaplocals
+          .find(l => l.attributes.LOC_ID === targetLocId);
+        if (targetLocal) {
+          this.showLocalMarker(targetLocal);
+        }
       }
+      this.setState(() => ({ maplocals, mapMarkers: null }));
     }
-    this.setState(() => ({ maplocals }));
   }
-  renderMapData = () => {
+  renderMapData = (callerName) => {
     const zoomLevel = mapHelper.getZoomLevel(region);
     zoomLevel0 = zoomLevel;
-    console.log(`renderMapData called with zoomLevel:${zoomLevel}`);
+    console.log(`renderMapData  called  from  ${callerName} with zoomLevel:${zoomLevel}`);
     if (zoomLevel > 17) {
       this.renderVisibleLocals();
     } else {
@@ -272,10 +287,17 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
     }
   }
   renderCustomMarkerHeight = (length) => {
+    let calloutH = 0;
     if (length === 0 || length === 1) {
-      return 80;
+      calloutH = 80;
+    } else {
+      calloutH = 65 + (length * 14);
     }
-    return 65 + (length * 14);
+    if (Platform.OS === 'android') {
+      calloutH += 18;
+    }
+
+    return calloutH;
   }
   renderCustomMarker = (localCoordinate, occupents, targetLocal) => (
     <Marker
@@ -340,8 +362,6 @@ const mapStateToProps = state => (
   {
     locals: state.bilune.locals,
     buildings: state.bilune.buildings,
-    id: state.bilune.id,
-    localId: state.bilune.locId,
     biluneState: state.bilune.state,
   });
 
