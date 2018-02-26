@@ -166,18 +166,25 @@ getMapLocals = dataLocals =>
 getCalloutInfo = (occupents, targetLocal) => {
   console.log(`getCalloutInfo localId:${occupents}`);
 
-  let occupentsString = `Local: ${targetLocal.attributes.LOC_CODE}`;
+  let occupentsString = '';
+  let extraLength = 0;
   if (occupents.length > 0) {
     occupents.forEach((o) => {
+      const formatedNomEtPernom = mapHelper.formatNomEtPrenom(o.nom, o.prenom);
+      if (formatedNomEtPernom.length > 37) {
+        extraLength += 2;
+      } else if (formatedNomEtPernom.length > 18 && formatedNomEtPernom.length < 38) {
+        extraLength += 1;
+      }
       occupentsString += `
-${o.nom} ${o.prenom.slice(0, 1)}`;
+${formatedNomEtPernom}`;
     });
   } else {
     occupentsString += `
 Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
   }
 
-  return occupentsString;
+  return [extraLength, occupentsString];
 }
 
     handleRegionChange = (trackRegion) => {
@@ -252,7 +259,7 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
         this.showLocalMarker(targetLocal);
       }
     }
-    this.setState(() => ({ maplocals, mapMarkers: null }));
+    this.setState(() => ({ maplocals }));
   }
   renderMapData = () => {
     const zoomLevel = mapHelper.getZoomLevel(region);
@@ -264,7 +271,12 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
       this.renderVisibleBuildings();
     }
   }
-
+  renderCustomMarkerHeight = (length) => {
+    if (length === 0 || length === 1) {
+      return 80;
+    }
+    return 65 + (length * 14);
+  }
   renderCustomMarker = (localCoordinate, occupents, targetLocal) => (
     <Marker
       ref={(ref) => { this.marker1 = ref; }}
@@ -274,10 +286,20 @@ Type: ${targetLocal.attributes.LOC_TYPE_DESIGNATION}`;
     >
       <Callout
         tooltip
-        style={[styles.customView, { height: 35 * (occupents.length < 2 ? 2 : occupents.length) }]}
+        style={[styles.customView,
+          {
+            height:
+            this.renderCustomMarkerHeight(occupents.length +
+               this.getCalloutInfo(occupents, targetLocal)[0]),
+            }]}
       >
-        <CustomCallout height={35 + (occupents.length === 0 ? 1 : occupents.length) * 15}>
-          <Text style={{ color: 'white', fontSize: 11 }}>{ this.getCalloutInfo(occupents, targetLocal) }</Text>
+        <CustomCallout
+          local={`Local: ${targetLocal.attributes.LOC_CODE}`}
+          height={
+          this.renderCustomMarkerHeight(occupents.length +
+            this.getCalloutInfo(occupents, targetLocal)[0])}
+        >
+          <Text style={{ color: 'white', fontSize: 11, marginTop: -20 }}>{ this.getCalloutInfo(occupents, targetLocal)[1] }</Text>
         </CustomCallout>
       </Callout>
     </Marker>

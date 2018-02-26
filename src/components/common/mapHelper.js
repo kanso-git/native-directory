@@ -224,6 +224,34 @@ const getZoomLevel = (region) => {
   return level;
 };
 
+const formatNomEtPrenom = (nom, prenom) => {
+  let formatedPernom = '';
+  const hasSpace = prenom.includes(' ');
+  const hasDash = prenom.includes('-');
+
+  if (hasSpace || hasDash) {
+    if (hasSpace) {
+      const withSpace = prenom.split(' ');
+      withSpace.forEach((p) => {
+        const hasSubDash = p.includes('-');
+        if (hasSubDash) {
+          const withSubDash = p.split('-');
+          formatedPernom += `${withSubDash[0].slice(0, 1)}. - ${withSubDash[1].slice(0, 1)}. `;
+        } else {
+          formatedPernom += `${p.slice(0, 1)}. `;
+        }
+      });
+    } else {
+      const withSubDash = prenom.split('-');
+      formatedPernom += `${withSubDash[0].slice(0, 1)}. - ${withSubDash[1].slice(0, 1)}. `;
+    }
+  } else {
+    // no space no dash
+    formatedPernom = `${prenom.slice(0, 1)}.`;
+  }
+  return `${nom} ${formatedPernom}`;
+};
+
 
 export {
   toWebMercatorY,
@@ -237,4 +265,5 @@ export {
   getZoomLevel,
   getBoundingBox,
   buildingInBoundingBox,
+  formatNomEtPrenom,
 };

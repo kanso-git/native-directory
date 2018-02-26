@@ -4,6 +4,7 @@ import React from 'react';
 import {
   StyleSheet,
   View,
+  Text,
 } from 'react-native';
 
 
@@ -26,6 +27,7 @@ const styles = StyleSheet.create({
   },
   amount: {
     // flex: 1,
+    width: 140,
   },
   arrow: {
     backgroundColor: 'transparent',
@@ -50,9 +52,10 @@ class CustomCallout extends React.Component {
   }
   render() {
     return (
-      <View style={[styles.container, this.props.style]}>
+      <View style={[styles.container, { height: this.props.height }]}>
         <View style={[styles.bubble]}>
-          <View style={[styles.amount, { height: this.props.height - 20 }]} >
+          <View style={[styles.amount]} >
+            <Text style={{ fontSize: 14, color: 'white', height: 35 }}>{this.props.local}</Text>
             {this.props.children}
           </View>
         </View>
