@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Actions } from 'react-native-router-flux';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 import MapMarker from './MapMarker';
 import * as mapHelper from './common/mapHelper';
 
@@ -32,8 +33,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    bottom: 0,
+    bottom: 40,
     right: 0,
+    ...ifIphoneX({
+      bottom: 60,
+    }),
   },
   openBtn: {
     position: 'absolute',

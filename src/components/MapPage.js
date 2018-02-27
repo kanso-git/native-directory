@@ -48,8 +48,6 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    width,
-    height,
     flex: 1,
   },
   openBtn: {

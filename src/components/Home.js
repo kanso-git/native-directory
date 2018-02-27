@@ -2,7 +2,7 @@
 /* eslint-disable consistent-return */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { HOME_SCREEN } from 'react-native-dotenv';
 import I18n from 'react-native-i18n';
 import { Card, InputFlex, CardSection, Footer, Spinner, Chromatic } from './common';
@@ -49,6 +49,9 @@ const {
 } = styles;
 
 class Home extends Component {
+  state={
+    focused: false,
+  }
   componentWillReceiveProps(nextProps) {
     const { secret, retry, screen } = nextProps.auth;
     const { searchQuery } = nextProps.directory;
@@ -58,6 +61,25 @@ class Home extends Component {
     } else if (secret != null && (retry > 0 && screen === HOME_SCREEN)) {
       this.props.search(searchQuery, secret);
       this.props.resetRetry();
+    }
+  }
+
+  onFocus= () => {
+    this.setState(() => ({ focused: true }));
+    console.log(`focus in :${this.state.focused}`);
+  }
+  onBlur= () => {
+    this.setState(() => ({ focused: false }));
+    console.log(`focus out :${this.state.focused}`);
+  }
+  onCardTap = () => {
+    const currentFocusStatus = this.state.focused;
+    console.log(`currentFocusStatus :${currentFocusStatus}`);
+    if (Keyboard) {
+      Keyboard.dismiss();
+    }
+    if (currentFocusStatus === true) {
+      this.setState(() => ({ focused: false }));
     }
   }
   onSearch= (value) => {
@@ -84,9 +106,9 @@ class Home extends Component {
     const { totalSearchResult } = this.props;
 
     if (searchQuery.length > 1) {
-      let result = `${totalSearchResult.length + resultTranslated} `;
+      let result = `${totalSearchResult.length} ${resultTranslated} `;
       if (totalSearchResult.length > 1) {
-        result = `${totalSearchResult.length + resultsTranslated} `;
+        result = `${totalSearchResult.length} ${resultsTranslated} `;
       }
       return (
         this.props.spinner ?
@@ -134,11 +156,13 @@ class Home extends Component {
     }) : null;
     const buildings = this.props.bilune.buildings ? this.props.bilune.buildings : null;
 
-    if (searchQuery.length > 0 || !entries) {
+    if (searchQuery.length > 0 || !entries || this.state.focused) {
       return (
-        <View style={searchResultBox}>
-          <Card><SearchList /></Card>
-        </View>
+        <TouchableWithoutFeedback onPressIn={Keyboard.dismiss} accessible={false} onPress={e => this.onCardTap(e)}>
+          <View style={searchResultBox}>
+            <Card><SearchList /></Card>
+          </View>
+        </TouchableWithoutFeedback>
       );
     } else if (entries && entries.length > 0 && buildings && buildings.length > 0) {
       const labelBuildingSection = `${I18n.t('section.building')} (${buildings.length})`;
@@ -166,6 +190,8 @@ class Home extends Component {
               placeholder={I18n.t('search.placeholder')}
               value={searchQuery}
               onChangeText={this.onSearch}
+              onBlur={this.onBlur}
+              onFocus={this.onFocus}
             />
           </CardSection>
           {this.renderResultMessage()}

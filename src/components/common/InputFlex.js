@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
 const InputFlex = ({
   value,
   onChangeText,
+  onFocus = () => console.log('onFocus is off'),
+  onBlur = () => console.log('onBlur is off'),
   icon, placeholder, autoFocus, secureTextEntry, style,
 }) => {
   const { inputStyle, containerStyle } = styles;
@@ -36,6 +38,8 @@ const InputFlex = ({
         placeholder={icon + placeholder}
         value={value}
         onChangeText={onChangeText}
+        onFocus={onFocus}
+        onBlur={onBlur}
         style={[inputStyle, style]}
       />
     </View>

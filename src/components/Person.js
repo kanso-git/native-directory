@@ -134,7 +134,7 @@ const renderEmail = email => (
 
 const renderOfficeAddress = location => (
   <TouchableOpacity onPress={() => Actions.push('mapPage', { buildingCode: location.building.code, localCode: location.local.code })}>
-    <View style={[containerStyle, { height: Platform.OS === 'android' ? 35 : 25 }, touchableContainer, { marginBottom: 15 }]}>
+    <View style={[containerStyle, { height: Platform.OS === 'android' ? 40 : 25 }, touchableContainer, { marginBottom: 15 }]}>
       <View style={iconWrapper}>
         <Icon name="building" style={[iconStyle, touchable]} allowFontScaling />
       </View>
@@ -147,7 +147,7 @@ const renderOfficeAddress = location => (
 );
 const renderBuildingAddress = building => (
   <TouchableOpacity onPress={() => Actions.push('mapPage', { buildingCode: building.code })}>
-    <View style={[containerStyle, { height: Platform.OS === 'android' ? 35 : 25 }, touchableContainer, { marginBottom: 15, height: building.name ? 50 : 40 }]}>
+    <View style={[containerStyle, touchableContainer, { marginBottom: 15, height: building.name ? 60 : 45 }]}>
       <View style={iconWrapper}>
         <Icon name="map-marker" style={[iconStyle, touchable]} allowFontScaling />
       </View>
@@ -165,11 +165,11 @@ const renderPositionElem = (position) => {
   const value = position.positionName ? position.positionName : I18n.t('person.position.positionNA');
   return (
     <View>
-      <View style={[containerStyle, { height: Platform.OS === 'android' ? 35 : 25 }]}>
+      <View style={[containerStyle]}>
         <Icon name={iconName} style={iconStyle} allowFontScaling />
         <Text style={titleStyleElem}>{title}</Text>
       </View>
-      <View style={[containerStyle, { height: Platform.OS === 'android' ? 35 : 25 }, { marginBottom: 15 }]}>
+      <View style={[containerStyle, { marginBottom: 15 }]}>
         <Text style={iconStyle} />
         <Text style={textStyleElem}>{value} </Text>
       </View>
@@ -185,7 +185,7 @@ const renderFunctions = props => props.person.positions.map((position, index) =>
     {
         position.organizationalUnit && (
         <TouchableOpacity onPress={() => Actions.replace('unitDetails', { unitDetails: position.organizationalUnit })}>
-          <View style={[containerStyle, { height: Platform.OS === 'android' ? 35 : 25 }, touchableContainer]}>
+          <View style={[containerStyle, touchableContainer]}>
             <Icon name="sitemap" style={[iconStyle, touchable]} allowFontScaling />
             <Text style={[textStyleElem, touchable]}>{position.organizationalUnit.name} </Text>
           </View>
