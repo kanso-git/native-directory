@@ -452,7 +452,7 @@ overlayContent = () => (
       { this.props.biluneState !== 'BDL_LOADED' || this.state.showSpinner && this.renderSpinner()}
       <View style={styles.overlay}>
         <SlideUp
-          draggableHeight={34}
+          draggableHeight={36}
           dragArrowColor="white"
           dragBgColor="#034d7c"
           contentSectionBgColor="rgba(255, 255, 255, 1)"
