@@ -5,17 +5,15 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Alert, StyleSheet, View, Text, TouchableOpacity, Dimensions, Platform } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, Platform } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Callout, Marker } from 'react-native-maps';
 import * as ldash from 'lodash';
-import Icon from 'react-native-fa-icons';
 import { biluneActions } from './actions';
-import { Spinner, SlideUp } from './common';
+import { Spinner } from './common';
 import CustomCallout from './CustomCallout';
 import * as mapHelper from './common/mapHelper';
 import MapPolygon from './MapPolygon';
 import MapMarker from './MapMarker';
-import BuildingOverlay from './BuildingOverlay';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -66,47 +64,14 @@ const styles = StyleSheet.create({
   customView: {
     width: 140,
   },
-  overlay: {
-    flex: 1,
-    paddingTop: height * 0.5,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    marginBottom: -5,
-  },
-  mapType: {
-    position: 'absolute',
-    top: 60,
-    right: 8,
-    backgroundColor: 'rgba(255,255,255,0.6)',
-    padding: 6,
-    borderRadius: 10,
-    width: 40,
-    height: 80,
-    paddingTop: 13,
-    paddingBottom: 13,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  lineStyle: {
-    borderWidth: 0.2,
-    borderColor: 'rgba(0,0,0,0.5)',
-    paddingLeft: 2,
-    paddingRight: 2,
-    width: 40,
-    margin: 10,
-  },
 });
 class MapPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      maplocals: [],
-      localMarker: null,
-      showSpinner: false,
-      mapMarkers: null,
-      localId: null,
-      floorId: null,
-    };
+  state={
+    maplocals: [],
+    localMarker: null,
+    showSpinner: false,
+    mapMarkers: null,
+    localId: null,
   }
 
   // called every time you access this component
@@ -232,9 +197,6 @@ Type: ${localType}`;
 
   return [extraLength, occupentsString];
 }
-overlayContent = () => (
-  <BuildingOverlay />
-)
 
     handleRegionChange = (trackRegion) => {
       region = trackRegion;
@@ -266,42 +228,6 @@ overlayContent = () => (
       this.showLocalMarker(targetLocal, coordinates);
     }
 
-    getCurrentPosition = () => {
-      try {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            region = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA,
-            };
-            
-            // this.setRegion(region);
-            const myMap = this.map;
-            if (myMap) {
-              myMap.animateToRegion(region, 0);
-            }
-          },
-          (error) => {
-            // TODO: better design
-            switch (error.code) {
-              case 1:
-                if (Platform.OS === 'ios') {
-                  Alert.alert('', 'Para ubicar tu locación habilita permiso para la aplicación en Ajustes - Privacidad - Localización');
-                } else {
-                  Alert.alert('', 'Para ubicar tu locación habilita permiso para la aplicación en Ajustes - Apps - ExampleApp - Localización');
-                }
-                break;
-              default:
-                Alert.alert('', 'Error al detectar tu locación');
-            }
-          },
-        );
-      } catch (e) {
-        alert(e.message || '');
-      }
-    }
     showLocalMarker = async (targetLocal, coordinates) => {
       this.setState(() => ({ localMarker: null }));
       const list = await this.loadOccupent(targetLocal);
@@ -375,7 +301,6 @@ overlayContent = () => (
 
     return calloutH;
   }
-
   renderCustomMarker = (localCoordinate, occupents, targetLocal) => (
     <Marker
       ref={(ref) => { this.marker1 = ref; }}
@@ -410,23 +335,6 @@ overlayContent = () => (
       </View>
     </View>
   );
-  renderMapTypeSelectors = () => (
-    <View style={styles.mapType} >
-      <TouchableOpacity
-        onPress={() => this.setState(() => ({ mapType: 'standard' }))}
-      >
-        <Text style={{ fontSize: 20, color: '#007aff' }} >&#9432;</Text>
-      </TouchableOpacity>
-      <View style={styles.lineStyle} />
-      <TouchableOpacity
-        onPress={() => this.getCurrentPosition()}
-      >
-        <Icon name="location-arrow" style={{ fontSize: 20, color: '#007aff' }} />
-      </TouchableOpacity>
-    </View>
-
-  )
-
   renderMap = () => (
     <View style={styles.container}>
       <MapView
@@ -434,11 +342,7 @@ overlayContent = () => (
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         onLayout={this.onLayoutMapReady}
-        showsUserLocation
-        userLocationAnnotationTitle="my location"
-        showsScale
         showsCompass
-        showsMyLocationButton={false}
         initialRegion={region}
         onRegionChange={this.handleRegionChange}
         onRegionChangeComplete={this.handleRegionChangeComplete}
@@ -448,17 +352,7 @@ overlayContent = () => (
         {this.state.mapMarkers}
         {this.state.localMarker}
       </MapView>
-      { this.renderMapTypeSelectors() }
       { this.props.biluneState !== 'BDL_LOADED' || this.state.showSpinner && this.renderSpinner()}
-      <View style={styles.overlay}>
-        <SlideUp
-          draggableHeight={34}
-          dragArrowColor="white"
-          dragBgColor="#034d7c"
-          contentSectionBgColor="rgba(255, 255, 255, 1)"
-          contentSection={this.overlayContent()}
-        />
-      </View>
     </View>
   );
   render() {

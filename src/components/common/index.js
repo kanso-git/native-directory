@@ -8,6 +8,7 @@ import Spinner from './Spinner';
 import ConfirmModal from './ConfirmModal';
 import Footer from './Footer';
 import Chromatic from './Chromatic';
+import SlideUp from './SlideUp';
 import * as utile from './utile';
 
 
@@ -21,7 +22,9 @@ export { Chromatic,
   Spinner,
   ConfirmModal,
   Footer,
-  utile };
+  utile,
+  SlideUp,
+};
 /* there is another technique which based on :
 1 - change the export default to named export for each file
 2 - export * from each file
