@@ -115,7 +115,8 @@ class MapPage extends Component {
      the region for the selected Building is calculated
     */
     console.log('.................. componentWillMount ................');
-    const initialState = mapHelper.extractParams(this.props.navigation.state.params, { ...this.props });
+    const { params } = this.props.navigation.state;
+    const initialState = mapHelper.extractParams(params, { ...this.props });
     this.setState(() => ({ ...initialState }));
     region = mapHelper.getRegionForSelectedBat({ ...this.props, id: initialState.id });
   }
@@ -232,6 +233,41 @@ Type: ${localType}`;
 
   return [extraLength, occupentsString];
 }
+
+getCurrentPosition = () => {
+  try {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        region = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        };
+        const myMap = this.map;
+        if (myMap) {
+          myMap.animateToRegion(region, 0);
+        }
+      },
+      (error) => {
+        // TODO: better design
+        switch (error.code) {
+          case 1:
+            if (Platform.OS === 'ios') {
+              Alert.alert('', 'Para ubicar tu locación habilita permiso para la aplicación en Ajustes - Privacidad - Localización');
+            } else {
+              Alert.alert('', 'Para ubicar tu locación habilita permiso para la aplicación en Ajustes - Apps - ExampleApp - Localización');
+            }
+            break;
+          default:
+            Alert.alert('', 'Error al detectar tu locación');
+        }
+      },
+    );
+  } catch (e) {
+    alert(e.message || '');
+  }
+}
 overlayContent = () => (
   <BuildingOverlay />
 )
@@ -266,42 +302,6 @@ overlayContent = () => (
       this.showLocalMarker(targetLocal, coordinates);
     }
 
-    getCurrentPosition = () => {
-      try {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            region = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA,
-            };
-            
-            // this.setRegion(region);
-            const myMap = this.map;
-            if (myMap) {
-              myMap.animateToRegion(region, 0);
-            }
-          },
-          (error) => {
-            // TODO: better design
-            switch (error.code) {
-              case 1:
-                if (Platform.OS === 'ios') {
-                  Alert.alert('', 'Para ubicar tu locación habilita permiso para la aplicación en Ajustes - Privacidad - Localización');
-                } else {
-                  Alert.alert('', 'Para ubicar tu locación habilita permiso para la aplicación en Ajustes - Apps - ExampleApp - Localización');
-                }
-                break;
-              default:
-                Alert.alert('', 'Error al detectar tu locación');
-            }
-          },
-        );
-      } catch (e) {
-        alert(e.message || '');
-      }
-    }
     showLocalMarker = async (targetLocal, coordinates) => {
       this.setState(() => ({ localMarker: null }));
       const list = await this.loadOccupent(targetLocal);
