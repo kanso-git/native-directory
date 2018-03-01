@@ -4755,10 +4755,6 @@ react-native-add-calendar-event@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/react-native-add-calendar-event/-/react-native-add-calendar-event-0.3.0.tgz#d2a63fe0eb4879018c392fed521d4060d5608db0"
 
-react-native-bounceable@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-bounceable/-/react-native-bounceable-0.2.1.tgz#1d033d8daf151390c11b085c57191e673afeba2c"
-
 react-native-communications@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"

@@ -24,7 +24,7 @@ export default class SlideUp extends Component {
     this.maxBottom = heightOverlay - (visibleHeight + this.props.draggableHeight);
     this.maxTop = 0;
     if (visibleHeight === 24) {
-      this.maxBottom = heightOverlay - 530;
+      this.maxBottom = heightOverlay * 0.35;
     }
     this.state = { scrollY: new Animated.Value(this.maxBottom) };
   }
