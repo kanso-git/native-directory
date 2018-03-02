@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#d3d3d3',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 40,
     paddingTop: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 5 },
@@ -24,6 +23,8 @@ const styles = StyleSheet.create({
     ...ifIphoneX({
       paddingBottom: 20,
       height: 60,
+    }, {
+      height: 40,
     }),
   },
 });

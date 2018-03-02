@@ -35,6 +35,8 @@
     "react-native-router-flux": "4.0.0-beta.24",
     "react-native-snap-carousel": "^3.6.0",
     "react-native-splash-screen": "^3.0.6",
+    "react-native-swiper": "^1.5.13",
+    "react-native-switch-selector": "^1.1.4",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",

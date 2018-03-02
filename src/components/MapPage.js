@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types,no-empty */
 /* eslint-disable consistent-return */
 /* eslint global-require: "off" */
+/* eslint-disable react/prop-types,no-empty */
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -9,6 +10,7 @@ import { Alert, StyleSheet, View, Text, TouchableOpacity, Dimensions, Platform }
 import MapView, { PROVIDER_GOOGLE, Callout, Marker } from 'react-native-maps';
 import * as ldash from 'lodash';
 import Icon from 'react-native-fa-icons';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { biluneActions } from './actions';
 import { Spinner, SlideUp } from './common';
 import CustomCallout from './CustomCallout';
@@ -48,9 +50,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    bottom: 0,
     right: 0,
     flex: 1,
+    ...ifIphoneX({
+      bottom: 35,
+    }, {
+      bottom: 25,
+    }),
   },
   openBtn: {
     position: 'absolute',
@@ -75,7 +81,7 @@ const styles = StyleSheet.create({
   },
   mapType: {
     position: 'absolute',
-    top: 60,
+    top: Platform.OS === 'ios' ? 60 : 20,
     right: 8,
     backgroundColor: 'rgba(255,255,255,0.6)',
     padding: 6,
@@ -106,6 +112,7 @@ class MapPage extends Component {
       mapMarkers: null,
       localId: null,
       floorId: null,
+      mapType: 'standard',
     };
   }
 
@@ -268,9 +275,28 @@ getCurrentPosition = () => {
     alert(e.message || '');
   }
 }
-overlayContent = () => (
-  <BuildingOverlay />
-)
+handleFloorChange = (value, index, floor) => {
+  console.log(`handleFloorChange value:${value} index:${index}, data:${floor}`);
+}
+
+handleMapTypeChange = (value) => {
+  this.setState(() => ({ mapType: value }));
+}
+
+overlayContent = () => {
+  const tragetBuilding = this.props.buildings.find(b => b.id === this.state.id);
+  
+  if (tragetBuilding && tragetBuilding.floors) {
+    return (
+      <BuildingOverlay
+        selectedFloor={this.state.floorId}
+        building={tragetBuilding}
+        onFloorChange={this.handleFloorChange}
+        onMapTypeChange={this.handleMapTypeChange}
+      />
+    );
+  }
+}
 
     handleRegionChange = (trackRegion) => {
       region = trackRegion;
@@ -432,6 +458,7 @@ overlayContent = () => (
       <MapView
         ref={(ref) => { this.map = ref; }}
         style={styles.map}
+        mapType={this.state.mapType}
         provider={PROVIDER_GOOGLE}
         onLayout={this.onLayoutMapReady}
         showsUserLocation

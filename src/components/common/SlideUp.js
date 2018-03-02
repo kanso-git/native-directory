@@ -11,6 +11,7 @@ import {
   Easing,
   TouchableOpacity,
 } from 'react-native';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 export default class SlideUp extends Component {
   constructor(props) {
@@ -18,13 +19,14 @@ export default class SlideUp extends Component {
     this.props = props;
 
     this.screenSize = Dimensions.get('window');
-    const visibleHeight = this.props.visibleHeight + 24;
     const heightOverlay = this.screenSize.height;
 
-    this.maxBottom = heightOverlay - (visibleHeight + this.props.draggableHeight);
     this.maxTop = 0;
-    if (visibleHeight === 24) {
+
+    if (isIphoneX()) {
       this.maxBottom = heightOverlay * 0.35;
+    } else {
+      this.maxBottom = heightOverlay * 0.33;
     }
     this.state = { scrollY: new Animated.Value(this.maxBottom) };
   }
@@ -55,7 +57,7 @@ export default class SlideUp extends Component {
       outputRange: [6, -6],
     });
     return (
-      <View style={{ paddingRight: 20 }}>
+      <View style={{ paddingRight: 20, marginTop: -15 }}>
         <Animated.View style={{
               position: 'absolute',
               borderRadius: 4,
@@ -203,7 +205,7 @@ export default class SlideUp extends Component {
                     backgroundColor: contentSectionBgColor,
                     position: 'absolute',
                     width: '100%',
-                    zIndex: 300,
+                    zIndex: 1,
                     height: '100%',
                     minHeight: visibleHeight,
                     // borderTopLeftRadius: animatedBorderRaduis,

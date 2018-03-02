@@ -7,6 +7,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-nati
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Actions } from 'react-native-router-flux';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
+import { biluneActions } from './actions';
 import MapMarker from './MapMarker';
 import * as mapHelper from './common/mapHelper';
 
@@ -33,10 +34,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    bottom: 40,
     right: 0,
     ...ifIphoneX({
       bottom: 60,
+    }, {
+      bottom: 40,
     }),
   },
   openBtn: {
@@ -127,15 +129,29 @@ class MapHomePage extends Component {
       const { buildings } = this.props;
       const visibleBuildings = buildings.filter(b => mapHelper.buildingInBoundingBox(region, b));
       if (visibleBuildings.length > 0) {
-        const buildingMarkers = visibleBuildings.map(bat => this.generateMarker(bat, selectedBuilding));
+        const buildingMarkers = visibleBuildings
+          .map(bat => this.generateMarker(bat, selectedBuilding));
         this.setState(() => ({ buildingMarkers }));
       }
     }
 
+  renderBuildingFloor = async (id) => {
+    this.props.loadAllBuildingData(id);
+  }
   renderOpenMapButton = () => (
     <TouchableOpacity
       style={styles.openBtn}
-      onPress={() => Actions.push('mapPage', { buildingId: this.props.id, localId: null })}
+      onPress={async () => {
+        const buildingId = this.props.id || mapHelper.getBuilidngId({ ...this.props });
+
+        const tragetBuilding = this.props.buildings.find(b => b.id === buildingId);
+        if (tragetBuilding && tragetBuilding.floors) {
+          Actions.push('mapPage', { buildingId, localId: null });
+        } else {
+          await this.renderBuildingFloor(buildingId);
+          Actions.push('mapPage', { buildingId, localId: null });
+        }
+      }}
     >
       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>&#10063;</Text>
     </TouchableOpacity>
@@ -168,4 +184,4 @@ const mapStateToProps = state => (
     id: state.bilune.id,
   });
 
-export default connect(mapStateToProps)(MapHomePage);
+export default connect(mapStateToProps, { ...biluneActions })(MapHomePage);
