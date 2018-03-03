@@ -113,6 +113,7 @@ class MapPage extends Component {
       localId: null,
       floorId: null,
       mapType: 'standard',
+      floors: [],
     };
   }
 
@@ -283,20 +284,25 @@ handleMapTypeChange = (value) => {
   this.setState(() => ({ mapType: value }));
 }
 
+overlayJsx = tragetBuilding => (<BuildingOverlay
+  selectedFloor={this.state.floorId}
+  building={tragetBuilding}
+  onFloorChange={this.handleFloorChange}
+  onMapTypeChange={this.handleMapTypeChange}
+/>)
 overlayContent = () => {
   const tragetBuilding = this.props.buildings.find(b => b.id === this.state.id);
-  
-  if (tragetBuilding && tragetBuilding.floors) {
-    return (
-      <BuildingOverlay
-        selectedFloor={this.state.floorId}
-        building={tragetBuilding}
-        onFloorChange={this.handleFloorChange}
-        onMapTypeChange={this.handleMapTypeChange}
-      />
-    );
+  let floors = [];
+  if (!tragetBuilding.floors) {
+    floors = this.props.loadBuildingFloors(this.state.id).then((d) => {
+      tragetBuilding[floors] = d.data;
+      return this.overlayJsx(tragetBuilding);
+    });
+  } else {
+    return this.overlayJsx(tragetBuilding);
   }
 }
+
 
     handleRegionChange = (trackRegion) => {
       region = trackRegion;

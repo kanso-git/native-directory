@@ -51,7 +51,7 @@ console.log(floorData);
             style={{ width: 140, height: 108 }}
             source={{ uri: image }}
           />
-          <View style={{ width: width - 150, marginLeft: 10 }}>
+          <View style={{ width: width - 160, marginLeft: 10 }}>
             <View style={{ flex: 1 }}>
               <Text>{abreviation} </Text>
               <Text>{`${adresseLigne1}

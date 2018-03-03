@@ -486,6 +486,32 @@ const loadOccupentsPerLocal = localId =>
     }
   };
 
+const loadBuildingFloors = buildingId =>
+  async (dispatch, getState) => {
+    try {
+      const floors = await getBdlBuildingFloorsAxios(dispatch, buildingId);
+      const dataBuildings = getState().bilune.buildings;
+      const buildings = dataBuildings.map((b) => {
+        if (b.id === buildingId) {
+          return { ...b, floors };
+        }
+        return b;
+      });
+
+      dispatch({
+        type: types.ENRICH_BILUNE_BUILDING,
+        payload: { buildings },
+      });
+      return floors;
+    } catch (e) {
+      if (e.response) {
+        if (e.response.status === 401) {
+          console.warn(`Error buildingFloors ${e} `);
+        }
+      }
+    }
+  };
+
 
 const loadAllBuildingData = buildingId =>
   async (dispatch, getState) => {
@@ -784,4 +810,5 @@ export {
   showHideReservationDay,
   searchInLocalReservations,
   loadOccupentsPerLocal,
+  loadBuildingFloors,
 };

@@ -136,7 +136,7 @@ class MapHomePage extends Component {
     }
 
   renderBuildingFloor = async (id) => {
-    this.props.loadAllBuildingData(id);
+    this.props.loadBuildingFloors(id);
   }
   renderOpenMapButton = () => (
     <TouchableOpacity
