@@ -44,14 +44,14 @@ class BuildingOverlay extends Component {
     } = this.props.building;
 console.log(floorData);
     return (
-      <View style={{ padding: 5 }}>
+      <View style={{ padding: 2 }}>
 
         <View style={{ flexDirection: 'row' }}>
           <Image
-            style={{ width: 140, height: 108 }}
+            style={{ width: 150, height: 108 }}
             source={{ uri: image }}
           />
-          <View style={{ width: width - 160, marginLeft: 10 }}>
+          <View style={{ width: width - 165, marginLeft: 10 }}>
             <View style={{ flex: 1 }}>
               <Text>{abreviation} </Text>
               <Text>{`${adresseLigne1}
