@@ -196,6 +196,24 @@ onLongPress = (c) => {
     this.handleOnLocalPress(targetPolygon.attributes.LOC_ID, coordinate);
   }
 }
+onPress = (c) => {
+  const { coordinate } = c.nativeEvent;
+  const inside = require('point-in-polygon');
+  const allLocals = [...data.mainLocals, ...data.otherLocals];
+  const targetPolygon = allLocals.find((f) => {
+    const polygon = f.geometry
+      .rings[0].map(p => [mapHelper.toWebMercatorX(p[0]), mapHelper.toWebMercatorY(p[1])]);
+    const insidePoly = inside([coordinate.longitude, coordinate.latitude], polygon);
+    if (insidePoly) {
+      return true;
+    }
+    return false;
+  });
+  if (targetPolygon) {
+    const { BAT_ID, LOC_ID } = targetPolygon.attributes;
+    this.setState(() => ({ id: BAT_ID, localId: LOC_ID }));
+  }
+}
 // helper method to return an array of local polygon
 getMapLocals = dataLocals =>
   dataLocals.map((f) => {
@@ -476,6 +494,7 @@ overlayContent = () => {
         onRegionChange={this.handleRegionChange}
         onRegionChangeComplete={this.handleRegionChangeComplete}
         onLongPress={this.onLongPress}
+        onPress={this.onPress}
       >
         {this.state.maplocals}
         {this.state.mapMarkers}
