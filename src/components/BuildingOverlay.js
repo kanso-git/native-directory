@@ -60,24 +60,26 @@ console.log(floorData);
 
         <View style={{ flexDirection: 'row' }}>
           <Image
-            style={{ width: 150, height: 108 }}
+            style={{ width: 145, height: 100 }}
             source={{ uri: image }}
           />
-          <View style={{ width: width - 165, marginLeft: 10 }}>
+          <View style={{ width: width - 160, marginLeft: 10 }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.title}>{abreviation} </Text>
               <Text style={styles.subtitle}>{`${adresseLigne1}
 ${npa} ${localite}`}
               </Text>
-              <Dropdown
-                label="étage :"
-                data={floorData}
-                value={floorObject.designation}
-                itemPadding={1}
-                itemCount={floorData.length}
-                dropdownOffset={{ top: 32, left: 10 }}
-                onChangeText={this.props.onFloorChange}
-              />
+              <View style={{ marginTop: -12 }}>
+                <Dropdown
+                  label="étage :"
+                  data={floorData}
+                  value={floorObject.designation}
+                  itemPadding={1}
+                  itemCount={floorData.length}
+                  dropdownOffset={{ top: 32, left: 10 }}
+                  onChangeText={this.props.onFloorChange}
+                />
+              </View>
             </View>
           </View>
         </View>

@@ -10,6 +10,7 @@ import {
   PanResponder,
   Easing,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 
@@ -28,8 +29,10 @@ export default class SlideUp extends Component {
 
     if (isIphoneX()) {
       this.maxBottom = heightOverlay * 0.35;
-    } else {
+    } else if (Platform.OS === 'ios') {
       this.maxBottom = heightOverlay * 0.33;
+    } else {
+      this.maxBottom = heightOverlay * 0.39;
     }
     this.state = { scrollY: new Animated.Value(this.maxBottom) };
   }
@@ -245,7 +248,7 @@ export default class SlideUp extends Component {
                 }}
       >
 
-        <View {...this.panResponder.panHandlers}>
+        <View >
           <TouchableOpacity
             onPress={() => {
                     if (this.currentModalPosition === 'top') {

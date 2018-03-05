@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     ...ifIphoneX({
       bottom: 33,
     }, {
-      bottom: 25,
+      bottom: Platform.OS === 'ios' ? 25 : 45,
     }),
   },
   openBtn: {
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    paddingTop: height * 0.5,
+    paddingTop: Platform.OS === 'ios' ? height * 0.5 : height * 0.43,
     alignItems: 'center',
     justifyContent: 'flex-end',
     marginBottom: -5,
