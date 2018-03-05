@@ -58,7 +58,10 @@
 		"localTotalNumber": "Total de locaux"
     },
     "mapPage" : {
-        "pageTitle" : "Carte"
+        "pageTitle" : "Carte",
+        "iosPositionError": "Pour localiser votre emplacement, activez l'autorisation pour l'application dans Paramètres - Confidentialité - Emplacement",
+        "androidPositionError":"Pour localiser votre emplacement, activez l'autorisation pour l'application dans Paramètres - Applications - ExampleApp - Emplacement",
+        "positionError":"Erreur lors de la détection de votre position"
     },
     "local" : {
         "pageTitle" : "Local",

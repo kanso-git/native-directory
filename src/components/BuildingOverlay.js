@@ -11,6 +11,18 @@ const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
   },
+  title: {
+    color: '#000',
+    fontSize: 13,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+  },
+  subtitle: {
+    marginTop: 2,
+    color: '#888888',
+    fontSize: 12,
+    fontStyle: 'italic',
+  },
 });
 
 const options = [
@@ -53,8 +65,8 @@ console.log(floorData);
           />
           <View style={{ width: width - 165, marginLeft: 10 }}>
             <View style={{ flex: 1 }}>
-              <Text>{abreviation} </Text>
-              <Text>{`${adresseLigne1}
+              <Text style={styles.title}>{abreviation} </Text>
+              <Text style={styles.subtitle}>{`${adresseLigne1}
 ${npa} ${localite}`}
               </Text>
               <Dropdown

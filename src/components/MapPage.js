@@ -6,13 +6,14 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Alert, StyleSheet, View, Text, TouchableOpacity, Dimensions, Platform } from 'react-native';
+import { Alert, StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Callout, Marker } from 'react-native-maps';
 import * as ldash from 'lodash';
 import Icon from 'react-native-fa-icons';
+import I18n from 'react-native-i18n';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { biluneActions } from './actions';
-import { Spinner, SlideUp } from './common';
+import { Spinner, SlideUp, utile } from './common';
 import CustomCallout from './CustomCallout';
 import * as mapHelper from './common/mapHelper';
 import MapPolygon from './MapPolygon';
@@ -25,6 +26,8 @@ const LATITUDE = 46.988;
 const LONGITUDE = 6.931;
 const LATITUDE_DELTA = 0.07482692805103852;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const SHOW_SLIDE_UP = 'show';
+const HIDE_SLIDE_UP = 'hide';
 
 const initialRegion = {
   latitude: LATITUDE,
@@ -53,7 +56,7 @@ const styles = StyleSheet.create({
     right: 0,
     flex: 1,
     ...ifIphoneX({
-      bottom: 35,
+      bottom: 33,
     }, {
       bottom: 25,
     }),
@@ -87,7 +90,7 @@ const styles = StyleSheet.create({
     padding: 6,
     borderRadius: 10,
     width: 40,
-    height: 80,
+    height: 120,
     paddingTop: 13,
     paddingBottom: 13,
     alignItems: 'center',
@@ -114,6 +117,7 @@ class MapPage extends Component {
       floorId: null,
       mapType: 'standard',
       floors: [],
+      slideUpStatus: null,
     };
   }
 
@@ -138,6 +142,7 @@ class MapPage extends Component {
     console.log('.................. componentDidMount ................');
     if (this.props.biluneState === 'BDL_LOADED') {
       // this.renderMapData();
+      region = mapHelper.getRegionForSelectedBat({ ...this.props, ...this.state });
     }
   }
   // called each time component revives new states or props values
@@ -171,7 +176,7 @@ class MapPage extends Component {
  called on onLayout mapView method, to avoid carshing th app mainly on android
   */
 onLayoutMapReady = () => {
-  console.log(`>>>>>>>> onLayoutMapReady  id:${this.props.id}, localId:${this.props.localId} >>>>>`);
+  console.log(`>>>>>>>> onLayoutMapReady  id:${this.state.id}, localId:${this.state.localId} >>>>>`);
   const myMap = this.map;
   if (myMap) {
     myMap.animateToRegion(region, 0);
@@ -192,28 +197,62 @@ onLongPress = (c) => {
     return false;
   });
   if (targetPolygon) {
-    this.setState(() => ({ localId: targetPolygon.attributes.LOC_ID }));
-    this.handleOnLocalPress(targetPolygon.attributes.LOC_ID, coordinate);
-  }
-}
-onPress = (c) => {
-  const { coordinate } = c.nativeEvent;
-  const inside = require('point-in-polygon');
-  const allLocals = [...data.mainLocals, ...data.otherLocals];
-  const targetPolygon = allLocals.find((f) => {
-    const polygon = f.geometry
-      .rings[0].map(p => [mapHelper.toWebMercatorX(p[0]), mapHelper.toWebMercatorY(p[1])]);
-    const insidePoly = inside([coordinate.longitude, coordinate.latitude], polygon);
-    if (insidePoly) {
-      return true;
-    }
-    return false;
-  });
-  if (targetPolygon) {
+    const slideUpStatus = SHOW_SLIDE_UP;
     const { BAT_ID, LOC_ID } = targetPolygon.attributes;
-    this.setState(() => ({ id: BAT_ID, localId: LOC_ID }));
+    this.setState(() => ({ localId: LOC_ID, id: BAT_ID, slideUpStatus }));
+    this.handleOnLocalPress(targetPolygon.attributes.LOC_ID, coordinate);
+  } else {
+    // check if the widget is opened
+    const slideUpStatus = HIDE_SLIDE_UP;
+    this.setState(() => ({ slideUpStatus, localMarker: null, localId: null }));
   }
 }
+onMarkerPress = (floorId, BuildingId) => {
+  this.setState(() => ({
+    localId: null, floorId, id: BuildingId, slideUpStatus: SHOW_SLIDE_UP,
+  }));
+}
+onPolygonPress = (locId, floorIdStr, BuildingId) => {
+  console.log(`onPolygonPress locId:${locId}, floorId:${floorIdStr}, BuildingId:${BuildingId} `);
+  this.setState(() => ({
+    localId: locId, floorId: parseInt(floorIdStr, 10), id: BuildingId, slideUpStatus: SHOW_SLIDE_UP,
+  }));
+}
+
+onPress = (c) => {
+  if (this.state.maplocals !== null) {
+    const { coordinate } = c.nativeEvent;
+    const inside = require('point-in-polygon');
+    const allLocals = [...data.mainLocals, ...data.otherLocals];
+    const targetPolygon = allLocals.find((f) => {
+      const polygon = f.geometry
+        .rings[0].map(p => [mapHelper.toWebMercatorX(p[0]), mapHelper.toWebMercatorY(p[1])]);
+      const insidePoly = inside([coordinate.longitude, coordinate.latitude], polygon);
+      if (insidePoly) {
+        return true;
+      }
+      return false;
+    });
+    if (targetPolygon) {
+      const slideUpStatus = SHOW_SLIDE_UP;
+      const { BAT_ID } = targetPolygon.attributes;
+      this.setState(() => ({
+        id: BAT_ID,
+        localId: null,
+        localMarker: null,
+        slideUpStatus,
+      }));
+    } else {
+    // check if the widget is opened
+      const slideUpStatus = HIDE_SLIDE_UP;
+      this.setState(() => ({ slideUpStatus, localMarker: null, localId: null }));
+    }
+  } else {
+    const slideUpStatus = HIDE_SLIDE_UP;
+    this.setState(() => ({ slideUpStatus, localMarker: null, localId: null }));
+  }
+}
+
 // helper method to return an array of local polygon
 getMapLocals = dataLocals =>
   dataLocals.map((f) => {
@@ -221,11 +260,13 @@ getMapLocals = dataLocals =>
       latitude: mapHelper.toWebMercatorY(p[1]),
       longitude: mapHelper.toWebMercatorX(p[0]),
     }));
+    const { LOC_ID, ETG_ID, BAT_ID } = f.attributes;
     const locals = (
       <MapPolygon
         fillColor={mapHelper.colorByLocType(f.attributes.LOC_TYPE_ID)}
         key={f.attributes.OBJECTID}
         coordinates={[...aLatLng]}
+        onPress={() => this.onPolygonPress(LOC_ID, ETG_ID, BAT_ID)}
       />
     );
     return locals;
@@ -276,23 +317,29 @@ getCurrentPosition = () => {
         }
       },
       (error) => {
-        // TODO: better design
         switch (error.code) {
           case 1:
             if (Platform.OS === 'ios') {
-              Alert.alert('', 'Para ubicar tu locación habilita permiso para la aplicación en Ajustes - Privacidad - Localización');
+              Alert.alert('', I18n.t('mapPage.iosPositionError'));
             } else {
-              Alert.alert('', 'Para ubicar tu locación habilita permiso para la aplicación en Ajustes - Apps - ExampleApp - Localización');
+              Alert.alert('', I18n.t('mapPage.androidPositionError'));
             }
             break;
           default:
-            Alert.alert('', 'Error al detectar tu locación');
+            Alert.alert('', I18n.t('mapPage.positionError'));
         }
       },
     );
   } catch (e) {
-    alert(e.message || '');
+    console.warn(e.message || '');
   }
+}
+fitToRegion = () => {
+  const myMap = this.map;
+  if (myMap) {
+    myMap.animateToRegion(initialRegion, 0);
+  }
+  this.setState(() => ({ slideUpStatus: HIDE_SLIDE_UP }));
 }
 handleFloorChange = (value, index, floor) => {
   console.log(`handleFloorChange value:${value} index:${index}, data:${floor}`);
@@ -378,6 +425,7 @@ overlayContent = () => {
          }}
        title={` ${bat.abreviation}`}
        description={`${bat.adresseLigne1}`}
+       onPress={() => setTimeout(() => this.onMarkerPress(bat.etageIdParDefaut, bat.id), 0)}
      />));
      this.setState(() => ({ mapMarkers, localMarker: null, maplocals: null }));
    }
@@ -463,11 +511,20 @@ overlayContent = () => {
   renderMapTypeSelectors = () => (
     <View style={styles.mapType} >
       <TouchableOpacity
-        onPress={() => this.setState(() => ({ mapType: 'standard' }))}
+        onPress={() => this.setState(() => ({ slideUpStatus: SHOW_SLIDE_UP }))}
       >
         <Text style={{ fontSize: 20, color: '#007aff' }} >&#9432;</Text>
       </TouchableOpacity>
       <View style={styles.lineStyle} />
+
+      <TouchableOpacity onPress={() => { this.fitToRegion(); }}>
+        <Image
+          style={{ width: 30, height: 25 }}
+          source={{ uri: utile.collapseIcon }}
+        />
+      </TouchableOpacity>
+      <View style={styles.lineStyle} />
+
       <TouchableOpacity
         onPress={() => this.getCurrentPosition()}
       >
@@ -509,6 +566,7 @@ overlayContent = () => {
           dragBgColor="#034d7c"
           contentSectionBgColor="rgba(255, 255, 255, 1)"
           contentSection={this.overlayContent()}
+          slideUpStatus={this.state.slideUpStatus}
         />
       </View>
     </View>

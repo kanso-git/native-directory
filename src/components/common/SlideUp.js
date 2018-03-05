@@ -13,6 +13,9 @@ import {
 } from 'react-native';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 
+const SHOW_SLIDE_UP = 'show';
+const HIDE_SLIDE_UP = 'hide';
+
 export default class SlideUp extends Component {
   constructor(props) {
     super(props);
@@ -40,6 +43,28 @@ export default class SlideUp extends Component {
       onPanResponderTerminate: this.handlePanResponderEnd.bind(this),
     });
   }
+
+  componentDidMount() {
+    this.handleStausChange(this.props.slideUpStatus);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('.... SlideUp componentWillReceiveProps ....');
+    this.handleStausChange(nextProps.slideUpStatus);
+  }
+ handleStausChange = (status) => {
+   console.info(`SlideUp handleStausChange  request to ${status}`);
+   switch (status) {
+     case SHOW_SLIDE_UP:
+       this.slideUp();
+       break;
+     case HIDE_SLIDE_UP:
+       this.slideDown();
+       break;
+     default:
+       break;
+   }
+ }
 
 
   defaultDraggableSection = () => {
@@ -254,4 +279,5 @@ SlideUp.defaultProps = {
   dragBgColor: '#ddd',
   contentSectionBgColor: '#ddd',
   dragArrowColor: '#888',
+  slideUpStatus: null,
 };
