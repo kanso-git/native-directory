@@ -75,8 +75,10 @@ ${npa} ${localite}`}
                   data={floorData}
                   value={floorObject.designation}
                   itemPadding={1}
-                  itemCount={floorData.length}
-                  dropdownOffset={{ top: 32, left: 10 }}
+                  itemCount={4}
+                  fontSize={13}
+                  dropdownOffset={{ top: 10, left: 10 }}
+                  dropdownMargins={{ min: 8, max: 16 }}
                   onChangeText={this.props.onFloorChange}
                 />
               </View>

@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     ...ifIphoneX({
       bottom: 33,
     }, {
-      bottom: Platform.OS === 'ios' ? 25 : 45,
+      bottom: Platform.OS === 'ios' ? 25 : 35,
     }),
   },
   openBtn: {
