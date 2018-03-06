@@ -334,26 +334,48 @@ getCurrentPosition = () => {
     console.warn(e.message || '');
   }
 }
-fitToRegion = () => {
+fitToInitialRegion = () => {
   const myMap = this.map;
   if (myMap) {
     myMap.animateToRegion(initialRegion, 0);
   }
   this.setState(() => ({ slideUpStatus: HIDE_SLIDE_UP }));
 }
+fitToRegion = () => {
+  const myMap = this.map;
+  if (myMap) {
+    region = mapHelper.getRegionForSelectedBat({ ...this.props, ...this.state });
+    myMap.animateToRegion(region, 0);
+  }
+  this.setState(() => ({ slideUpStatus: HIDE_SLIDE_UP }));
+  this.renderMapData('after floor change or image click');
+}
 handleFloorChange = (value, index, floor) => {
-  console.log(`handleFloorChange value:${value} index:${index}, data:${floor}`);
+  this.setState(() => ({
+    id: floor[0].buildingId,
+    floorId: value,
+    localId: null,
+    localMarker: null,
+  }));
+  this.fitToRegion();
 }
 
 handleMapTypeChange = (value) => {
   this.setState(() => ({ mapType: value }));
 }
 
+handleImageClick = () => {
+  console.log(`handleImageClick batId:${this.state.id},  floorId:${this.state.floorId}`);
+  this.fitToRegion();
+}
+
+
 overlayJsx = tragetBuilding => (<BuildingOverlay
   selectedFloor={this.state.floorId}
   building={tragetBuilding}
   onFloorChange={this.handleFloorChange}
   onMapTypeChange={this.handleMapTypeChange}
+  onImageClick={this.handleImageClick}
 />)
 overlayContent = () => {
   const tragetBuilding = this.props.buildings.find(b => b.id === this.state.id);
@@ -517,7 +539,7 @@ overlayContent = () => {
       </TouchableOpacity>
       <View style={styles.lineStyle} />
 
-      <TouchableOpacity onPress={() => { this.fitToRegion(); }}>
+      <TouchableOpacity onPress={() => { this.fitToInitialRegion(); }}>
         <Image
           style={{ width: 30, height: 25 }}
           source={{ uri: utile.collapseIcon }}

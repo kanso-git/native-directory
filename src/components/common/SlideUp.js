@@ -30,7 +30,7 @@ export default class SlideUp extends Component {
     if (isIphoneX()) {
       this.maxBottom = heightOverlay * 0.35;
     } else if (Platform.OS === 'ios') {
-      this.maxBottom = heightOverlay * 0.33;
+      this.maxBottom = heightOverlay * 0.36;
     } else {
       this.maxBottom = heightOverlay * 0.39;
     }

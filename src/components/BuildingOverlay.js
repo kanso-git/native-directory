@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, StyleSheet, Image, Text, Dimensions } from 'react-native';
+import { View, StyleSheet, Image, Text, Dimensions, TouchableOpacity } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
 import { Dropdown } from 'react-native-material-dropdown';
 
@@ -47,6 +47,7 @@ class BuildingOverlay extends Component {
     const floorData = this.props.building.floors.map(f => ({
       value: f.id,
       label: f.designation,
+      buildingId: this.props.building.id,
     }));
     const floorId = this.props.floorId ? this.props.floorId : this.props.building.etageIdParDefaut;
     const floorObject = this.props.building.floors.find(f => f.id === parseInt(floorId, 10));
@@ -54,15 +55,17 @@ class BuildingOverlay extends Component {
     const {
       abreviation, adresseLigne1, npa, localite,
     } = this.props.building;
-console.log(floorData);
+    console.log(floorData);
     return (
       <View style={{ padding: 2 }}>
 
         <View style={{ flexDirection: 'row' }}>
-          <Image
-            style={{ width: 145, height: 100 }}
-            source={{ uri: image }}
-          />
+          <TouchableOpacity onPress={this.props.onImageClick}>
+            <Image
+              style={{ width: 145, height: 100 }}
+              source={{ uri: image }}
+            />
+          </TouchableOpacity>
           <View style={{ width: width - 160, marginLeft: 10 }}>
             <View style={{ flex: 1 }}>
               <Text style={styles.title}>{abreviation} </Text>
@@ -70,6 +73,7 @@ console.log(floorData);
 ${npa} ${localite}`}
               </Text>
               <View style={{ marginTop: -12 }}>
+                { floorData.length > 1 &&
                 <Dropdown
                   label="étage :"
                   data={floorData}
@@ -81,17 +85,24 @@ ${npa} ${localite}`}
                   dropdownMargins={{ min: 8, max: 16 }}
                   onChangeText={this.props.onFloorChange}
                 />
+              }
+                { floorData.length === 1 &&
+                  <View>
+                    <Text style={[styles.subtitle, { marginTop: 20 }]}>étage:</Text>
+                    <Text style={[styles.subtitle]}>{floorData[0].label}</Text>
+                  </View>
+              }
               </View>
             </View>
           </View>
         </View>
         <View style={{ paddingTop: 10 }}>
-          <Text style={{ fontSize: 17, paddingBottom: 10 }}>Réglages de Plans</Text>
+          <Text style={{ fontSize: 14, paddingBottom: 10 }}>Réglages de Plans</Text>
           <View>
             <SwitchSelector
               options={options}
               borderColor="black"
-              fontSize={16}
+              fontSize={13}
               initial={0}
               onPress={this.props.onMapTypeChange}
             />

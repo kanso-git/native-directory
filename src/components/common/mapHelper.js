@@ -192,7 +192,7 @@ const getCenteredRegionByFloor = (locals) => {
 };
 
 const getVisibleLocals = (bilune, region) => {
-  const { localId, locals } = bilune;
+  const { localId, locals, floorId } = bilune;
   const id = getBuilidngId(bilune);
   const visibleLocals = {
     mainLocals: [],
@@ -221,7 +221,7 @@ const getVisibleLocals = (bilune, region) => {
       .filter(l => localInBoundingBox(region, l));
     visibleLocals.mainLocals.push(...tempLocals);
   } else {
-    const etageId = mainBuilding.etageIdParDefaut;
+    const etageId = floorId != null ? parseInt(floorId, 10) : mainBuilding.etageIdParDefaut;
     const tempLocals = filterLocals(locals, etageId, mainBuilding.id)
       .filter(l => localInBoundingBox(region, l));
     visibleLocals.mainLocals.push(...tempLocals);
