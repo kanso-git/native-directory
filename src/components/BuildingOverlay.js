@@ -98,7 +98,7 @@ ${npa} ${localite}`}
         </View>
         <View style={{ paddingTop: 10 }}>
           <Text style={{ fontSize: 14, paddingBottom: 10 }}>Réglages de Plans</Text>
-          <View>
+          <View style={{ marginTop: -5 }}>
             <SwitchSelector
               options={options}
               borderColor="black"

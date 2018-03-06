@@ -3,7 +3,7 @@
 /* eslint-disable consistent-return */
 /* eslint global-require: "off" */
 /* eslint-disable react/prop-types,no-empty */
-
+/* eslint-disable no-nested-ternary */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert, StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, Platform } from 'react-native';
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     ...ifIphoneX({
       bottom: 33,
     }, {
-      bottom: Platform.OS === 'ios' ? 25 : 35,
+      bottom: Platform.OS === 'ios' ? 32 : 35,
     }),
   },
   openBtn: {
@@ -77,7 +77,13 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    paddingTop: Platform.OS === 'ios' ? height * 0.5 : height * 0.43,
+    ...ifIphoneX({
+      paddingTop: height * 0.6,
+    }, {
+      paddingTop: Platform.OS === 'ios' ?
+        (height > 700 ? height * 0.6 : height * 0.58) :
+        (height >= 640 ? height * 0.53 : height * 0.50),
+    }),
     alignItems: 'center',
     justifyContent: 'flex-end',
     marginBottom: -5,
@@ -117,7 +123,7 @@ class MapPage extends Component {
       floorId: null,
       mapType: 'standard',
       floors: [],
-      slideUpStatus: null,
+      slideUpStatus: HIDE_SLIDE_UP,
     };
   }
 
@@ -130,6 +136,8 @@ class MapPage extends Component {
     const { params } = this.props.navigation.state;
     const initialState = mapHelper.extractParams(params, { ...this.props });
     this.setState(() => ({ ...initialState }));
+    console.info(`componentWillMount >>>>>>>>>>>> set id:${initialState.id}`);
+    this.onBuildingChange(-1, initialState.id);
     region = mapHelper.getRegionForSelectedBat({ ...this.props, id: initialState.id });
   }
 
@@ -144,6 +152,9 @@ class MapPage extends Component {
       // this.renderMapData();
       region = mapHelper.getRegionForSelectedBat({ ...this.props, ...this.state });
     }
+    // iphone 8 -->667
+    // iphone 7 plus -->736
+    console.log(`height:${height}`);
   }
   // called each time component revives new states or props values
   componentWillReceiveProps(nextProps) {
@@ -172,6 +183,17 @@ class MapPage extends Component {
     region = initialRegion;
   }
 
+onBuildingChange = (prevId, nextId) => {
+  if (prevId !== nextId) {
+    setTimeout(() => {
+      this.setState(() => ({ slideUpStatus: SHOW_SLIDE_UP }));
+    }, 300);
+  } else if (this.state.slideUpStatus === SHOW_SLIDE_UP) {
+    setTimeout(() => {
+      this.setState(() => ({ slideUpStatus: HIDE_SLIDE_UP }));
+    }, 300);
+  }
+}
   /*
  called on onLayout mapView method, to avoid carshing th app mainly on android
   */
@@ -197,29 +219,36 @@ onLongPress = (c) => {
     return false;
   });
   if (targetPolygon) {
-    const slideUpStatus = SHOW_SLIDE_UP;
     const { BAT_ID, LOC_ID } = targetPolygon.attributes;
-    this.setState(() => ({ localId: LOC_ID, id: BAT_ID, slideUpStatus }));
+    console.info(`onLongPress >>>>>>>>>>>>  set id:${BAT_ID}`);
+    this.onBuildingChange(this.state.id, BAT_ID);
+    this.setState(() => ({ localId: LOC_ID, id: BAT_ID }));
     this.handleOnLocalPress(targetPolygon.attributes.LOC_ID, coordinate);
   } else {
     // check if the widget is opened
-    const slideUpStatus = HIDE_SLIDE_UP;
-    this.setState(() => ({ slideUpStatus, localMarker: null, localId: null }));
+    this.setState(() => ({ localMarker: null, localId: null }));
   }
 }
 onMarkerPress = (floorId, BuildingId) => {
+  console.info(`onMarkerPress >>>>>>>>>>>>  set id:${BuildingId}`);
+  this.onBuildingChange(this.state.id, BuildingId);
   this.setState(() => ({
-    localId: null, floorId, id: BuildingId, slideUpStatus: SHOW_SLIDE_UP,
+    localId: null, floorId, id: BuildingId,
   }));
 }
 onPolygonPress = (locId, floorIdStr, BuildingId) => {
-  console.log(`onPolygonPress locId:${locId}, floorId:${floorIdStr}, BuildingId:${BuildingId} `);
+  console.info(`onPolygonPress >>>>>>>>>>>> set id:${BuildingId}`);
+  this.onBuildingChange(this.state.id, BuildingId);
   this.setState(() => ({
-    localId: locId, floorId: parseInt(floorIdStr, 10), id: BuildingId, slideUpStatus: SHOW_SLIDE_UP,
+    localId: locId, floorId: parseInt(floorIdStr, 10), id: BuildingId,
   }));
 }
 
 onPress = (c) => {
+  const unselectedState = {
+    localMarker: null,
+    localId: null,
+  };
   if (this.state.maplocals !== null) {
     const { coordinate } = c.nativeEvent;
     const inside = require('point-in-polygon');
@@ -234,22 +263,26 @@ onPress = (c) => {
       return false;
     });
     if (targetPolygon) {
-      const slideUpStatus = SHOW_SLIDE_UP;
       const { BAT_ID } = targetPolygon.attributes;
+      this.onBuildingChange(this.state.id, BAT_ID);
+      console.info(`onPress >>>>>>>>>>>>  set id:${BAT_ID}`);
       this.setState(() => ({
         id: BAT_ID,
         localId: null,
         localMarker: null,
-        slideUpStatus,
       }));
     } else {
     // check if the widget is opened
-      const slideUpStatus = HIDE_SLIDE_UP;
-      this.setState(() => ({ slideUpStatus, localMarker: null, localId: null }));
+      if (this.state.slideUpStatus === SHOW_SLIDE_UP) {
+        unselectedState.slideUpStatus = HIDE_SLIDE_UP;
+      }
+      this.setState(() => (unselectedState));
     }
   } else {
-    const slideUpStatus = HIDE_SLIDE_UP;
-    this.setState(() => ({ slideUpStatus, localMarker: null, localId: null }));
+    if (this.state.slideUpStatus === SHOW_SLIDE_UP) {
+      unselectedState.slideUpStatus = HIDE_SLIDE_UP;
+    }
+    this.setState(() => (unselectedState));
   }
 }
 
@@ -339,7 +372,6 @@ fitToInitialRegion = () => {
   if (myMap) {
     myMap.animateToRegion(initialRegion, 0);
   }
-  this.setState(() => ({ slideUpStatus: HIDE_SLIDE_UP }));
 }
 fitToRegion = () => {
   const myMap = this.map;
@@ -347,10 +379,10 @@ fitToRegion = () => {
     region = mapHelper.getRegionForSelectedBat({ ...this.props, ...this.state });
     myMap.animateToRegion(region, 0);
   }
-  this.setState(() => ({ slideUpStatus: HIDE_SLIDE_UP }));
   this.renderMapData('after floor change or image click');
 }
 handleFloorChange = (value, index, floor) => {
+  console.info(`handleFloorChange >>>>>>>>>>>>  set id:${floor[0].buildingId}`);
   this.setState(() => ({
     id: floor[0].buildingId,
     floorId: value,
@@ -533,7 +565,14 @@ overlayContent = () => {
   renderMapTypeSelectors = () => (
     <View style={styles.mapType} >
       <TouchableOpacity
-        onPress={() => this.setState(() => ({ slideUpStatus: SHOW_SLIDE_UP }))}
+        onPress={() => {
+          if (this.state.slideUpStatus === HIDE_SLIDE_UP) {
+            this.setState(() => ({ slideUpStatus: SHOW_SLIDE_UP }));
+          } else {
+            this.setState(() => ({ slideUpStatus: HIDE_SLIDE_UP }));
+          }
+          }
+        }
       >
         <Text style={{ fontSize: 20, color: '#007aff' }} >&#9432;</Text>
       </TouchableOpacity>
