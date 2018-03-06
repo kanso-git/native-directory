@@ -61,7 +61,12 @@
         "pageTitle" : "Map",
         "iosPositionError": "To locate your location enable permission for the application in Settings - Privacy - Location",
         "androidPositionError":"To locate your location enable permission for the application in Settings - Apps - Location",
-        "positionError":"Error detecting your location"
+        "positionError":"Error detecting your location",
+        "mapType": "MAP TYPE",
+        "default": "Default",
+        "satellite": "Satellite",
+        "hybrid": "Hybrid",
+        "floor" : "Floor"
     },
     "local" : {
         "pageTitle" : "Local",

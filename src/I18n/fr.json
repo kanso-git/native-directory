@@ -61,7 +61,12 @@
         "pageTitle" : "Carte",
         "iosPositionError": "Pour localiser votre emplacement, activez l'autorisation pour l'application dans Paramètres - Confidentialité - Emplacement",
         "androidPositionError":"Pour localiser votre emplacement, activez l'autorisation pour l'application dans Paramètres - Applications - ExampleApp - Emplacement",
-        "positionError":"Erreur lors de la détection de votre position"
+        "positionError":"Erreur lors de la détection de votre position",
+        "mapType": "Réglages de Plans",
+        "default": "Plan",
+        "satellite": "Satellite",
+        "hybrid": "Hybrid",
+        "floor" : "Étage"
     },
     "local" : {
         "pageTitle" : "Local",

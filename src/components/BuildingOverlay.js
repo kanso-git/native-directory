@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { View, StyleSheet, Image, Text, Dimensions, TouchableOpacity } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
 import { Dropdown } from 'react-native-material-dropdown';
+import I18n from 'react-native-i18n';
 
 const { width } = Dimensions.get('window');
 
@@ -26,9 +27,9 @@ const styles = StyleSheet.create({
 });
 
 const options = [
-  { label: 'Plan', value: 'standard' },
-  { label: 'Satellite', value: 'satellite' },
-  { label: 'Hybrid', value: 'hybrid' },
+  { label: I18n.t('mapPage.default'), value: 'standard' },
+  { label: I18n.t('mapPage.satellite'), value: 'satellite' },
+  { label: I18n.t('mapPage.hybrid'), value: 'hybrid' },
 ];
 
 class BuildingOverlay extends Component {
@@ -75,7 +76,7 @@ ${npa} ${localite}`}
               <View style={{ marginTop: -12 }}>
                 { floorData.length > 1 &&
                 <Dropdown
-                  label="étage :"
+                  label={`${I18n.t('mapPage.floor')} :`}
                   data={floorData}
                   value={floorObject.designation}
                   itemPadding={1}
@@ -88,7 +89,7 @@ ${npa} ${localite}`}
               }
                 { floorData.length === 1 &&
                   <View>
-                    <Text style={[styles.subtitle, { marginTop: 20 }]}>étage:</Text>
+                    <Text style={[styles.subtitle, { marginTop: 20 }]}>{`${I18n.t('mapPage.floor')} :`}</Text>
                     <Text style={[styles.subtitle]}>{floorData[0].label}</Text>
                   </View>
               }
@@ -96,8 +97,8 @@ ${npa} ${localite}`}
             </View>
           </View>
         </View>
-        <View style={{ paddingTop: 10 }}>
-          <Text style={{ fontSize: 14, paddingBottom: 10 }}>Réglages de Plans</Text>
+        <View style={{ paddingTop: 10, height: 50 }}>
+          <Text style={{ fontSize: 14, paddingBottom: 10, paddingLeft: 5 }}>{I18n.t('mapPage.mapType')}</Text>
           <View style={{ marginTop: -5 }}>
             <SwitchSelector
               options={options}
