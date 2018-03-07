@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types,no-empty */
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, FlatList, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Platform } from 'react-native';
 import Icon from 'react-native-fa-icons';
 import { Actions } from 'react-native-router-flux';
 import I18n from 'react-native-i18n';
@@ -53,8 +53,6 @@ const styles = StyleSheet.create({
   },
   addressStyle: {
     paddingLeft: 20,
-    paddingBottom: 10,
-    height: 120,
   },
 });
 
@@ -75,12 +73,14 @@ class LocalPersons extends Component {
   }
 
   renderOfficeAddress = location => (
-    <TouchableOpacity onPress={() => Actions.push('mapPage', { buildingId: location.attributes.BAT_ID, localId: location.attributes.LOC_ID })}>
+    <TouchableOpacity
+      onPress={() => Actions.push('mapPage', { buildingId: location.attributes.BAT_ID, localId: location.attributes.LOC_ID })}
+    >
       <View style={[containerStyle, touchableContainer, { marginBottom: 25 }]}>
         <View style={iconWrapper}>
           <Icon name="building" style={[iconStyle, touchable]} allowFontScaling />
         </View>
-        <View style={addressStyle}>
+        <View style={[addressStyle, { paddingLeft: 5 }]}>
           <Text style={[touchable]}>{I18n.t('person.position.location.office')}: {location.attributes.LOC_TYPE_DESIGNATION} - {location.attributes.LOC_CODE} </Text>
           <Text style={[touchable]}>{I18n.t('person.position.location.floor')}: {location.attributes.ETG_DESIGNATION} </Text>
         </View>
@@ -88,14 +88,17 @@ class LocalPersons extends Component {
     </TouchableOpacity>
   );
   renderBuildingAddress = building => (
-    <TouchableOpacity onPress={() => Actions.push('mapPage', { buildingId: building.id })}>
-      <View style={[containerStyle, touchableContainer]}>
+    <TouchableOpacity
+      onPress={() => Actions.push('mapPage', { buildingId: building.id })}
+      style={[containerStyle, touchableContainer, { height: 80 }]}
+    >
+      <View style={{ height: 80 }} >
         <View style={iconWrapper}>
           <Icon name="map-marker" style={[iconStyle, touchable]} allowFontScaling />
         </View>
-        <View style={addressStyle}>
+        <View style={[addressStyle, { paddingLeft: 25, marginTop: -15 }]}>
           { building.designation && <Text style={[touchable]}>{building.designation}</Text> }
-          <Text style={[touchable]}>{`${building.adresseLigne1}
+          <Text style={[touchable, { height: 50 }]}>{`${building.adresseLigne1}
 ${building.npa} ${building.localite}`}
           </Text>
         </View>
@@ -119,7 +122,11 @@ ${building.npa} ${building.localite}`}
 
     return (
       <Card>
-        <CardSection style={{ flexDirection: 'column', height: 120 }}>
+        <CardSection style={{
+ flexDirection: 'column',
+        height: 140,
+}}
+        >
           { this.renderOfficeAddress(targetLocal) }
           { this.renderBuildingAddress(building) }
         </CardSection>
@@ -130,12 +137,14 @@ ${building.npa} ${building.localite}`}
             <Text style={textStyle}>{I18n.t('local.occupants')} ({data.length})</Text>
           </View>
         </CardSection>
-        <FlatList
-          keyboardShouldPersistTaps="always"
-          keyboardDismissMode="on-drag"
-          data={data}
-          renderItem={this.renderItem}
-        />
+        <ScrollView>
+          <FlatList
+            keyboardShouldPersistTaps="always"
+            keyboardDismissMode="on-drag"
+            data={data}
+            renderItem={this.renderItem}
+          />
+        </ScrollView>
       </Card>
     );
   }
