@@ -76,7 +76,8 @@
 		"localCode": "Local code",
 		"bookingSchedule":"Booking",
 		"scheduleFrom": "from",
-		"scheduleTo": "to"
+        "scheduleTo": "to",
+        "occupants": "occupants"
     },
 	"bookingItem" : {
 		"from":"From",

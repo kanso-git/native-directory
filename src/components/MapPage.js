@@ -12,6 +12,7 @@ import * as ldash from 'lodash';
 import Icon from 'react-native-fa-icons';
 import I18n from 'react-native-i18n';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
+import { Actions } from 'react-native-router-flux';
 import { biluneActions } from './actions';
 import { Spinner, SlideUp, utile } from './common';
 import CustomCallout from './CustomCallout';
@@ -245,12 +246,16 @@ onPolygonPress = (locId, floorIdStr, BuildingId) => {
 }
 
 onPress = (c) => {
+  const { coordinate, action } = c.nativeEvent;
   const unselectedState = {
     localMarker: null,
     localId: null,
   };
-  if (this.state.maplocals !== null) {
-    const { coordinate } = c.nativeEvent;
+  if (action) {
+    console.info(`>>>>>>>>>> onMapPress action:${action}`);
+    // marker-press or marker-overlay-press
+  } else if (this.state.maplocals !== null) {
+    // when action is undefined means we have an mapclick event
     const inside = require('point-in-polygon');
     const allLocals = [...data.mainLocals, ...data.otherLocals];
     const targetPolygon = allLocals.find((f) => {
@@ -272,7 +277,7 @@ onPress = (c) => {
         localMarker: null,
       }));
     } else {
-    // check if the widget is opened
+      // check if the widget is opened
       if (this.state.slideUpStatus === SHOW_SLIDE_UP) {
         unselectedState.slideUpStatus = HIDE_SLIDE_UP;
       }
@@ -536,6 +541,17 @@ overlayContent = () => {
       calloutAnchor={{ x: 0.5, y: 0.4 }}
     >
       <Callout
+        onPress={() => {
+          const building = this.props.buildings.find(b => b.id === this.state.id);
+          const typeCode = targetLocal.attributes.LOC_TYPE_ID;
+            if (typeCode === 10 || typeCode === 11 || typeCode === 12 || typeCode === 3) {
+              this.props.setLocalId(targetLocal.attributes.LOC_ID, targetLocal.attributes.BAT_ID);
+              Actions.push('localDetails');
+            } else {
+              Actions.push('localPersons', { targetLocal, occupents, building });
+            }
+          }
+        }
         tooltip
         style={[styles.customView,
           {

@@ -5,7 +5,9 @@ import {
   StyleSheet,
   View,
   Text,
+  TouchableHighlight,
 } from 'react-native';
+import Icon from 'react-native-fa-icons';
 
 
 const styles = StyleSheet.create({
@@ -52,10 +54,27 @@ class CustomCallout extends React.Component {
   }
   render() {
     return (
-      <View style={[styles.container, { height: this.props.height }]}>
+      <View
+        style={[styles.container, { height: this.props.height }]}
+      >
         <View style={[styles.bubble]}>
           <View style={[styles.amount]} >
-            <Text style={{ fontSize: 14, color: 'white', height: 35 }}>{this.props.local}</Text>
+
+            <View style={{ height: 35 }}>
+              <Text style={{ fontSize: 14, color: 'white' }}>{this.props.local}</Text>
+              <Icon
+                style={{
+                      fontSize: 18,
+                      color: 'white',
+                      position: 'absolute',
+                      top: 0,
+                      right: 10,
+                }}
+                name="caret-right"
+              />
+            </View>
+
+
             {this.props.children}
           </View>
         </View>

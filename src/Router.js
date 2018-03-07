@@ -8,6 +8,7 @@ import UnitDetails from './components/UnitDetails';
 import BuildingDetails from './components/BuildingDetails';
 import LocalDetails from './components/LocalDetails';
 import MapPage from './components/MapPage';
+import LocalPersons from './components/LocalPersons';
 import NetworkError from './components/NetworkError';
 
 import SampleParallaxView from './components/SampleParallaxView';
@@ -102,6 +103,16 @@ const RouterComponent = () => (
           backTitle=" "
           component={SampleParallaxView}
           title="SampleParallaxView"
+          titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
+          backButtonTintColor="white"
+          navigationBarStyle={styles.navStyle}
+        />
+
+        <Scene
+          key="localPersons"
+          backTitle=" "
+          component={LocalPersons}
+          title={I18n.t('local.title')}
           titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}

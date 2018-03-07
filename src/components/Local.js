@@ -8,10 +8,10 @@ import { RESERVATION_EMPTY, RESERVATION_PIDHO } from 'react-native-dotenv';
 import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import { Actions } from 'react-native-router-flux';
 import { biluneActions } from './actions';
 import { Card, CardSection, InputFlex, utile, Chromatic } from './common';
 import LocalReservationItem from './LocalReservationItem';
-import { Actions } from 'react-native-router-flux';
 
 const styles = StyleSheet.create({
   textStyle: {

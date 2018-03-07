@@ -75,7 +75,8 @@
         "type" : "Type",
 		"bookingSchedule":"Calendrier",
 		"scheduleFrom": "du",
-		"scheduleTo": "au"
+        "scheduleTo": "au",
+        "occupants": "occupants"
     },
 	"bookingItem" : {
 		"from":"De",
