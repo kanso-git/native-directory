@@ -13,7 +13,7 @@
 {
     "id": 3,
     "designation": "Aula, auditoire",
-    "color": "#e6e0cb",
+    "color": "#FF8080",
     "sortOrder": 3
 },
 {
@@ -70,4 +70,89 @@
     "designation": "Autres surfaces",
     "color": "#e3e3d6",
     "sortOrder": 12
-}]
+},
+{
+    "id": 13,
+    "designation": "Ascenseur",
+    "color": "#CC00CC",
+    "sortOrder": 13
+},
+{
+    "id": 14,
+    "designation": "Escalier",
+    "color": "#000000",
+    "sortOrder": 14
+},
+{
+    "id": 15,
+    "designation": "Autres surfaces",
+    "color": "#e3e3d6",
+    "sortOrder": 15
+},
+{
+    "id": 16,
+    "designation": "Réception",
+    "color": "#fff",
+    "sortOrder": 16
+},
+{
+    "id": 17,
+    "designation": "Sanitaires",
+    "color": "#994C00",
+    "sortOrder": 17
+},
+{
+    "id": 18,
+    "designation": "Sanitaires MM",
+    "color": "#994C00",
+    "sortOrder": 18
+},
+{
+    "id": 19,
+    "designation": "Sanitaires Mmes",
+    "color": "#994C00",
+    "sortOrder": 19
+},
+{
+    "id": 20,
+    "designation": "Sanitaires PMR",
+    "color": "#994C00",
+    "sortOrder": 20
+},
+{
+    "id": 21,
+    "designation": "Autres surfaces",
+    "color": "#e3e3d6",
+    "sortOrder": 21
+},
+{
+    "id": 22,
+    "designation": "Autres surfaces",
+    "color": "#e3e3d6",
+    "sortOrder": 22
+},
+{
+    "id": 23,
+    "designation": "Autres surfaces",
+    "color": "#e3e3d6",
+    "sortOrder": 23
+},
+{
+    "id": 24,
+    "designation": "Autres surfaces",
+    "color": "#e3e3d6",
+    "sortOrder": 24
+},
+{
+    "id": 28,
+    "designation": "Autres surfaces",
+    "color": "#e3e3d6",
+    "sortOrder": 25
+},
+{
+    "id": 29,
+    "designation": "Autres surfaces",
+    "color": "#e3e3d6",
+    "sortOrder": 26
+}
+]

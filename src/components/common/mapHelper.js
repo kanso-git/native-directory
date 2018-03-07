@@ -18,6 +18,10 @@ const colorByLocType = (id) => {
   const locObj = typeLocal.filter(l => l.id === id);
   return locObj.length > 0 ? locObj[0].color : '#f7f7f7';
 };
+const designationByLocType = (id) => {
+  const locObj = typeLocal.filter(l => l.id === id);
+  return locObj.length > 0 ? locObj[0].designation : '#f7f7f7';
+};
 
 const getBoundingBox = region => ([
   region.longitude - region.longitudeDelta / 2, // westLng - min lng
@@ -324,4 +328,5 @@ export {
   getRegionForSelectedBatInHomePage,
   getBuilidngId,
   extractParams,
+  designationByLocType,
 };

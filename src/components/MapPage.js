@@ -328,7 +328,7 @@ getCalloutInfo = (occupents, targetLocal) => {
 ${formatedNomEtPernom}`;
     });
   } else {
-    let localType = targetLocal.attributes.LOC_TYPE_DESIGNATION;
+    let localType = mapHelper.designationByLocType(targetLocal.attributes.LOC_TYPE_ID);
     if (targetLocal.attributes.LOC_TYPE_ID === 11) {
       localType = 'Salle d\'ens.';
     }
