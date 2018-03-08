@@ -8,11 +8,7 @@ This is the Unine directory, built using react-native
 
 2 - Unit test using jest
 
-3 - re-render the locals list when images got loaded ..
-
-4 - implement the image stretch ctrl when pulling down ( to avoid seeing blank background when pulling down)
-    https://github.com/i6mi6/react-native-parallax-scroll-view
-
+3 - check out why image is not visible sometimes mainly onCalloutPress an idea to make image as state and to set it each time we access the page 
 
 # Here are 10 fundamental React-Native commands you might find helpful
 
