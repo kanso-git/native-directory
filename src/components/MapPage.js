@@ -459,6 +459,7 @@ overlayContent = () => {
     }
 
     showLocalMarker = async (targetLocal, coordinates) => {
+      console.log(`showLocalMarker for targetLocal:${JSON.stringify(targetLocal, null, 3)}`);
       this.setState(() => ({ localMarker: null }));
       const list = await this.loadOccupent(targetLocal);
       const targetCoordinates = coordinates || mapHelper
@@ -469,7 +470,7 @@ overlayContent = () => {
         if (this.marker1) {
           this.marker1.showCallout();
         }
-      }, 250);
+      }, 350);
     }
 
  renderVisibleBuildings = () => {
@@ -499,9 +500,11 @@ overlayContent = () => {
       const maplocals = this.getMapLocals(filteredMaplocals);
       console.log(`renderVisibleLocals maplocals length:${maplocals.length}`);
       const targetLocId = this.state.localId;
+      console.log(`renderVisibleLocals targetLocId:${targetLocId}`);
       if (targetLocId != null) {
         const targetLocal = filteredMaplocals
           .find(l => l.attributes.LOC_ID === targetLocId);
+        console.log(`renderVisibleLocals targetLocal:${targetLocal}`);
         if (targetLocal) {
           this.showLocalMarker(targetLocal);
         }

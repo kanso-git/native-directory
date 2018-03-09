@@ -282,7 +282,7 @@ const extractParams = (params, bilune) => {
 
   console.log(`buildingId:${buildingId}, 
        localId:${localId}, 
-       localId:${localCode},
+       localCode:${localCode},
        buildingCode:${buildingCode} `);
 
   if (buildingCode && buildingCode != null) {
@@ -290,7 +290,8 @@ const extractParams = (params, bilune) => {
     myBuildingId = myBuilding.id;
   }
   if (localCode && localCode != null) {
-    myLocal = bilune.locals.find(l => l.attributes.LOC_CODE === localCode);
+    myLocal = bilune.locals.find(l => l.attributes.LOC_CODE === localCode &&
+      l.attributes.BAT_ID === myBuildingId);
     myLocalId = myLocal.attributes.LOC_ID;
     myFloorId = myLocal.attributes.ETG_ID;
   }
@@ -305,7 +306,7 @@ const extractParams = (params, bilune) => {
   if (myBuildingId == null) {
     myBuildingId = bilune.buildings[0].id;
   }
-  console.log(`extractParams id:${myBuildingId}, localId:${myLocalId}`);
+  console.log(`extractParams id:${myBuildingId}, localId:${myLocalId}, myFloorId:${myFloorId}`);
   return {
     id: myBuildingId,
     localId: myLocalId,
