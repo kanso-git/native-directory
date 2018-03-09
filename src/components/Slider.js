@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
+import { Actions } from 'react-native-router-flux';
 import * as _ from 'lodash';
 import { biluneActions } from './actions';
 import { sliderWidth, itemWidth } from './SliderEntryStyle';
@@ -15,10 +16,21 @@ class Slider extends Component {
     state={
       entries: this.props.entries || [],
     }
+    componentWillMount() {
+      console.log(`Slider componentWillMount BuildingId:${this.props.id}`);
+    }
     componentWillReceiveProps(nextProps) {
       this.setState(() => ({
         entries: nextProps.entries,
       }));
+    }
+    shouldComponentUpdate() {
+      if (Actions.currentScene === 'home') {
+        console.log('Slider shouldComponentUpdate is true');
+        return true;
+      }
+      console.log('Slider shouldComponentUpdate is fasle');
+      return false;
     }
     // methods can then be called this way
     jumpToSlide= (buidlingId) => {
@@ -41,7 +53,7 @@ class Slider extends Component {
         <View style={[styles.exampleContainer, styles.exampleContainerLight]}>
 
           <Carousel
-            ref={'carousel'}
+            ref="carousel"
             data={this.state.entries}
             renderItem={this.renderItem}
             sliderWidth={sliderWidth}
