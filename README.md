@@ -9,6 +9,7 @@ This is the Unine directory, built using react-native
 2 - Unit test using jest
 
 3 - check out why image is not visible sometimes mainly onCalloutPress an idea to make image as state and to set it each time we access the page 
+4 - add splash screen at launch time  https://github.com/Jacse/react-native-app-intro-slider
 
 # Here are 10 fundamental React-Native commands you might find helpful
 
