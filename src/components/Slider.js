@@ -16,9 +16,6 @@ class Slider extends Component {
     state={
       entries: this.props.entries || [],
     }
-    componentWillMount() {
-      console.log(`Slider componentWillMount BuildingId:${this.props.id}`);
-    }
     componentWillReceiveProps(nextProps) {
       this.setState(() => ({
         entries: nextProps.entries,
