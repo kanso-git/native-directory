@@ -98,6 +98,15 @@ const {
 } = styles;
 
 class Local extends Component {
+  componentWillMount() {
+    const imgId = this.props.localWithReservations.attributes.OBJECTID;
+    if (!this.props.images[imgId]) {
+      // TODO load local the image
+    }
+  }
+  componentDidMount() {
+
+  }
   onSaveEventInCalendar = (event) => {
     const debutUTC = utile.momentStatic.utc(event.debutUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
     const finUTC = utile.momentStatic.utc(event.finUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
