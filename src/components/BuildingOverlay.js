@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types,no-empty */
 
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { View, StyleSheet, Image, Text, Dimensions, TouchableOpacity } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -115,10 +114,4 @@ ${npa} ${localite}`}
   }
 }
 
-
-const mapStateToProps = state => (
-  {
-    buildings: state.bilune.buildings,
-  });
-
-export default connect(mapStateToProps)(BuildingOverlay);
+export default BuildingOverlay;
