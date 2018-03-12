@@ -54,7 +54,7 @@ const RouterComponent = () => (
           backTitle=" "
           component={MemberDetails}
           title={I18n.t('person.pageTitle')}
-          titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
+          titleStyle={styles.titleStyle}
           navigationBarStyle={styles.navStyle}
           backButtonTintColor="white"
           renderRightButton={
@@ -71,7 +71,7 @@ const RouterComponent = () => (
           backTitle=" "
           component={UnitDetails}
           title={I18n.t('unit.pageTitle')}
-          titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
+          titleStyle={styles.titleStyle}
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}
           renderRightButton={
@@ -89,7 +89,7 @@ const RouterComponent = () => (
           backTitle=" "
           component={BuildingDetails}
           title={I18n.t('building.pageTitle')}
-          titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
+          titleStyle={styles.titleStyle}
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}
           renderRightButton={
@@ -107,7 +107,7 @@ const RouterComponent = () => (
           backTitle=" "
           component={LocalDetails}
           title={I18n.t('local.pageTitle')}
-          titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
+          titleStyle={styles.titleStyle}
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}
           renderRightButton={
@@ -125,7 +125,7 @@ const RouterComponent = () => (
           backTitle=" "
           component={MapPage}
           title={I18n.t('mapPage.pageTitle')}
-          titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
+          titleStyle={styles.titleStyle}
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}
           rightButtonImage={base64Icon}
@@ -154,7 +154,7 @@ const RouterComponent = () => (
           backTitle=" "
           component={LocalPersons}
           title={I18n.t('local.title')}
-          titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
+          titleStyle={styles.titleStyle}
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}
           renderRightButton={

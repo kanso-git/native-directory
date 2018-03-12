@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types,no-empty */
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList } from 'react-native';
 import Icon from 'react-native-fa-icons';
 import { Actions } from 'react-native-router-flux';
 import I18n from 'react-native-i18n';
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   containerStyle: {
     flex: 1,
-    height: 25,
+    height: 35,
     flexDirection: 'row',
     alignItems: 'flex-start',
     paddingTop: 10,
@@ -49,10 +49,10 @@ const styles = StyleSheet.create({
     color: '#007aff',
   },
   touchableContainer: {
-    marginBottom: 15,
+    marginBottom: 10,
   },
   addressStyle: {
-    paddingLeft: 20,
+    paddingLeft: 35,
   },
 });
 
@@ -74,9 +74,10 @@ class LocalPersons extends Component {
 
   renderOfficeAddress = location => (
     <TouchableOpacity
+      style={[containerStyle]}
       onPress={() => Actions.push('mapPage', { buildingId: location.attributes.BAT_ID, localId: location.attributes.LOC_ID })}
     >
-      <View style={[containerStyle, touchableContainer, { marginBottom: 25 }]}>
+      <View style={[containerStyle]} >
         <View style={iconWrapper}>
           <Icon name="building" style={[iconStyle, touchable]} allowFontScaling />
         </View>
@@ -121,31 +122,31 @@ ${building.npa} ${building.localite}`}
     const data = occupents.map((item, index) => ({ ...item, key: item.id, index }));
 
     return (
-      <Card>
-        <CardSection style={{
- flexDirection: 'column',
-        height: 140,
-}}
-        >
-          { this.renderOfficeAddress(targetLocal) }
-          { this.renderBuildingAddress(building) }
-        </CardSection>
+      <ScrollView>
+        <Card>
+          <CardSection style={{
+            flexDirection: 'column',
+                    height: 160,
+            }}
+          >
+            { this.renderOfficeAddress(targetLocal) }
+            { this.renderBuildingAddress(building) }
+          </CardSection>
 
-        <CardSection>
-          <View style={[containerStyle, { height: 35 }]}>
-            <Icon name="users" style={[iconStyle, { fontSize: 22 }]} allowFontScaling />
-            <Text style={textStyle}>{I18n.t('local.occupants')} ({data.length})</Text>
-          </View>
-        </CardSection>
-        <ScrollView>
+          <CardSection>
+            <View style={[containerStyle, { height: 35 }]}>
+              <Icon name="users" style={[iconStyle, { fontSize: 22 }]} allowFontScaling />
+              <Text style={textStyle}>{I18n.t('local.occupants')} ({data.length})</Text>
+            </View>
+          </CardSection>
           <FlatList
             keyboardShouldPersistTaps="always"
             keyboardDismissMode="on-drag"
             data={data}
             renderItem={this.renderItem}
           />
-        </ScrollView>
-      </Card>
+        </Card>
+      </ScrollView>
     );
   }
 }
