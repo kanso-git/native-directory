@@ -1,6 +1,6 @@
 import React from 'react';
-import { Image, StyleSheet, Platform } from 'react-native';
-import { Scene, Router, Stack } from 'react-native-router-flux';
+import { Image, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { Scene, Router, Stack, Actions } from 'react-native-router-flux';
 import I18n from 'react-native-i18n';
 import Home from './components/Home';
 import MemberDetails from './components/MemberDetails';
@@ -57,6 +57,14 @@ const RouterComponent = () => (
           titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
           navigationBarStyle={styles.navStyle}
           backButtonTintColor="white"
+          renderRightButton={
+            <TouchableOpacity onPress={() => Actions.replace('main')}>
+              <Image
+                style={styles.leftImgStyle}
+                source={{ uri: base64Icon }}
+              />
+            </TouchableOpacity>
+          }
         />
         <Scene
           key="unitDetails"
@@ -66,6 +74,14 @@ const RouterComponent = () => (
           titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}
+          renderRightButton={
+            <TouchableOpacity onPress={() => Actions.replace('main')}>
+              <Image
+                style={styles.leftImgStyle}
+                source={{ uri: base64Icon }}
+              />
+            </TouchableOpacity>
+          }
         />
 
         <Scene
@@ -76,6 +92,14 @@ const RouterComponent = () => (
           titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}
+          renderRightButton={
+            <TouchableOpacity onPress={() => Actions.replace('main')}>
+              <Image
+                style={styles.leftImgStyle}
+                source={{ uri: base64Icon }}
+              />
+            </TouchableOpacity>
+          }
         />
 
         <Scene
@@ -86,6 +110,14 @@ const RouterComponent = () => (
           titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}
+          renderRightButton={
+            <TouchableOpacity onPress={() => Actions.replace('main')}>
+              <Image
+                style={styles.leftImgStyle}
+                source={{ uri: base64Icon }}
+              />
+            </TouchableOpacity>
+          }
         />
 
         <Scene
@@ -96,6 +128,15 @@ const RouterComponent = () => (
           titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}
+          rightButtonImage={base64Icon}
+          renderRightButton={
+            <TouchableOpacity onPress={() => Actions.replace('main')}>
+              <Image
+                style={styles.leftImgStyle}
+                source={{ uri: base64Icon }}
+              />
+            </TouchableOpacity>
+          }
         />
 
         <Scene
@@ -116,6 +157,14 @@ const RouterComponent = () => (
           titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
           backButtonTintColor="white"
           navigationBarStyle={styles.navStyle}
+          renderRightButton={
+            <TouchableOpacity onPress={() => Actions.replace('main')}>
+              <Image
+                style={styles.leftImgStyle}
+                source={{ uri: base64Icon }}
+              />
+            </TouchableOpacity>
+          }
         />
 
       </Scene>

@@ -99,9 +99,11 @@ const {
 
 class Local extends Component {
   componentWillMount() {
-    const imgId = this.props.localWithReservations.attributes.OBJECTID;
-    if (!this.props.images[imgId]) {
+    const localObjId = this.props.localWithReservations.attributes.OBJECTID;
+    const localId = this.props.localWithReservations.attributes.LOC_ID;
+    if (!this.props.images[localObjId]) {
       // TODO load local the image
+      this.props.loadLocalImageById(localObjId, localId);
     }
   }
   componentDidMount() {
@@ -211,7 +213,7 @@ ${npa} ${localite}`}
    }
 
    render() {
-     console.log(this.props.localWithReservations);
+     const localObjectId = this.props.localWithReservations.attributes.OBJECTID;
      const { onScroll = () => {} } = this.props;
      return (
        <ParallaxScrollView
@@ -228,9 +230,7 @@ ${npa} ${localite}`}
              <Image
                style={{ width: viewportWidth, height: (viewportHeight * 0.25) + 90, backgroundColor: '#034d7c' }}
                source={{
-            uri:
-             this.props
-             .images[this.props.localWithReservations.attributes.OBJECTID] || utile.noImageIcon,
+            uri: this.props.images[localObjectId] || utile.noImageIcon,
            }}
              />
              <View style={{

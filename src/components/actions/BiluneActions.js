@@ -795,6 +795,21 @@ const searchBilune = query =>
     });
   };
 
+const loadLocalImageById = (localObjId, locId) =>
+  async (dispatch, getState) => {
+    // load building images for home slider
+    const { images } = getState().bilune;
+    // image is not loaded
+    try {
+      const imagesPromise = await getImageUsingBlob(dispatch, `${API_BDL}/locaux/${locId}/photo/mini`);
+      console.info(`loadLocalImageById  for LOCAL:${locId} `);
+      images[localObjId] = imagesPromise;
+      dispatch({
+        type: types.SET_IMAGE_BILUNE,
+        payload: { images },
+      });
+    } catch (err) { console.warn(`err loading image:${err}`); }
+  };
 const setBuildingId = ({ id }) => ({ type: types.SET_DEFAULT_BAT_ID, payload: { id } });
 const setLocalId = (locId, id) => ({ type: types.SET_DEFAULT_LOC_ID, payload: { locId, id } });
 
@@ -811,4 +826,5 @@ export {
   searchInLocalReservations,
   loadOccupentsPerLocal,
   loadBuildingFloors,
+  loadLocalImageById,
 };
