@@ -3,13 +3,15 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable consistent-return */
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import Communications from 'react-native-communications';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 import Icon from 'react-native-fa-icons';
 import I18n from 'react-native-i18n';
 import { Card, CardSection } from './common';
+import { pidhoActions } from './actions';
 
 const styles = StyleSheet.create({
   textStyle: {
@@ -98,7 +100,62 @@ const {
 } = styles;
 
 
-const renderPersonlUrl = (url) => {
+class Person extends Component {
+  componentDidMount() {
+    const bipeId = this.props.person.id;
+    const { courses } = this.props;
+    if (courses && courses[bipeId]) {
+      console.log(` don't load the course list for bipeId${bipeId}`);
+    } else {
+      this.props.loadCoursesbyBipeId(bipeId);
+    }
+  }
+  formatPositions = (person) => {
+    if (!person.positions) {
+      person.currFunctions = [];
+      person.positions = [];
+    } else {
+      const { positions } = person;
+      const currTitles = positions.filter(p => p.positionType === 'title');
+      const currFunctions = positions.filter(p => p.positionType === 'function');
+
+      const finalPositions = currFunctions.map((p, key) => {
+        const functionTitle = currTitles.filter((t) => {
+          const isFoundAndNotDeleted =
+           t.organizationalUnit.id === p.organizationalUnit.id && !t.deleted;
+          if (isFoundAndNotDeleted) {
+            t.deleted = true;
+          }
+          return isFoundAndNotDeleted;
+        });
+
+        if (functionTitle.length > 0) {
+          p.titleName = functionTitle[0].positionName;
+          functionTitle[0].deleted = true;
+        }
+
+        if (currFunctions.length === 1) {
+          currFunctions[0].displayOrder = '';
+        } else {
+          const displayOrder = key + 1;
+          p.displayOrder = displayOrder.toString();
+        }
+        return p;
+      });
+
+      // add unassigned titles to the end on the positions array
+      currTitles.forEach((t) => {
+        if (!t.deleted) {
+          t.displayOrder = '';
+          finalPositions.push(t);
+        }
+      });
+      person.currFunctions = currFunctions;
+      person.positions = finalPositions;
+    }
+    return person;
+  };
+renderPersonlUrl = (url) => {
   if (url) {
     return (
       <TouchableOpacity onPress={() => Communications.web(url)}>
@@ -111,7 +168,7 @@ const renderPersonlUrl = (url) => {
   }
   return null;
 };
-const renderPhones = props => props.person.phones.map(phone => (
+renderPhones = props => props.person.phones.map(phone => (
   <TouchableOpacity
     key={phone.external}
     onPress={
@@ -123,7 +180,8 @@ const renderPhones = props => props.person.phones.map(phone => (
     </View>
   </TouchableOpacity>
 ));
-const renderEmail = email => (
+
+renderEmail = email => (
   <TouchableOpacity onPress={() => Communications.email([email], null, null, ' ', ' ')}>
     <View style={[containerStyle, touchableContainer]}>
       <Icon name="envelope" style={[iconStyle, touchable]} allowFontScaling />
@@ -132,7 +190,7 @@ const renderEmail = email => (
   </TouchableOpacity>
 );
 
-const renderOfficeAddress = location => (
+renderOfficeAddress = location => (
   <TouchableOpacity onPress={() => Actions.push('mapPage', { buildingCode: location.building.code, localCode: location.local.code })}>
     <View style={[containerStyle, { height: Platform.OS === 'android' ? 40 : 25 }, touchableContainer, { marginBottom: 15 }]}>
       <View style={iconWrapper}>
@@ -145,9 +203,11 @@ const renderOfficeAddress = location => (
     </View>
   </TouchableOpacity>
 );
-const renderBuildingAddress = building => (
+renderBuildingAddress = building => (
   <TouchableOpacity onPress={() => Actions.push('mapPage', { buildingCode: building.code })}>
-    <View style={[containerStyle, touchableContainer, { marginBottom: 15, height: building.name ? 60 : 45 }]}>
+    <View style={[containerStyle, touchableContainer,
+      { marginBottom: 15, height: building.name ? 60 : 45 }]}
+    >
       <View style={iconWrapper}>
         <Icon name="map-marker" style={[iconStyle, touchable]} allowFontScaling />
       </View>
@@ -159,7 +219,7 @@ const renderBuildingAddress = building => (
   </TouchableOpacity>
 );
 
-const renderPositionElem = (position) => {
+renderPositionElem = (position) => {
   const iconName = position.positionType === 'function' ? 'suitcase' : 'certificate';
   const title = position.positionType === 'function' ? `${I18n.t('person.position.position')} ${position.displayOrder}` : I18n.t('person.position.title');
   const value = position.positionName ? position.positionName : I18n.t('person.position.positionNA');
@@ -176,11 +236,11 @@ const renderPositionElem = (position) => {
     </View>
   );
 };
-const renderFunctions = props => props.person.positions.map((position, index) => (
+renderFunctions = props => props.person.positions.map((position, index) => (
 
   <CardSection key={index} style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
     {
-        renderPositionElem(position)
+      this.renderPositionElem(position)
     }
     {
         position.organizationalUnit && (
@@ -196,92 +256,63 @@ const renderFunctions = props => props.person.positions.map((position, index) =>
 
     {
         position.location && (
-        renderOfficeAddress(position.location)
+          this.renderOfficeAddress(position.location)
         )
     }
     {
       (position.location && position.location.building) && (
-        renderBuildingAddress(position.location.building)
+        this.renderBuildingAddress(position.location.building)
       )
     }
 
   </CardSection>
 ));
-const formatPositions = (person) => {
-  if (!person.positions) {
-    person.currFunctions = [];
-    person.positions = [];
-  } else {
-    const { positions } = person;
-    const currTitles = positions.filter(p => p.positionType === 'title');
-    const currFunctions = positions.filter(p => p.positionType === 'function');
 
-    const finalPositions = currFunctions.map((p, key) => {
-      const functionTitle = currTitles.filter((t) => {
-        const isFoundAndNotDeleted =
-         t.organizationalUnit.id === p.organizationalUnit.id && !t.deleted;
-        if (isFoundAndNotDeleted) {
-          t.deleted = true;
-        }
-        return isFoundAndNotDeleted;
-      });
-
-      if (functionTitle.length > 0) {
-        p.titleName = functionTitle[0].positionName;
-        functionTitle[0].deleted = true;
-      }
-
-      if (currFunctions.length === 1) {
-        currFunctions[0].displayOrder = '';
-      } else {
-        const displayOrder = key + 1;
-        p.displayOrder = displayOrder.toString();
-      }
-      return p;
-    });
-
-    // add unassigned titles to the end on the positions array
-    currTitles.forEach((t) => {
-      if (!t.deleted) {
-        t.displayOrder = '';
-        finalPositions.push(t);
-      }
-    });
-    person.currFunctions = currFunctions;
-    person.positions = finalPositions;
-  }
-  return person;
-};
-const Person = (props) => {
+render() {
   const {
     lastName,
     firstName,
     status,
     email,
     url,
-  } = props.person;
-  formatPositions(props.person);
+  } = this.props.person;
 
   return (
     <Card>
-      <CardSection>
+      <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }} >
         <View style={[containerStyle, { height: 35 }]}>
           <Icon name="user-circle-o" style={[iconStyle, { fontSize: 22 }]} allowFontScaling />
           <Text style={textStyle}>{firstName} {lastName}</Text>
         </View>
+        { this.props.profCourses &&
+          <TouchableOpacity onPress={() => Actions.replace('personCoursDetails', { person: this.props.person })}>
+            <View style={[containerStyle, { height: 35 }]}>
+              <Icon name="graduation-cap" style={[iconStyle, { fontSize: 22 }, touchable]} allowFontScaling />
+              <Text style={[textStyle, touchable]}>{I18n.t('person.myCours')}</Text>
+            </View>
+          </TouchableOpacity>
+        }
       </CardSection>
       <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
         <View style={[containerStyle, { marginBottom: 15 }]}>
           <Icon name="info-circle" style={iconStyle} allowFontScaling />
           <Text style={textStyleElem}>{status}</Text>
         </View>
-        { email && renderEmail(email)}
-        { props.person.phones && renderPhones(props)}
-        { url && renderPersonlUrl(url)}
+        { email && this.renderEmail(email)}
+        { this.props.person.phones && this.renderPhones(this.props)}
+        { url && this.renderPersonlUrl(url)}
       </CardSection>
-      { props.person.positions && renderFunctions(props)}
+      { this.props.person.positions && this.renderFunctions(this.props)}
     </Card>
   );
-};
+}
+}
 
-export default Person;
+const mapStateToProps = state => (
+  {
+    courses: state.pidho.courses,
+    profCourses: state.pidho.profCourses,
+  }
+);
+
+export default connect(mapStateToProps, { ...pidhoActions })(Person);

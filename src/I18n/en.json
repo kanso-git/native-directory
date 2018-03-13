@@ -16,10 +16,12 @@
     },
     "person" : {
         "pageTitle" : "Person Details",
+        "coursPage" :"My Cours",
         "status" : "Status",
         "email" : "Email",
         "phone" : "Phone",
         "website" : "Website",
+        "myCours" : "See My Cours",
         "vcard" : {
             "label1" : "Save contact to your phone",
             "label2" : "Download VCard"

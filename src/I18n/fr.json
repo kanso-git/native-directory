@@ -17,9 +17,11 @@
     "person" : {
         "pageTitle" : "Détails de la personne",
         "status" : "Statut",
+        "coursPage" :"Mes Cours",
         "email" : "E-mail",
         "phone" : "Téléphone",
         "website" : "Site web",
+        "myCours" : "Voir Mes Cours",
         "vcard" : {
             "label1" : "Enregistrer le contact sur mon téléphone",
             "label2" : "Télécharger VCard"

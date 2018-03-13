@@ -7,6 +7,7 @@ import MemberDetails from './components/MemberDetails';
 import UnitDetails from './components/UnitDetails';
 import BuildingDetails from './components/BuildingDetails';
 import LocalDetails from './components/LocalDetails';
+import PersonCoursDetails from './components/PersonCoursDetails';
 import MapPage from './components/MapPage';
 import LocalPersons from './components/LocalPersons';
 import NetworkError from './components/NetworkError';
@@ -119,6 +120,25 @@ const RouterComponent = () => (
             </TouchableOpacity>
           }
         />
+
+        <Scene
+          key="personCoursDetails"
+          backTitle=" "
+          component={PersonCoursDetails}
+          title={I18n.t('person.coursPage')}
+          titleStyle={styles.titleStyle}
+          backButtonTintColor="white"
+          navigationBarStyle={styles.navStyle}
+          renderRightButton={
+            <TouchableOpacity onPress={() => Actions.replace('main')}>
+              <Image
+                style={styles.leftImgStyle}
+                source={{ uri: base64Icon }}
+              />
+            </TouchableOpacity>
+        }
+        />
+
 
         <Scene
           key="mapPage"
