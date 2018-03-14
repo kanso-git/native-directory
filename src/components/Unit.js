@@ -123,7 +123,7 @@ const renderAddress = addressLines => (
 );
 
 const onPressItem = (item) => {
-  Actions.replace('memberDetails', { memberDetails: item });
+  Actions.push('memberDetails', { memberDetails: item });
 };
 const renderItem = ({ item }) => (
   <SearchItem

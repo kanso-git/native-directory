@@ -52,6 +52,13 @@ class Home extends Component {
   state={
     focused: false,
   }
+  componentWillMount() {
+    const { reset } = this.props.navigation.state.params;
+    console.info(`>>>>>>>>>>>>>>>>>>>>>> Home resest is:${reset}`);
+    if (reset === true) {
+      this.props.setLocalId(null, null);
+    }
+  }
   componentWillReceiveProps(nextProps) {
     const { secret, retry, screen } = nextProps.auth;
     const { searchQuery } = nextProps.directory;

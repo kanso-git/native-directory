@@ -244,7 +244,7 @@ renderFunctions = props => props.person.positions.map((position, index) => (
     }
     {
         position.organizationalUnit && (
-        <TouchableOpacity onPress={() => Actions.replace('unitDetails', { unitDetails: position.organizationalUnit })}>
+        <TouchableOpacity onPress={() => Actions.push('unitDetails', { unitDetails: position.organizationalUnit })}>
           <View style={[containerStyle, touchableContainer]}>
             <Icon name="sitemap" style={[iconStyle, touchable]} allowFontScaling />
             <Text style={[textStyleElem, touchable]}>{position.organizationalUnit.name} </Text>
@@ -278,7 +278,6 @@ render() {
     id,
   } = this.props.person;
   this.formatPositions(this.props.person);
-
   const { courses } = this.props;
   return (
     <Card>
@@ -287,7 +286,7 @@ render() {
           <Icon name="user-circle-o" style={[iconStyle, { fontSize: 22 }]} allowFontScaling />
           <Text style={textStyle}>{firstName} {lastName}</Text>
         </View>
-        { (courses && courses[id] && courses[id].length > 0) &&
+        { (courses && courses[id] && Array.isArray(courses[id]) && courses[id].length > 0) &&
           <TouchableOpacity onPress={() => Actions.replace('personCoursDetails', { person: this.props.person })}>
             <View style={[containerStyle, { height: 35 }]}>
               <Icon name="graduation-cap" style={[iconStyle, { fontSize: 22 }, touchable]} allowFontScaling />

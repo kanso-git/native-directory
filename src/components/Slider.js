@@ -31,11 +31,13 @@ class Slider extends Component {
     }
     // methods can then be called this way
     jumpToSlide= (buidlingId) => {
+      console.log(`>>>>>>>> jumpToSlide to buidlingId:${buidlingId}`);
       const refCarousel = this.refs.carousel;
       if (buidlingId && refCarousel && buidlingId > 0) {
         const currentSlideIndex = refCarousel.currentIndex;
         const currentBuildingIndex = _.findIndex(this.state.entries, { id: buidlingId });
         if (currentBuildingIndex !== currentSlideIndex) {
+          console.info(`>>>>>>>> jumpToSlide  snapToItem index:${currentBuildingIndex}`);
           refCarousel.snapToItem(currentBuildingIndex, false);
         }
       }

@@ -98,7 +98,7 @@ class App extends Component {
             },
           });
           this.initializeApp();
-          Actions.reset('main');
+          Actions.reset('main', { reset: true });
         }
         break;
       case 'offline':

@@ -75,11 +75,13 @@ class MapHomePage extends Component {
 
   // called every time you access this component right after componentWillMount
   componentDidMount() {
+    console.log('>>>>>>>>>> MapHomePage componentDidMount');
     const id = mapHelper.getBuilidngId({ ...this.props });
     this.renderVisibleBuildings(id);
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.id !== this.props.id) {
+    console.log('>>>>>>>>>> MapHomePage componentWillReceiveProps');
+    if (Actions.currentScene === 'home') {
       const myMap = this.map;
       if (myMap) {
         region = mapHelper.getRegionForSelectedBatInHomePage({ ...this.props, id: nextProps.id });
@@ -90,7 +92,7 @@ class MapHomePage extends Component {
   }
   // called when about to leave the component
   componentWillUnmount() {
-    region = initialRegion;
+    // region = initialRegion;
   }
 
   onLayoutMapReady = () => {

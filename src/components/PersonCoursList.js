@@ -153,7 +153,7 @@ ${npa} ${localite}`;
   renderPhones = phones => phones.map(phone => (
     <TouchableOpacity
       key={phone.external}
-      style={{ paddingLeft: 10 }}
+      style={{ paddingLeft: 15 }}
       onPress={() => Communications.phonecall(phone.external, true)}
     >
       <Text style={[styles.textStyleElem, touchable]}>{phone.external}</Text>
