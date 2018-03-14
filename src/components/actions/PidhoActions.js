@@ -105,16 +105,22 @@ const searchInProfCours = (bipeId, searchQuery) =>
       if (d.occupation != null) {
         if (_.isArray(d.occupation)) {
           resFromOcc = d.occupation.filter((o) => {
-            const { matiere, prof, remarque } = o;
+            const {
+              matiere, profs, remarque, salle,
+            } = o;
+            const salleSearch = salle != null ? salle.toLowerCase().includes(q) : false;
             const remarqueSearch = remarque != null ? remarque.toLowerCase().includes(q) : false;
             return matiere.includes(q)
-              || remarqueSearch || searchInProf(prof, q);
+              || remarqueSearch || salleSearch || searchInProf(profs, q);
           });
           resInOccupation = resFromOcc && resFromOcc.length > 0;
         } else {
-          const { matiere, prof, remarque } = d.occupation;
+          const {
+            matiere, profs, remarque, salle,
+          } = d.occupation;
+          const salleSearch = salle != null ? salle.toLowerCase().includes(q) : false;
           const remarqueSearch = remarque != null ? remarque.toLowerCase().includes(q) : false;
-          resInOccupation = matiere.includes(q) || remarqueSearch || searchInProf(prof, q);
+          resInOccupation = matiere.includes(q) || salleSearch || remarqueSearch || searchInProf(profs, q);
           if (resInOccupation) {
             resFromOcc = d.occupation;
           }
