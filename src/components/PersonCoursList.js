@@ -7,8 +7,9 @@ import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import { RESERVATION_EMPTY, RESERVATION_PIDHO } from 'react-native-dotenv';
 import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
+import Icon from 'react-native-fa-icons';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import { Actions } from 'react-native-router-flux';
+import Communications from 'react-native-communications';
 import { pidhoActions } from './actions';
 import { Card, CardSection, InputFlex, utile, Chromatic } from './common';
 import PersonCoursItem from './PersonCoursItem';
@@ -94,7 +95,6 @@ const {
   textStyle,
   touchable,
   touchableContainer,
-  addressStyle,
 } = styles;
 
 class PersonCoursList extends Component {
@@ -102,15 +102,22 @@ class PersonCoursList extends Component {
     const debutUTC = utile.momentStatic.utc(event.debutUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
     const finUTC = utile.momentStatic.utc(event.finUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 
-    const title = event.typeoccupation === RESERVATION_PIDHO ? `${event.matiere}  (${event.prof})` : `${event.matiere} (${event.prof})`;
+    const { adresseLigne1, localite, npa } = event.building;
+    const { LOC_TYPE_DESIGNATION, LOC_CODE, ETG_DESIGNATION } = event.local.attributes;
+    const title = event.typeoccupation === RESERVATION_PIDHO ? `${event.matiere}  (${event.profs})` : `${event.matiere} (${event.profs})`;
     const fomrattedTitle = title.length > 40 ? `${title.substr(0, 39)} ...` : title;
-    const noteText = 'complete note ';
+    const noteText = `${title}
+
+${LOC_TYPE_DESIGNATION} - ${LOC_CODE}
+${ETG_DESIGNATION}
+${adresseLigne1}
+${npa} ${localite}`;
 
     const eventConfig = {
       title: fomrattedTitle,
       startDate: debutUTC,
       endDate: finUTC,
-      location: 'Location Salle',
+      location: `${adresseLigne1} ${npa} ${localite}`,
       notes: noteText,
       description: noteText,
     };
@@ -143,6 +150,27 @@ class PersonCoursList extends Component {
     const moment = utile.momentStatic;
     return `${I18n.t('local.scheduleFrom')} ${moment().format('DD MMM')} ${I18n.t('local.scheduleTo')}  ${moment().add(7, 'd').format('DD MMM')}`;
   }
+  renderPhones = props => props.phones.map(phone => (
+    <TouchableOpacity
+      key={phone.external}
+      onPress={
+      () => Communications.phonecall(phone.external, true)}
+    >
+      <View style={[styles.containerStyle, touchableContainer]}>
+        <Icon name="phone" style={[styles.iconStyle, touchable]} allowFontScaling />
+        <Text style={[styles.textStyleElem, touchable]}>{phone.external} </Text>
+      </View>
+    </TouchableOpacity>
+  ));
+
+  renderEmail = email => (
+    <TouchableOpacity onPress={() => Communications.email([email], null, null, ' ', ' ')}>
+      <View style={[styles.containerStyle, touchableContainer]}>
+        <Icon name="envelope" style={[styles.iconStyle, touchable]} allowFontScaling />
+        <Text style={[styles.textStyleElem, touchable]}>{email} </Text>
+      </View>
+    </TouchableOpacity>
+  );
    renderItem = ({ item }) => (
      <PersonCoursItem
        item={item}
@@ -162,7 +190,7 @@ class PersonCoursList extends Component {
      } = this.props;
 
      return (
-       <TouchableOpacity
+       <View
          style={{
 width: viewportWidth,
 paddingLeft: 5,
@@ -171,19 +199,17 @@ backgroundColor: 'rgba(52, 52, 52, 0.5)',
 justifyContent: 'flex-end',
 alignItems: 'flex-start',
 }}
-         onPress={() => {
-          Actions.pop();
-          }}
        >
-         <View style={[{ height: 24 }]}>
+         <View style={[{ height: 25 }]}>
            <Text style={[textStyle, touchable]}>{firstName} {lastName}</Text>
          </View>
-         <View style={[{ marginBottom: 5, height: 40 }, touchableContainer]}>
-           <View style={addressStyle}>
-             <Text style={[touchable]}>{email}</Text>
-           </View>
+         <View style={[{ height: 30, width: viewportWidth }]}>
+           { email && this.renderEmail(email)}
          </View>
-       </TouchableOpacity>
+         <View style={[{ height: 25, width: viewportWidth }]}>
+           { this.props.phones && this.renderPhones(this.props)}
+         </View>
+       </View>
      );
    }
 
@@ -194,7 +220,7 @@ alignItems: 'flex-start',
          onScroll={onScroll}
          headerBackgroundColor="transparent"
          stickyHeaderHeight={90}
-         parallaxHeaderHeight={(viewportHeight * 0.25) + 90}
+         parallaxHeaderHeight={(viewportHeight * 0.2) + 90}
          backgroundSpeed={10}
          keyboardShouldPersistTaps="always"
          keyboardDismissMode="on-drag"
@@ -202,7 +228,12 @@ alignItems: 'flex-start',
            <View key="background">
              <Chromatic />
              <Image
-               style={{ width: viewportWidth, height: (viewportHeight * 0.25) + 90, backgroundColor: '#034d7c' }}
+               style={{
+                opacity: 0.4,
+                width: viewportWidth,
+                height: (viewportHeight * 0.2) + 90,
+                backgroundColor: '#034d7c',
+               }}
                source={{
             uri: utile.unineImgBig,
            }}
@@ -212,7 +243,7 @@ alignItems: 'flex-start',
                                            top: 0,
                                            width: window.width,
                                            backgroundColor: 'rgba(52, 52, 52, 0.5)',
-                                           height: (viewportHeight * 0.25),
+                                           height: (viewportHeight * 0.2),
              }}
              />
 
@@ -220,7 +251,7 @@ alignItems: 'flex-start',
           )}
 
          renderForeground={() => (
-           <View key="parallax-header" style={[styles.parallaxHeader, { paddingTop: (viewportHeight * 0.25), width: viewportWidth }]}>
+           <View key="parallax-header" style={[styles.parallaxHeader, { paddingTop: (viewportHeight * 0.2), width: viewportWidth }]}>
              {this.renderHeader()}
            </View>
         )}

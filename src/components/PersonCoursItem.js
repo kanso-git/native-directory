@@ -3,18 +3,36 @@
 /* eslint-disable consistent-return */
 
 import React, { Component } from 'react';
-import { Text, Image, View, TouchableOpacity } from 'react-native';
+import { Text, Image, View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-fa-icons';
 import Dash from 'react-native-dash';
 import { RESERVATION, RESERVATION_PIRES, RESERVATION_PIDHO, RESERVATION_EMPTY } from 'react-native-dotenv';
-
-import I18n from 'react-native-i18n';
-
-import { CardSection, utile } from './common';
+import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
+import I18n from 'react-native-i18n';
+import { biluneActions } from './actions';
+import { CardSection, utile } from './common';
 
+
+const styles = StyleSheet.create({
+  addressLine: {
+    fontSize: 13,
+    paddingTop: 0,
+    marginRight: 35,
+    color: '#007aff',
+  },
+});
 
 class PersonCoursItem extends Component {
+  enrichItemByAddress = (item) => {
+    if (item.typeoccupation === RESERVATION_PIDHO) {
+      const { salleBiluneId } = item;
+      const local = this.props.locals.find(l => l.attributes.LOC_ID === salleBiluneId);
+      const building = this.props.buildings.find(b => b.id === local.attributes.BAT_ID);
+      return { ...item, local, building };
+    }
+    return item;
+  }
   checkIfDayIsVisible = (days, dayDate) => {
     const currentDay = days.filter(f => f.date === dayDate);
     return !!currentDay.length;
@@ -34,8 +52,9 @@ class PersonCoursItem extends Component {
      const moment = utile.momentStatic;
      return moment(date, 'YYYY-MM-DD').format('dddd, LL');
    };
-   showLocal = (salleBiluneId) => {
-     console.log(`salleBiluneId :${salleBiluneId}`);
+   showLocal = (salleBiluneId, buildingId) => {
+     this.props.setLocalId(salleBiluneId, buildingId);
+     Actions.push('localDetails');
    }
 
    renderDashed = (isEmpty, item) => (
@@ -100,8 +119,9 @@ class PersonCoursItem extends Component {
            >
              <Text style={{ fontSize: 18, fontWeight: 'bold', paddingBottom: 1 }}>{`${I18n.t('bookingItem.from')} ${item.heure.split('-')[0]} ${I18n.t('bookingItem.to')} ${item.heure.split('-')[1]}`}  </Text>
              <Text style={{ fontSize: 13, paddingTop: 2, marginRight: 35 }}>{I18n.t('bookingItem.course')}: {`${item.matiere}`} </Text>
-             <TouchableOpacity onPress={() => this.showLocal(item.salleBiluneId)}>
-               <Text style={{ fontSize: 13, paddingTop: 5, marginRight: 35 }}>{I18n.t('bookingItem.salle')}: {`${item.salle}`} </Text>
+             <TouchableOpacity onPress={() => this.showLocal(item.salleBiluneId, item.building.id)}>
+               <Text style={[styles.addressLine, { paddingTop: 5 }]}>{I18n.t('bookingItem.salle')}: {`${item.salle}`} </Text>
+               <Text style={styles.addressLine}>{I18n.t('person.position.location.floor')}: {`${item.local.attributes.ETG_DESIGNATION} / ${item.building.designation}`} </Text>
              </TouchableOpacity>
            </View>
          );
@@ -192,18 +212,24 @@ class PersonCoursItem extends Component {
        return this.renderSectionJsx(item.section, visibleDays);
      }
    }
-
    render() {
      const {
        item, pressFn, visibleDays,
      } = this.props;
+     const itemWithAddress = this.enrichItemByAddress(item);
      return (
        <View>
-         { this.renderSection(item, visibleDays) }
-         { this.switchOnType(item, visibleDays, pressFn) }
+         { this.renderSection(itemWithAddress, visibleDays) }
+         { this.switchOnType(itemWithAddress, visibleDays, pressFn) }
        </View>
      );
    }
 }
+const mapStateToProps = state => (
+  {
+    locals: state.bilune.locals,
+    buildings: state.bilune.buildings,
+  }
+);
 
-export default PersonCoursItem;
+export default connect(mapStateToProps, { ...biluneActions })(PersonCoursItem);
