@@ -11,6 +11,7 @@ import { RESERVATION, RESERVATION_PIRES, RESERVATION_PIDHO, RESERVATION_EMPTY } 
 import I18n from 'react-native-i18n';
 
 import { CardSection, utile } from './common';
+import { Actions } from 'react-native-router-flux';
 
 
 class PersonCoursItem extends Component {
@@ -33,6 +34,9 @@ class PersonCoursItem extends Component {
      const moment = utile.momentStatic;
      return moment(date, 'YYYY-MM-DD').format('dddd, LL');
    };
+   showLocal = (salleBiluneId) => {
+     console.log(`salleBiluneId :${salleBiluneId}`);
+   }
 
    renderDashed = (isEmpty, item) => (
      <View>
@@ -96,7 +100,9 @@ class PersonCoursItem extends Component {
            >
              <Text style={{ fontSize: 18, fontWeight: 'bold', paddingBottom: 1 }}>{`${I18n.t('bookingItem.from')} ${item.heure.split('-')[0]} ${I18n.t('bookingItem.to')} ${item.heure.split('-')[1]}`}  </Text>
              <Text style={{ fontSize: 13, paddingTop: 2, marginRight: 35 }}>{I18n.t('bookingItem.course')}: {`${item.matiere}`} </Text>
-             <Text style={{ fontSize: 13, paddingTop: 5, marginRight: 35 }}>{I18n.t('bookingItem.prof')}: {`${Array.isArray(item.prof) ? item.prof.join(', ') : item.prof}`} </Text>
+             <TouchableOpacity onPress={() => this.showLocal(item.salleBiluneId)}>
+               <Text style={{ fontSize: 13, paddingTop: 5, marginRight: 35 }}>{I18n.t('bookingItem.salle')}: {`${item.salle}`} </Text>
+             </TouchableOpacity>
            </View>
          );
        case RESERVATION_EMPTY:

@@ -87,7 +87,8 @@
 		"prof":"Professeur(s)",
 		"for":"Réservée pour",
 		"remark":"Remarque",
-		"free":"Libre"
+        "free":"Libre",
+        "salle":"Salle"
 	},
     "section" : {
         "personUnit": "Personnes et Structures Organisationnelles",

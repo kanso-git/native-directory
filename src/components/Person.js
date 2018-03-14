@@ -276,7 +276,8 @@ render() {
     email,
     url,
   } = this.props.person;
-
+  this.formatPositions(this.props.person);
+  const { profCourses } = this.props;
   return (
     <Card>
       <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }} >
@@ -284,7 +285,7 @@ render() {
           <Icon name="user-circle-o" style={[iconStyle, { fontSize: 22 }]} allowFontScaling />
           <Text style={textStyle}>{firstName} {lastName}</Text>
         </View>
-        { this.props.profCourses &&
+        { (profCourses.days && profCourses.days.length > 0) &&
           <TouchableOpacity onPress={() => Actions.replace('personCoursDetails', { person: this.props.person })}>
             <View style={[containerStyle, { height: 35 }]}>
               <Icon name="graduation-cap" style={[iconStyle, { fontSize: 22 }, touchable]} allowFontScaling />

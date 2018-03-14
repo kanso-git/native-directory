@@ -88,7 +88,8 @@
 		"prof":"Professor(s)",
 		"for":"Booked for",
 		"remark":"Note",
-		"free":"Free"
+        "free":"Free",
+        "salle":"Local"
 	},
     "section" : {
         "personUnit": "Persons and organizational units",
