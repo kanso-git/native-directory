@@ -120,7 +120,8 @@ const searchInProfCours = (bipeId, searchQuery) =>
           } = d.occupation;
           const salleSearch = salle != null ? salle.toLowerCase().includes(q) : false;
           const remarqueSearch = remarque != null ? remarque.toLowerCase().includes(q) : false;
-          resInOccupation = matiere.includes(q) || salleSearch || remarqueSearch || searchInProf(profs, q);
+          resInOccupation = matiere.includes(q)
+          || salleSearch || remarqueSearch || searchInProf(profs, q);
           if (resInOccupation) {
             resFromOcc = d.occupation;
           }

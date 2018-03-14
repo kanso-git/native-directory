@@ -253,6 +253,12 @@ onPress = (c) => {
   };
   if (action) {
     console.info(`>>>>>>>>>> onMapPress action:${action}`);
+    if (action === 'press') {
+      if (this.state.slideUpStatus === SHOW_SLIDE_UP) {
+        unselectedState.slideUpStatus = HIDE_SLIDE_UP;
+      }
+      this.setState(() => (unselectedState));
+    }
     // marker-press or marker-overlay-press
   } else if (this.state.maplocals !== null) {
     // when action is undefined means we have an mapclick event

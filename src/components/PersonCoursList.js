@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     flex: 11,
     height: 20,
-    width: 100,
+    width: 150,
   },
   iconWrapper: {
     height: 20,
@@ -150,16 +150,13 @@ ${npa} ${localite}`;
     const moment = utile.momentStatic;
     return `${I18n.t('local.scheduleFrom')} ${moment().format('DD MMM')} ${I18n.t('local.scheduleTo')}  ${moment().add(7, 'd').format('DD MMM')}`;
   }
-  renderPhones = props => props.phones.map(phone => (
+  renderPhones = phones => phones.map(phone => (
     <TouchableOpacity
       key={phone.external}
-      onPress={
-      () => Communications.phonecall(phone.external, true)}
+      style={{ paddingLeft: 10 }}
+      onPress={() => Communications.phonecall(phone.external, true)}
     >
-      <View style={[styles.containerStyle, touchableContainer]}>
-        <Icon name="phone" style={[styles.iconStyle, touchable]} allowFontScaling />
-        <Text style={[styles.textStyleElem, touchable]}>{phone.external} </Text>
-      </View>
+      <Text style={[styles.textStyleElem, touchable]}>{phone.external}</Text>
     </TouchableOpacity>
   ));
 
@@ -187,6 +184,7 @@ ${npa} ${localite}`;
        lastName,
        firstName,
        email,
+       phones,
      } = this.props;
 
      return (
@@ -198,6 +196,7 @@ paddingTop: 10,
 backgroundColor: 'rgba(52, 52, 52, 0.5)',
 justifyContent: 'flex-end',
 alignItems: 'flex-start',
+height: 90,
 }}
        >
          <View style={[{ height: 25 }]}>
@@ -206,8 +205,16 @@ alignItems: 'flex-start',
          <View style={[{ height: 30, width: viewportWidth }]}>
            { email && this.renderEmail(email)}
          </View>
-         <View style={[{ height: 25, width: viewportWidth }]}>
-           { this.props.phones && this.renderPhones(this.props)}
+         <View style={[{
+                        height: 30,
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'flex-start',
+                        justifyContent: 'flex-start',
+                        }]}
+         >
+           <Icon name="phone" style={{ fontSize: 18, paddingLeft: 5, color: '#fff' }} allowFontScaling />
+           { phones && this.renderPhones(phones)}
          </View>
        </View>
      );
