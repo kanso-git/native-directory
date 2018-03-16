@@ -53,11 +53,8 @@ class Home extends Component {
     focused: false,
   }
   componentWillMount() {
-    const { reset } = this.props.navigation.state.params;
-    console.info(`>>>>>>>>>>>>>>>>>>>>>> Home resest is:${reset}`);
-    if (reset === true) {
-      this.props.setLocalId(null, null);
-    }
+    // const { reset } = this.props.navigation.state.params;
+    // console.info(`>>>>>>>>>>>>>>>>>>>>>> Home resest is:${reset}`);
   }
   componentWillReceiveProps(nextProps) {
     const { secret, retry, screen } = nextProps.auth;

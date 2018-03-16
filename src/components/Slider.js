@@ -16,6 +16,17 @@ class Slider extends Component {
     state={
       entries: this.props.entries || [],
     }
+    componentWillMount() {
+      console.log(`Slider componentWillMount id:${this.props.id}`);
+      const buildingId = this.props.id;
+      if (buildingId && buildingId !== null) {
+        const withoutSelected = this.props.entries.filter(b => b.id !== buildingId);
+        const withSelected = this.props.entries.filter(b => b.id === buildingId);
+        this.setState(() => ({
+          entries: [...withSelected, ...withoutSelected],
+        }));
+      }
+    }
     componentWillReceiveProps(nextProps) {
       this.setState(() => ({
         entries: nextProps.entries,
@@ -70,7 +81,7 @@ class Slider extends Component {
    renderItem = ({ item, index }) => <SliderEntry data={item} even={(index + 1) % 2 === 0} />
    render() {
      const example3 = this.layoutExample(3, '"Stack of cards" layout | Loop', 'stack');
-     setTimeout(() => this.jumpToSlide(this.props.id), 500);
+     // setTimeout(() => this.jumpToSlide(this.props.id), 500);
      return (
        <View style={styles.container}>
          { example3 }
