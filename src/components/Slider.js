@@ -20,10 +20,34 @@ class Slider extends Component {
       console.log(`Slider componentWillMount id:${this.props.id}`);
       const buildingId = this.props.id;
       if (buildingId && buildingId !== null) {
+        /*
+        const bSelected = [];
+        const aSelected = [];
+        let found = false;
+        const currentBuildingIndex = _.findIndex(this.state.entries, { id: buildingId });
+        if (currentBuildingIndex !== 0) {
+          this.props.entries.forEach((b, i) => {
+            if (i === currentBuildingIndex) {
+              found = true;
+            }
+            if (!found) {
+              bSelected.push(b);
+            } else {
+              aSelected.push(b);
+            }
+          });
+          const newEntries = [...aSelected, ...bSelected];
+          console.log(`Slider componentWillMount newEntries:${newEntries.length}`);
+          this.setState(() => ({
+            entries: newEntries,
+          }));
+        } */
         const withoutSelected = this.props.entries.filter(b => b.id !== buildingId);
         const withSelected = this.props.entries.filter(b => b.id === buildingId);
+        const newEntries = [...withSelected, ...withoutSelected];
+        console.log(`Slider componentWillMount newEntries:${newEntries.length}`);
         this.setState(() => ({
-          entries: [...withSelected, ...withoutSelected],
+          entries: newEntries,
         }));
       }
     }
