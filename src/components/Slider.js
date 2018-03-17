@@ -11,20 +11,19 @@ import { sliderWidth, itemWidth } from './SliderEntryStyle';
 import SliderEntry from './SliderEntry';
 import styles from './indexStyle';
 
-let refCarousel;
 class Slider extends Component {
     state={
       entries: this.props.entries || [],
     }
     componentWillMount() {
+      /*
       console.log(`Slider componentWillMount id:${this.props.id}`);
       const buildingId = this.props.id;
       if (buildingId && buildingId !== null) {
-        /*
         const bSelected = [];
         const aSelected = [];
         let found = false;
-        const currentBuildingIndex = _.findIndex(this.state.entries, { id: buildingId });
+        const currentBuildingIndex = _.findIndex(this.props.entries, { id: buildingId });
         if (currentBuildingIndex !== 0) {
           this.props.entries.forEach((b, i) => {
             if (i === currentBuildingIndex) {
@@ -41,15 +40,10 @@ class Slider extends Component {
           this.setState(() => ({
             entries: newEntries,
           }));
-        } */
-        const withoutSelected = this.props.entries.filter(b => b.id !== buildingId);
-        const withSelected = this.props.entries.filter(b => b.id === buildingId);
-        const newEntries = [...withSelected, ...withoutSelected];
-        console.log(`Slider componentWillMount newEntries:${newEntries.length}`);
-        this.setState(() => ({
-          entries: newEntries,
-        }));
-      }
+        }
+        // const withoutSelected = this.props.entries.filter(b => b.id !== buildingId);
+        // const withSelected = this.props.entries.filter(b => b.id === buildingId);
+      } */
     }
     componentWillReceiveProps(nextProps) {
       this.setState(() => ({
@@ -67,10 +61,10 @@ class Slider extends Component {
     // methods can then be called this way
     jumpToSlide= (buidlingId) => {
       console.log(`>>>>>>>> jumpToSlide to buidlingId:${buidlingId}`);
-      const refCarousel = this.refs.carousel;
+      const refCarousel = this.carousel;
       if (buidlingId && refCarousel && buidlingId > 0) {
         const currentSlideIndex = refCarousel.currentIndex;
-        const currentBuildingIndex = _.findIndex(this.state.entries, { id: buidlingId });
+        const currentBuildingIndex = _.findIndex(this.props.entries, { id: buidlingId });
         if (currentBuildingIndex !== currentSlideIndex) {
           console.info(`>>>>>>>> jumpToSlide  snapToItem index:${currentBuildingIndex}`);
           refCarousel.snapToItem(currentBuildingIndex, false);
@@ -87,7 +81,7 @@ class Slider extends Component {
         <View style={[styles.exampleContainer, styles.exampleContainerLight]}>
 
           <Carousel
-            ref="carousel"
+            ref={(ref) => { this.carousel = ref; }}
             data={this.state.entries}
             renderItem={this.renderItem}
             sliderWidth={sliderWidth}
@@ -105,7 +99,7 @@ class Slider extends Component {
    renderItem = ({ item, index }) => <SliderEntry data={item} even={(index + 1) % 2 === 0} />
    render() {
      const example3 = this.layoutExample(3, '"Stack of cards" layout | Loop', 'stack');
-     // setTimeout(() => this.jumpToSlide(this.props.id), 500);
+     setTimeout(() => this.jumpToSlide(this.props.id), 500);
      return (
        <View style={styles.container}>
          { example3 }
