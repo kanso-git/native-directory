@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { HOME_SCREEN } from 'react-native-dotenv';
 import I18n from 'react-native-i18n';
+import * as ldsh from 'lodash';
 import { Card, InputFlex, CardSection, Footer, Spinner, Chromatic } from './common';
 import { authActions, searchActions, biluneActions } from './actions';
 import SearchList from './SearchList';
@@ -170,10 +171,29 @@ class Home extends Component {
       );
     } else if (entries && entries.length > 0 && buildings && buildings.length > 0) {
       const labelBuildingSection = `${I18n.t('section.building')} (${buildings.length})`;
+      const bSelected = [];
+      const aSelected = [];
+      let newEntries = entries;
+      let found = false;
+      const currentBuildingIndex = this.props.bilune.id != null
+        ? ldsh.findIndex(this.props.entries, { id: this.props.bilune.id }) : 0;
+      if (currentBuildingIndex !== 0) {
+        entries.forEach((b, i) => {
+          if (i === currentBuildingIndex) {
+            found = true;
+          }
+          if (!found) {
+            bSelected.push(b);
+          } else {
+            aSelected.push(b);
+          }
+        });
+        newEntries = [...aSelected, ...bSelected];
+      }
       return (
         <View style={wrapperMapSlider} >
           {this.renderSectionJsx(labelBuildingSection)}
-          <View style={sliderBox}><Slider entries={entries} /></View>
+          <View style={sliderBox}><Slider entries={newEntries} /></View>
           <Chromatic height={2} />
           <View style={mapBox}><MapHomePage /></View>
         </View>

@@ -67,7 +67,7 @@ class Slider extends Component {
         const currentBuildingIndex = _.findIndex(this.props.entries, { id: buidlingId });
         if (currentBuildingIndex !== currentSlideIndex) {
           console.info(`>>>>>>>> jumpToSlide  snapToItem index:${currentBuildingIndex}`);
-          refCarousel.snapToItem(currentBuildingIndex, false);
+          refCarousel.snapToItem(currentBuildingIndex, true);
         }
       }
     }
