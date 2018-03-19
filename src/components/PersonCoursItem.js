@@ -121,7 +121,7 @@ class PersonCoursItem extends Component {
              <Text style={{ fontSize: 13, paddingTop: 2, marginRight: 35 }}>{I18n.t('bookingItem.course')}: {`${item.matiere}`} </Text>
              <TouchableOpacity onPress={() => this.showLocal(item.salleBiluneId, item.building.id)}>
                <Text style={[styles.addressLine, { paddingTop: 5 }]}>{I18n.t('bookingItem.salle')}: {`${item.salle}`} </Text>
-               <Text style={styles.addressLine}>{I18n.t('person.position.location.floor')}: {`${item.local.attributes.ETG_DESIGNATION} / ${item.building.designation}`} </Text>
+               <Text style={styles.addressLine}>{I18n.t('person.position.location.floor')}: {`${item.local.attributes.ETG_DESIGNATION} / ${item.building.abreviation}`} </Text>
              </TouchableOpacity>
            </View>
          );

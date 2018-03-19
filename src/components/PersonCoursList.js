@@ -214,7 +214,7 @@ height: 90,
                         }]}
          >
            <Icon name="phone" style={{ fontSize: 18, paddingLeft: 5, color: '#fff' }} allowFontScaling />
-           { phones && this.renderPhones(phones)}
+           { phones ? this.renderPhones(phones) : <Text style={{ fontSize: 18, paddingLeft: 5, color: '#fff' }} >  --</Text>}
          </View>
        </View>
      );

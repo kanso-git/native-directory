@@ -98,7 +98,7 @@ class LocalPersons extends Component {
           <Icon name="map-marker" style={[iconStyle, touchable]} allowFontScaling />
         </View>
         <View style={[addressStyle, { paddingLeft: 25, marginTop: -15 }]}>
-          { building.designation && <Text style={[touchable]}>{building.designation}</Text> }
+          { building.abreviation && <Text style={[touchable]}>{building.abreviation}</Text> }
           <Text style={[touchable, { height: 50 }]}>{`${building.adresseLigne1}
 ${building.npa} ${building.localite}`}
           </Text>
