@@ -29,7 +29,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "UniNE Annuaire.app"
+               BuildableName = "UniNE Campus.app"
                BlueprintName = "nativeDirectory"
                ReferencedContainer = "container:nativeDirectory.xcodeproj">
             </BuildableReference>
@@ -72,7 +72,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "UniNE Annuaire.app"
+            BuildableName = "UniNE Campus.app"
             BlueprintName = "nativeDirectory"
             ReferencedContainer = "container:nativeDirectory.xcodeproj">
          </BuildableReference>
@@ -96,7 +96,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "UniNE Annuaire.app"
+            BuildableName = "UniNE Campus.app"
             BlueprintName = "nativeDirectory"
             ReferencedContainer = "container:nativeDirectory.xcodeproj">
          </BuildableReference>
@@ -115,7 +115,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "UniNE Annuaire.app"
+            BuildableName = "UniNE Campus.app"
             BlueprintName = "nativeDirectory"
             ReferencedContainer = "container:nativeDirectory.xcodeproj">
          </BuildableReference>
@@ -126,7 +126,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
-      customArchiveName = "UniNE Annuaire"
+      customArchiveName = "UniNE Campus"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

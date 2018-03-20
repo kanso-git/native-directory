@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   textStyleElem: {
     color: '#000',
     paddingRight: 5,
-    paddingLeft: 5,
+    paddingLeft: 0,
     fontSize: 16,
     fontWeight: '600',
     lineHeight: 21,
@@ -214,7 +214,7 @@ height: 90,
                         }]}
          >
            <Icon name="phone" style={{ fontSize: 18, paddingLeft: 5, color: '#fff' }} allowFontScaling />
-           { phones ? this.renderPhones(phones) : <Text style={{ fontSize: 18, paddingLeft: 5, color: '#fff' }} >  --</Text>}
+           { phones ? this.renderPhones(phones) : <Text style={{ fontSize: 18, paddingLeft: 15, color: '#fff' }} > --</Text>}
          </View>
        </View>
      );

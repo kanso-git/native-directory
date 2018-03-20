@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
 
 class PersonCoursItem extends Component {
   enrichItemByAddress = (item) => {
-    if (item.typeoccupation === RESERVATION_PIDHO) {
-      const { salleBiluneId } = item;
+    const { salleBiluneId } = item;
+    if (item.typeoccupation === RESERVATION_PIDHO && salleBiluneId != null) {
       const local = this.props.locals.find(l => l.attributes.LOC_ID === salleBiluneId);
       const building = this.props.buildings.find(b => b.id === local.attributes.BAT_ID);
       return { ...item, local, building };
@@ -119,10 +119,20 @@ class PersonCoursItem extends Component {
            >
              <Text style={{ fontSize: 18, fontWeight: 'bold', paddingBottom: 1 }}>{`${I18n.t('bookingItem.from')} ${item.heure.split('-')[0]} ${I18n.t('bookingItem.to')} ${item.heure.split('-')[1]}`}  </Text>
              <Text style={{ fontSize: 13, paddingTop: 2, marginRight: 35 }}>{I18n.t('bookingItem.course')}: {`${item.matiere}`} </Text>
-             <TouchableOpacity onPress={() => this.showLocal(item.salleBiluneId, item.building.id)}>
-               <Text style={[styles.addressLine, { paddingTop: 5 }]}>{I18n.t('bookingItem.salle')}: {`${item.salle}`} </Text>
-               <Text style={styles.addressLine}>{I18n.t('person.position.location.floor')}: {`${item.local.attributes.ETG_DESIGNATION} / ${item.building.abreviation}`} </Text>
-             </TouchableOpacity>
+             {
+              item.salleBiluneId === null ? (
+                <Text style={[styles.addressLine, { paddingTop: 5, color: '#000' }]}>{I18n.t('bookingItem.salle')}: {`${item.salleHorsCampusNom}`} </Text>
+              ) : (
+                <TouchableOpacity onPress={() =>
+                  this.showLocal(item.salleBiluneId, item.building.id)}
+                >
+                  <Text style={[styles.addressLine, { paddingTop: 5 }]}>{I18n.t('bookingItem.salle')}: {`${item.salle}`} </Text>
+                  <Text style={styles.addressLine}>{I18n.t('person.position.location.floor')}: {`${item.local.attributes.ETG_DESIGNATION} / ${item.building.abreviation}`} </Text>
+                </TouchableOpacity>
+              )
+            }
+
+
            </View>
          );
        case RESERVATION_EMPTY:

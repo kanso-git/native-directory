@@ -1,8 +1,8 @@
 {
     "global" : {
-        "title" : "Annuaire UniNE",
+        "title" : "UniNE Campus",
         "loading" : "Chargement...",
-		"footerLine1": " Annuaire Version 2.3 - février 2018",
+		"footerLine1": " UniNE Campus Version 2.3 - février 2018",
 		"footerLine2": " © 2016 - 2018 SITEL - Université de Neuchâtel"
     },
     "search" : {
