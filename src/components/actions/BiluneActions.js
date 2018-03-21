@@ -413,8 +413,9 @@ const completeLoadingLocalData = (localId, dataReservations, dispatch, getState)
   const dataLocals = getState().bilune.locals;
   dataLocals.forEach((currLocal) => {
     if (parseInt(currLocal.attributes.LOC_ID, 10) === localId) {
+      const { salleplaces } = dataReservations.Query.Horaire;
       const localWithReservations = formatedLocalReservationDataForList({
-        ...currLocal, days, query: '',
+        ...currLocal, days, query: '', salleplaces,
       });
 
       dispatch({

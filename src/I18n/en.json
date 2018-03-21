@@ -2,8 +2,8 @@
     "global" : {
         "title" : "UniNE Campus",
         "loading" : "Loading...",
-		"footerLine1": " UniNE Campus 2.3 - février 2018",
-		"footerLine2": " © 2015 - 2018 SITEL - Université de Neuchâtel"
+		"footerLine1": "UniNE Campus 2.3 ( mars 2018 )",
+		"footerLine2": "© 2015 - 2018 SITEL - Université de Neuchâtel"
     },
     "search" : {
         "placeholder" : "Person, department, phone number...",
@@ -79,7 +79,21 @@
 		"bookingSchedule":"Booking",
 		"scheduleFrom": "from",
         "scheduleTo": "to",
-        "occupants": "occupants"
+        "occupants": "occupants",
+        "salleplaces": "nb places",
+        "area": "area"
+    },
+    "infos" : {
+        "pageTitle" : "Infos",
+        "general":"développée par le SITEL (UniNE)",
+        "intro": "L’application UniNE Campus est basée sur:\n",
+         "gLine1": "Système d’information des locaux de l’université de Neuchâtel (BILUNE ©2008-2018)",
+         "gLine2": " La base de données d’information du personnel et étudiants (BIPE©2000-2018)",
+         "gLine3": "La planification informatique des horaires (PIDHO©2010-2018)",
+         "gLine4": "  La planification informatique des réservations des locaux (PIRES©2014-2018)",
+        "esri":"ESRI",
+        "google":"Google Maps",
+        "more":"Pour toute information et commentaires"
     },
 	"bookingItem" : {
 		"from":"From",

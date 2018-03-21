@@ -85,6 +85,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
+  info: {
+    position: 'absolute',
+    top: 20,
+    right: 8,
+    backgroundColor: 'rgba(255,255,255,0.6)',
+    padding: 6,
+    borderRadius: 10,
+    width: 120,
+    height: 40,
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: 'flex-start',
+    justifyContent: 'space-around',
+  },
 
 });
 
@@ -198,7 +212,7 @@ alignItems: 'flex-start',
           }}
        >
          <View style={[{ height: 24 }]}>
-           <Text style={[textStyle, touchable]}>{LOC_TYPE_DESIGNATION} - {LOC_CODE}</Text>
+           <Text style={[textStyle, touchable]}>{LOC_TYPE_DESIGNATION}  {LOC_CODE}</Text>
          </View>
          <View style={[{ marginBottom: 5, height: 40 }, touchableContainer]}>
            <View style={addressStyle}>
@@ -212,6 +226,14 @@ ${npa} ${localite}`}
      );
    }
 
+   renderLocalInfos = local => (
+     <View style={styles.info} >
+       { local.salleplaces &&
+       <Text style={{ fontSize: 13, color: '#007aff' }}>{I18n.t('local.salleplaces')} : {local.salleplaces}</Text> }
+       <Text style={{ fontSize: 13, color: '#007aff' }}>{I18n.t('local.area')} : {Math.round(local.attributes.SHAPE_Area)} &#13217;</Text>
+
+     </View>
+   )
    render() {
      const localObjectId = this.props.localWithReservations.attributes.OBJECTID;
      const { onScroll = () => {} } = this.props;
@@ -241,7 +263,7 @@ ${npa} ${localite}`}
                                            height: (viewportHeight * 0.25),
              }}
              />
-
+             { this.renderLocalInfos(this.props.localWithReservations) }
            </View>
           )}
 

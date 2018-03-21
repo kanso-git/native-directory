@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { Scene, Router, Stack, Actions } from 'react-native-router-flux';
 import I18n from 'react-native-i18n';
+import Icon from 'react-native-fa-icons';
 import Home from './components/Home';
 import MemberDetails from './components/MemberDetails';
 import UnitDetails from './components/UnitDetails';
@@ -9,6 +10,7 @@ import BuildingDetails from './components/BuildingDetails';
 import LocalDetails from './components/LocalDetails';
 import PersonCoursDetails from './components/PersonCoursDetails';
 import MapPage from './components/MapPage';
+import AppInfosPage from './components/AppInfosPage';
 import LocalPersons from './components/LocalPersons';
 import NetworkError from './components/NetworkError';
 
@@ -23,6 +25,11 @@ const styles = StyleSheet.create({
     height: 35,
     resizeMode: Image.resizeMode.contain,
     paddingBottom: 15,
+  },
+  leftInfoImgStyle: {
+    color: 'white',
+    marginRight: 10,
+    fontSize: 30,
   },
   titleStyleAndroid: {
     alignSelf: 'center',
@@ -39,6 +46,9 @@ const base64Icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAAAuCAYAAA
 const backToHome = () => {
   Actions.reset('main', { reset: true });
 };
+const openAppInfos = () => {
+  Actions.push('appInfosPage');
+};
 const RouterComponent = () => (
   <Router >
     <Stack key="root" hideNavBar>
@@ -51,8 +61,33 @@ const RouterComponent = () => (
           key="home"
           component={Home}
           title={I18n.t('global.title')}
-          titleStyle={Platform.OS === 'android' ? styles.titleStyleAndroid : styles.titleStyle}
+          titleStyle={styles.titleStyle}
           navigationBarStyle={styles.navStyle}
+          renderRightButton={
+            <TouchableOpacity onPress={() => openAppInfos()}>
+              <Icon
+                style={styles.leftInfoImgStyle}
+                name="info-circle"
+              />
+            </TouchableOpacity>
+          }
+        />
+        <Scene
+          key="appInfosPage"
+          backTitle=" "
+          component={AppInfosPage}
+          title={I18n.t('infos.pageTitle')}
+          titleStyle={styles.titleStyle}
+          navigationBarStyle={styles.navStyle}
+          backButtonTintColor="white"
+          renderRightButton={
+            <TouchableOpacity onPress={() => backToHome()}>
+              <Image
+                style={styles.leftImgStyle}
+                source={{ uri: base64Icon }}
+              />
+            </TouchableOpacity>
+        }
         />
         <Scene
           key="memberDetails"
