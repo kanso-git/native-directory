@@ -147,8 +147,8 @@ class Home extends Component {
 }}
     >
       <Footer
-        footerTitle1={I18n.t('global.footerLine1')}
-        footerTitle2={I18n.t('global.footerLine2')}
+        footerTitle1={`${I18n.t('global.footerLine1')}${I18n.t('global.month')} ${I18n.t('global.currentYear')}`}
+        footerTitle2={`${I18n.t('global.footerLine2')}${I18n.t('global.currentYear')} ${I18n.t('global.owner')}`}
       />
     </View>
   )

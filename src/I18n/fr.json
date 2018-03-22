@@ -2,8 +2,11 @@
     "global" : {
         "title" : "UniNE Campus",
         "loading" : "Chargement...",
-		"footerLine1": "UniNE Campus Version 2.3 ( mars 2018 )",
-		"footerLine2": "© 2015 - 2018 SITEL - Université de Neuchâtel"
+        "currentYear":"2018",
+        "month":"avril",
+		"footerLine1": "UniNE Campus Version 2.3 - ",
+        "footerLine2": "© 2015 - ",
+        "owner":"SITEL - Université de Neuchâtel"
     },
     "search" : {
         "placeholder" : "Personne, département, n° de tél...",
@@ -84,15 +87,15 @@
     },
     "infos" : {
         "pageTitle" : "Crédits",
-        "general":"développée par le SITEL (UniNE)",
+        "general": "développée par le SITEL (UniNE)",
         "intro": "L’application UniNE Campus est basée sur:\n",
-         "gLine1": "Système d’information des locaux de l’université de Neuchâtel (BILUNE ©2008-2018)",
-         "gLine2": " La base de données d’information du personnel et étudiants (BIPE©2000-2018)",
-         "gLine3": "La planification informatique des horaires (PIDHO©2010-2018)",
-         "gLine4": "  La planification informatique des réservations des locaux (PIRES©2014-2018)",
-        "esri":"ESRI",
-        "google":"Google Maps",
-        "more":"Pour toute information et commentaires"
+        "gLine1": "Système d’information des locaux de l’université de Neuchâtel - BILUNE ©2008-",
+        "gLine2": "La base de données d’information du personnel et étudiants - BIPE©2000-",
+        "gLine3": "La planification informatique des horaires - PIDHO©2010-",
+        "gLine4": "La planification informatique des réservations des locaux - PIRES©2014-",
+        "esri": "ESRI",
+        "google": "Google Maps",
+        "more": "Pour toute information et commentaires"
     },
 	"bookingItem" : {
 		"from":"De",
@@ -116,6 +119,24 @@
     },
     "home":{
       "intro":"Veuillez saisir le nom d’une personne, d’une unité organisationnelle ou d'un numéro de téléphone."
-    }
-
+    },
+    "intro":{
+        "btn":{
+         "skip":"Ignorer",
+         "done":"Lancer l'application",
+         "next":"Suivant"
+        },
+        "search":{
+          "title":"Recherche",
+          "text":"Rechercher une personne, une unité organisationnelle, un numéro de téléphone, un bâtiment, aula, salle d’enseignement, salle informatique, etc."
+        },
+        "event":{
+          "title":"Evénements, Cours, Professeurs",
+          "text":"Voir les horaires de cours/événements de la semaine courante et les ajouter au calendrier"
+        },
+        "map":{
+          "title":"Carte",
+          "text":"Localiser un/une collaborateur/trice, un bâtiment, un bureau, aula, salle d'enseignement, salle informatique "
+        }
+      }
 }

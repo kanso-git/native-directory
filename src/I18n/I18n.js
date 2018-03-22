@@ -30,6 +30,7 @@ switch (languageCode) {
     break;
 }
 
+export default I18n;
 // let languageCode = I18n.locale.substr(0, 2)
 // // All other translations for the app goes to the respective language file:
 // switch (languageCode) {

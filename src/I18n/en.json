@@ -2,8 +2,11 @@
     "global" : {
         "title" : "UniNE Campus",
         "loading" : "Loading...",
-		"footerLine1": "UniNE Campus 2.3 ( mars 2018 )",
-		"footerLine2": "© 2015 - 2018 SITEL - Université de Neuchâtel"
+        "currentYear":"2018",
+        "month":"april",
+		"footerLine1": "UniNE Campus Version 2.3 - ",
+        "footerLine2": "© 2015 - ",
+        "owner":"SITEL - Université de Neuchâtel"
     },
     "search" : {
         "placeholder" : "Person, department, phone number...",
@@ -85,15 +88,15 @@
     },
     "infos" : {
         "pageTitle" : "Infos",
-        "general":"développée par le SITEL (UniNE)",
-        "intro": "L’application UniNE Campus est basée sur:\n",
-         "gLine1": "Système d’information des locaux de l’université de Neuchâtel (BILUNE ©2008-2018)",
-         "gLine2": " La base de données d’information du personnel et étudiants (BIPE©2000-2018)",
-         "gLine3": "La planification informatique des horaires (PIDHO©2010-2018)",
-         "gLine4": "  La planification informatique des réservations des locaux (PIRES©2014-2018)",
+        "general":"developed by SITEL (UniNE)",
+        "intro": "The UniNE Campus application is based on:\n",
+         "gLine1": "Information system of the premises of the University of Neuchâtel - BILUNE ©2008-",
+         "gLine2": "The information database of staff and students - BIPE©2000-",
+         "gLine3": "Computer planning schedules - PIDHO©2010-",
+         "gLine4": "Computer planning of room reservations - PIRES©2014-",
         "esri":"ESRI",
         "google":"Google Maps",
-        "more":"Pour toute information et commentaires"
+        "more":"For any information and comments"
     },
 	"bookingItem" : {
 		"from":"From",
@@ -117,6 +120,24 @@
     },
   "home":{
     "intro":"Please enter the name of a person, organizational unit or telephone number."
+  },
+  "intro":{
+    "btn":{
+     "skip":"Skip",
+     "done":"Done",
+     "next":"Next"
+    },
+    "search":{
+      "title":"Search",
+      "text":"Search a person, organizational unit, phone number, building, aula, teaching room, computer room, etc."
+    },
+    "event":{
+      "title":"Events, Courses, Professors",
+      "text":"See the class/event schedules of the current week and add them to the calendar"
+    },
+    "map":{
+      "title":"Map",
+      "text":"Locate a collaborator, a building, an office, aula, classroom, computer room"
+    }
   }
-
 }

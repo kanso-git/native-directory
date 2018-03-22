@@ -37,7 +37,7 @@ const AppInfosPage = () => (
     </CardSection>
     <CardSection style={{ flexDirection: 'column' }}>
       <Text style={styles.description} >
-        {I18n.t('global.footerLine1')} {I18n.t('infos.general')}
+        {I18n.t('global.footerLine1')}{I18n.t('global.month')} {I18n.t('global.currentYear')} {I18n.t('infos.general')}
       </Text>
 
       <Text style={styles.description} >
@@ -46,19 +46,19 @@ const AppInfosPage = () => (
 
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
-        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine1')}</Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine1')}{I18n.t('global.currentYear')}</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
-        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine2')}</Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine2')}{I18n.t('global.currentYear')}</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
-        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine3')}</Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine3')}{I18n.t('global.currentYear')}</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
-        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine4')}</Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine4')}{I18n.t('global.currentYear')}</Text>
       </View>
 
     </CardSection>

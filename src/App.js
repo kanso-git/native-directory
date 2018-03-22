@@ -1,12 +1,15 @@
 /* eslint no-console: ["error", { allow: ["info", "warn", "error"] }] */
 import React, { Component } from 'react';
-import { View, Platform, BackHandler, NetInfo, StyleSheet } from 'react-native';
+import { View, Text, Platform, BackHandler, NetInfo, StyleSheet, AsyncStorage } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import SplashScreen from 'react-native-splash-screen';
 import { Actions } from 'react-native-router-flux';
-import './I18n/I18n';
+import AppIntroSlider from 'react-native-app-intro-slider';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-fa-icons';
+import I18n from './I18n/I18n';
 import { authActions, biluneActions } from './components/actions';
 import reducers from './components/reducers';
 import * as utile from './components/common/utile';
@@ -17,8 +20,68 @@ const styles = StyleSheet.create({
   full: {
     flex: 1,
   },
+  mainContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  image: {
+    width: 320,
+    height: 320,
+  },
+  text: {
+    color: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+    paddingHorizontal: 16,
+  },
+  title: {
+    fontSize: 22,
+    color: 'white',
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
 });
+const APP_INTRO_KEY = 'showAppIntro';
+const APP_INTRO_SHOW = 'show';
+const APP_INTRO_HIDE = 'hide';
+const slides = [
+  {
+    key: 'search',
+    title: `${I18n.t('intro.search.title')}`,
+    text: `${I18n.t('intro.search.text')}`,
+    icon: 'search',
+    colors: ['#0083b0', '#056734'],
+  },
+  {
+    key: 'event',
+    title: `${I18n.t('intro.event.title')}`,
+    text: `${I18n.t('intro.event.text')}`,
+    icon: 'graduation-cap',
+    colors: ['#056734', '#b70f1d'],
+  },
+  {
+    key: 'map',
+    title: `${I18n.t('intro.map.title')}`,
+    text: `${I18n.t('intro.map.text')}`,
+    icon: 'map-marker',
+    colors: ['#b70f1d', '#eb9800', '#904c88'],
+  },
+];
 class App extends Component {
+  state={
+    showAppIntro: null,
+  }
+  componentWillMount() {
+    AsyncStorage.getItem(APP_INTRO_KEY).then((v) => {
+      if (v == null) {
+        this.setState(() => ({ showAppIntro: APP_INTRO_SHOW }));
+      } else {
+        this.setState(() => ({ showAppIntro: APP_INTRO_HIDE }));
+      }
+    });
+  }
   componentDidMount() {
     if (SplashScreen && SplashScreen.hide) {
       SplashScreen.hide();
@@ -110,15 +173,67 @@ class App extends Component {
   }
 
   myStore = null;
+  handleDone = () => {
+    console.info('Intro handleDone pressed!');
+    AsyncStorage.setItem(APP_INTRO_KEY, APP_INTRO_HIDE);
+    this.setState(() => ({ showAppIntro: APP_INTRO_HIDE }));
+  }
+  handleSkip = () => {
+    console.info('Intro handleSkip pressed!');
+    this.setState(() => ({ showAppIntro: APP_INTRO_HIDE }));
+  }
+  renderIntroItem = props => (
+    <LinearGradient
+      style={[styles.mainContent, {
+        paddingTop: props.topSpacer,
+        paddingBottom: props.bottomSpacer,
+        width: props.width,
+        height: props.height,
+      }]}
+      colors={props.colors}
+      start={{ x: 0, y: 0.1 }}
+      end={{ x: 0.1, y: 1 }}
+    >
+      <Icon
+        style={{
+          backgroundColor: 'transparent', color: 'white', fontSize: 200,
+        }}
+        name={props.icon}
+      />
+      <View>
+        <Text style={styles.title}>{props.title}</Text>
+        <Text style={styles.text}>{props.text}</Text>
+      </View>
+    </LinearGradient>
+  );
+
+  renderIntro = () => (
+    <AppIntroSlider
+      slides={slides}
+      renderItem={this.renderIntroItem}
+      bottomButton
+      showSkipButton
+      onDone={this.handleDone}
+      onSkip={this.handleSkip}
+      skipLabel={I18n.t('intro.btn.skip')}
+      doneLabel={I18n.t('intro.btn.done')}
+      nextLabel={I18n.t('intro.btn.next')}
+    />
+  );
+  renderMainApp = myStore => (
+    <Provider store={myStore} >
+      <View style={styles.full}>
+        <Router />
+      </View>
+    </Provider>
+  );
   render() {
-    this.myStore = createStore(reducers, applyMiddleware(thunk));
-    return (
-      <Provider store={this.myStore} >
-        <View style={styles.full}>
-          <Router />
-        </View>
-      </Provider>
-    );
+    if (this.myStore === null) {
+      this.myStore = createStore(reducers, applyMiddleware(thunk));
+    }
+    console.info(`showAppIntro :${this.state.showAppIntro}`);
+    // AsyncStorage.removeItem(APP_INTRO_KEY);
+    return this.state.showAppIntro === 'show' ? this.renderIntro() : this.renderMainApp(this.myStore);
   }
 }
 
