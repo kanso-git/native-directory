@@ -9,9 +9,9 @@ import { connect } from 'react-redux';
 import I18n from 'react-native-i18n';
 import Icon from 'react-native-fa-icons';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import Communications from 'react-native-communications';
 import { pidhoActions } from './actions';
 import { Card, CardSection, InputFlex, utile, Chromatic } from './common';
+import * as logging from './common/logging';
 import PersonCoursItem from './PersonCoursItem';
 
 const styles = StyleSheet.create({
@@ -126,14 +126,14 @@ ${npa} ${localite}`;
       .then((eventId) => {
         // handle success (receives event id) or dismissing the modal (receives false)
         if (eventId) {
-          // console.warn(eventId);
+          // logging.warn(eventId);
         } else {
-          // console.warn('dismissed');
+          // logging.warn('dismissed');
         }
       })
       .catch((error) => {
         // handle error such as when user rejected permissions
-        console.warn(error);
+        logging.warn(error);
       });
   };
 
@@ -141,7 +141,7 @@ ${npa} ${localite}`;
     this.props.showHideCourseDay(this.props.id, dateDay);
   }
   onPressItem = (item) => {
-    console.log(JSON.stringify(item, null, 4));
+    logging.log(JSON.stringify(item, null, 4));
   };
   onSearch = (value) => {
     this.props.searchInProfCours(this.props.id, value);
@@ -154,14 +154,14 @@ ${npa} ${localite}`;
     <TouchableOpacity
       key={phone.external}
       style={{ paddingLeft: 15 }}
-      onPress={() => Communications.phonecall(phone.external, true)}
+      onPress={() => utile.phonecall(phone.external, true)}
     >
       <Text style={[styles.textStyleElem, touchable]}>{phone.external}</Text>
     </TouchableOpacity>
   ));
 
   renderEmail = email => (
-    <TouchableOpacity onPress={() => Communications.email([email], null, null, ' ', ' ')}>
+    <TouchableOpacity onPress={() => utile.email([email])}>
       <View style={[styles.containerStyle, touchableContainer]}>
         <Icon name="envelope" style={[styles.iconStyle, touchable]} allowFontScaling />
         <Text style={[styles.textStyleElem, touchable]}>{email} </Text>

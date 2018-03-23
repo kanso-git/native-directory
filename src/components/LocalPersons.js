@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList } from '
 import Icon from 'react-native-fa-icons';
 import { Actions } from 'react-native-router-flux';
 import I18n from 'react-native-i18n';
-import { Card, CardSection } from './common';
+import { Card, CardSection, utile } from './common';
 
 const styles = StyleSheet.create({
   textStyle: {
@@ -71,7 +71,10 @@ class LocalPersons extends Component {
     // const { occupents, targetLocal } = this.props.navigation.state.params;
     // this.props.loadOccupentsPerLocal(id);
   }
-
+  componentDidMount() {
+    const { screens } = utile.gaParams;
+    utile.trackScreenView(screens.personL);
+  }
   renderOfficeAddress = location => (
     <TouchableOpacity
       style={[containerStyle]}

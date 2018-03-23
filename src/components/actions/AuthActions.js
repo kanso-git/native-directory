@@ -103,7 +103,6 @@ const register = () =>
         },
       });
     } catch (e) {
-      // console.error('register auth error', e);
       const isConnected = await utile.isConnected();
       const service = 'register';
       return dispatch({

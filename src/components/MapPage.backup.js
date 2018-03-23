@@ -12,6 +12,7 @@ import { biluneActions } from './actions';
 import { Spinner } from './common';
 import CustomCallout from './CustomCallout';
 import * as mapHelper from './common/mapHelper';
+import * as logging from './common/logging';
 import MapPolygon from './MapPolygon';
 import MapMarker from './MapMarker';
 
@@ -79,7 +80,7 @@ class MapPage extends Component {
     /*
      the region for the selected Building is calculated
     */
-    console.log('.................. componentWillMount ................');
+    logging.log('.................. componentWillMount ................');
     const initialState = mapHelper.extractParams(this.props.navigation.state.params, { ...this.props });
     this.setState(() => ({ ...initialState }));
     region = mapHelper.getRegionForSelectedBat({ ...this.props, id: initialState.id });
@@ -91,7 +92,7 @@ class MapPage extends Component {
     when the user navigates to map after the locals get full loded
     the bilueState will be BDL_LOADED
     */
-    console.log('.................. componentDidMount ................');
+    logging.log('.................. componentDidMount ................');
     if (this.props.biluneState === 'BDL_LOADED') {
       // this.renderMapData();
     }
@@ -104,7 +105,7 @@ class MapPage extends Component {
     are get loaded the componentWillReceiveProps will be called with
     BDL_LOADED as new state value
     */
-    console.log('.................. componentWillReceiveProps ................');
+    logging.log('.................. componentWillReceiveProps ................');
     if (nextProps.biluneState !== this.props.biluneState) {
       this.renderMapData('componentWillReceiveProps');
     }
@@ -127,7 +128,7 @@ class MapPage extends Component {
  called on onLayout mapView method, to avoid carshing th app mainly on android
   */
 onLayoutMapReady = () => {
-  console.log(`>>>>>>>> onLayoutMapReady  id:${this.props.id}, localId:${this.props.localId} >>>>>`);
+  logging.log(`>>>>>>>> onLayoutMapReady  id:${this.props.id}, localId:${this.props.localId} >>>>>`);
   const myMap = this.map;
   if (myMap) {
     myMap.animateToRegion(region, 0);
@@ -171,7 +172,7 @@ getMapLocals = dataLocals =>
 
 
 getCalloutInfo = (occupents, targetLocal) => {
-  console.log(`getCalloutInfo localId:${occupents}`);
+  logging.log(`getCalloutInfo localId:${occupents}`);
 
   let occupentsString = '';
   let extraLength = 0;
@@ -222,7 +223,7 @@ Type: ${localType}`;
     }
 
     handleOnLocalPress= (clickedLocId, coordinates) => {
-      console.log(`handleOnLocalPress target :${clickedLocId}`);
+      logging.log(`handleOnLocalPress target :${clickedLocId}`);
       const targetLocal = this.props.locals
         .find(l => l.attributes.LOC_ID === clickedLocId);
       this.showLocalMarker(targetLocal, coordinates);
@@ -262,11 +263,11 @@ Type: ${localType}`;
   renderVisibleLocals = () => {
     data = mapHelper.getVisibleLocals({ ...this.props, ...this.state }, region);
     const allLocals = [...data.mainLocals, ...data.otherLocals];
-    console.log(`renderVisibleLocals allLocals length:${allLocals.length}`);
+    logging.log(`renderVisibleLocals allLocals length:${allLocals.length}`);
     if (allLocals.length > 0) {
       const filteredMaplocals = ldash.uniqWith(allLocals, ldash.isEqual);
       const maplocals = this.getMapLocals(filteredMaplocals);
-      console.log(`renderVisibleLocals maplocals length:${maplocals.length}`);
+      logging.log(`renderVisibleLocals maplocals length:${maplocals.length}`);
       const targetLocId = this.state.localId;
       if (targetLocId != null) {
         const targetLocal = filteredMaplocals
@@ -281,7 +282,7 @@ Type: ${localType}`;
   renderMapData = (callerName) => {
     const zoomLevel = mapHelper.getZoomLevel(region);
     zoomLevel0 = zoomLevel;
-    console.log(`renderMapData  called  from  ${callerName} with zoomLevel:${zoomLevel}`);
+    logging.log(`renderMapData  called  from  ${callerName} with zoomLevel:${zoomLevel}`);
     if (zoomLevel > 17) {
       this.renderVisibleLocals();
     } else {

@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ScrollView } from 'react-native';
 import { PERSON_SCREEN } from 'react-native-dotenv';
-import { Spinner, Chromatic } from './common';
+import { Spinner, Chromatic, utile } from './common';
 import { authActions, searchActions } from './actions';
 import Person from './Person';
 
@@ -17,6 +17,10 @@ class MemberDetails extends Component {
     this.props.getPersonDetail(id, secret);
   }
 
+  componentDidMount() {
+    const { screens } = utile.gaParams;
+    utile.trackScreenView(screens.person);
+  }
   componentWillReceiveProps(nextProps) {
     const { secret, retry, screen } = nextProps.auth;
     const { id } = nextProps.navigation.state.params.memberDetails;

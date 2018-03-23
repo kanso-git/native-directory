@@ -279,12 +279,6 @@ const extractParams = (params, bilune) => {
   let myLocalId = null;
   let myFloorId = null;
 
-
-  console.log(`buildingId:${buildingId}, 
-       localId:${localId}, 
-       localCode:${localCode},
-       buildingCode:${buildingCode} `);
-
   if (buildingCode && buildingCode != null) {
     myBuilding = bilune.buildings.find(b => b.code === buildingCode);
     myBuildingId = myBuilding.id;
@@ -306,7 +300,6 @@ const extractParams = (params, bilune) => {
   if (myBuildingId == null) {
     myBuildingId = bilune.buildings[0].id;
   }
-  console.log(`extractParams id:${myBuildingId}, localId:${myLocalId}, myFloorId:${myFloorId}`);
   return {
     id: myBuildingId,
     localId: myLocalId,

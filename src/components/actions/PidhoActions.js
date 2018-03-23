@@ -7,10 +7,11 @@ import {
 import * as types from './Types';
 import * as queries from '../common/queriesHelper';
 import * as utile from '../common/utile';
+import * as logging from '../common/logging';
 
 const courseListAxios = async (bipeId, sD, eD) => {
   const url = queries.coursesListByBipeId(bipeId, sD, eD);
-  console.info(`url courseListAxios ${url}`);
+  logging.info(`url courseListAxios ${url}`);
   const res = await axios.get(url);
   return res.data;
 };

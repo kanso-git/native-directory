@@ -3,13 +3,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
-import { Spinner, Chromatic } from './common';
+import { Spinner, Chromatic, utile } from './common';
 import { biluneActions } from './actions';
 import Local from './Local';
 
 class LocalDetails extends Component {
   componentDidMount() {
     this.props.loadAllLocalData(this.props.bilune.locId);
+    const { screens } = utile.gaParams;
+    utile.trackScreenView(screens.local);
   }
   renderSpinner = () => (
     <View style={{ flex: 1 }}>

@@ -3,12 +3,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
-import { Spinner, Chromatic } from './common';
+import { Spinner, Chromatic, utile } from './common';
 import { biluneActions } from './actions';
 import Building from './Building';
 
 
 class BuidlingDetails extends Component {
+  componentDidMount() {
+    const { screens } = utile.gaParams;
+    utile.trackScreenView(screens.building);
+  }
   renderSpinner = () => (
     <View style={{ flex: 1 }}>
       <Chromatic />

@@ -27,6 +27,8 @@ target 'nativeDirectory' do
 
   pod 'react-native-add-calendar-event', :path => '../node_modules/react-native-add-calendar-event'
 
+  pod 'react-native-google-analytics-bridge', :path => '../node_modules/react-native-google-analytics-bridge'
+
 end
 
 post_install do |installer|

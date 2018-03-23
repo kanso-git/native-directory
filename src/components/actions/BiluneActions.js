@@ -16,6 +16,7 @@ import { BDL_SECURITY_TOKEN,
 import * as types from './Types';
 import * as queries from '../common/queriesHelper';
 import * as utile from '../common/utile';
+import * as logging from '../common/logging';
 
 const headers = {};
 headers[`${BDL_SECURITY_TOKEN}`] = BDL_SECURITY_TOKEN_VAL;
@@ -38,7 +39,7 @@ const getImageUsingBlob = async (dispatch, url) => {
     return (res.base64() && res.base64().length > 0) ?
       `data:${mimetype};base64,${base64Str}` : null;
   } catch (e) {
-    console.warn(`error occured getImageUsingBlob ${e}`);
+    logging.warn(`error occured getImageUsingBlob ${e}`);
     const isConnected = await utile.isConnected();
     const service = 'getImageUsingBlob';
     return dispatch({
@@ -58,7 +59,7 @@ const getBdlBuildingListAxios = async (dispatch) => {
     res = await axios.get(queries.bdlBuildings(), { headers });
     return res.data;
   } catch (e) {
-    console.warn(`error occured getBdlBuildingFloorsAxios ${e}`);
+    logging.warn(`error occured getBdlBuildingFloorsAxios ${e}`);
     const isConnected = await utile.isConnected();
     const service = 'getBdlBuildingListAxios';
     return dispatch({
@@ -80,7 +81,7 @@ const getBdlBuildingFloorsAxios = async (dispatch, floorBuildingId) => {
     const collapsed = true;
     return res.data.map((f, index) => ({ ...f, collapsed, sortOrder: index + 1 }));
   } catch (e) {
-    console.warn(`error occured getBdlBuildingFloorsAxios ${e}`);
+    logging.warn(`error occured getBdlBuildingFloorsAxios ${e}`);
     const isConnected = await utile.isConnected();
     return dispatch({
       type: types.UPDATE_CONNECTION_STATE,
@@ -96,10 +97,10 @@ const getBdlBuildingFloorsAxios = async (dispatch, floorBuildingId) => {
 const getBiluneLocalsWithSpatialDataAxios = async (dispatch) => {
   try {
     const locals = await axios.get(queries.locals('BAT_ID>0'));
-    console.info(`found ${locals.data.features.length} locals`);
+    logging.info(`found ${locals.data.features.length} locals`);
     return locals.data.features;
   } catch (e) {
-    console.warn(`error getBiluneLocalsWithSpatialDataAxios ${e}`);
+    logging.warn(`error getBiluneLocalsWithSpatialDataAxios ${e}`);
     const isConnected = await utile.isConnected();
     return dispatch({
       type: types.UPDATE_CONNECTION_STATE,
@@ -118,7 +119,7 @@ const getBiluneBuildingEnteriesAxios = async (dispatch) => {
     res = await axios.get(queries.buildingsEnteries());
     return res.data ? res.data.features : res.data;
   } catch (e) {
-    console.warn(`error getBiluneBuildingEnteriesAxios ${e}`);
+    logging.warn(`error getBiluneBuildingEnteriesAxios ${e}`);
     const isConnected = await utile.isConnected();
     return dispatch({
       type: types.UPDATE_CONNECTION_STATE,
@@ -139,7 +140,7 @@ const getOccupentPerLocalAxios = async (dispatch, localId) => {
     res = await axios.get(url, { headers });
     return res.data;
   } catch (e) {
-    console.warn(`error getOccupentPerLocalAxios ${e}`);
+    logging.warn(`error getOccupentPerLocalAxios ${e}`);
     const isConnected = await utile.isConnected();
     return dispatch({
       type: types.UPDATE_CONNECTION_STATE,
@@ -191,7 +192,7 @@ const loadSpatialData = () =>
           imagesPromise.push(getImageUsingBlob(dispatch, `${API_BDL}/batiments/${b.id}/photo/mini`));
         }
       });
-      console.info(`loadSpatialData loading images for ${imagesId.length} buildings`);
+      logging.info(`loadSpatialData loading images for ${imagesId.length} buildings`);
       if (imagesId.length > 0) {
         Promise.all(imagesPromise).then((imagesData) => {
           // handle image stocking
@@ -202,7 +203,7 @@ const loadSpatialData = () =>
             type: types.SET_IMAGE_BILUNE,
             payload: { images },
           });
-        }).catch(err => console.warn(`err loading image:${err}`));
+        }).catch(err => logging.warn(`err loading image:${err}`));
       }
       // const locals = await getBiluneLocalsOneByOneAxios(bdlBuildings);
       const locals = await getBiluneLocalsWithSpatialDataAxios(dispatch);
@@ -223,7 +224,7 @@ const loadSpatialData = () =>
       });
       const end = new Date().getTime();
       const time = end - start;
-      console.info(`loadSpatialData loading time: ${time}`);
+      logging.info(`loadSpatialData loading time: ${time}`);
     } catch (e) {
       dispatch({
         type: types.CHANGE_BILUNE_STATE,
@@ -233,7 +234,7 @@ const loadSpatialData = () =>
       });
       if (e.response) {
         if (e.response.status === 401) {
-          console.warn(`Error getBuildingList ${e} `);
+          logging.warn(`Error getBuildingList ${e} `);
         }
       }
     }
@@ -281,7 +282,7 @@ const formatedBuildingDataForList = (myBuilding) => {
 };
 const reservationListAxios = async (lId, sD, eD) => {
   const url = queries.reservationsByLocalId(lId, sD, eD);
-  console.info(`url reservationListAxios ${url}`);
+  logging.info(`url reservationListAxios ${url}`);
   const res = await axios.get(url);
   return res.data;
 };
@@ -483,7 +484,7 @@ const loadOccupentsPerLocal = localId =>
       });
       return occupentsList;
     } catch (e) {
-      console.warn(`error in loadOccupentsPerLocal error:${e}`);
+      logging.warn(`error in loadOccupentsPerLocal error:${e}`);
     }
   };
 
@@ -507,7 +508,7 @@ const loadBuildingFloors = buildingId =>
     } catch (e) {
       if (e.response) {
         if (e.response.status === 401) {
-          console.warn(`Error buildingFloors ${e} `);
+          logging.warn(`Error buildingFloors ${e} `);
         }
       }
     }
@@ -542,7 +543,7 @@ const loadAllBuildingData = buildingId =>
             imagesPromise.push(getImageUsingBlob(dispatch, `${API_BDL}/locaux/${loc.attributes.LOC_ID}/photo/mini`));
           }
         });
-        console.info(`loadAllBuildingData loading images for ${imagesId.length} locals`);
+        logging.info(`loadAllBuildingData loading images for ${imagesId.length} locals`);
         if (imagesId.length > 0) {
           Promise.all(imagesPromise).then((imagesData) => {
           // handle image stocking
@@ -553,7 +554,7 @@ const loadAllBuildingData = buildingId =>
               type: types.SET_IMAGE_BILUNE,
               payload: { images },
             });
-          }).catch(err => console.warn(`err loading image:${err}`));
+          }).catch(err => logging.warn(`err loading image:${err}`));
         }
 
         const dataBuildings = getState().bilune.buildings;
@@ -577,7 +578,7 @@ const loadAllBuildingData = buildingId =>
     } catch (e) {
       if (e.response) {
         if (e.response.status === 401) {
-          console.warn(`Error buildingFloors ${e} `);
+          logging.warn(`Error buildingFloors ${e} `);
         }
       }
     }
@@ -707,7 +708,7 @@ const searchBilune = query =>
             imagesPromise.push(getImageUsingBlob(dispatch, `${API_BDL}/batiments/${b.id}/photo/mini`));
           }
         });
-        console.info(`searchBilune loading images for ${imagesId.length} buildings`);
+        logging.info(`searchBilune loading images for ${imagesId.length} buildings`);
         if (imagesId.length > 0) {
           Promise.all(imagesPromise).then((imagesData) => {
             // handle image stocking
@@ -718,7 +719,7 @@ const searchBilune = query =>
               type: types.SET_IMAGE_BILUNE,
               payload: { images },
             });
-          }).catch(err => console.warn(`err loading image:${err}`));
+          }).catch(err => logging.warn(`err loading image:${err}`));
         }
       }
       // as we can find local with length 2
@@ -745,7 +746,7 @@ const searchBilune = query =>
             imagesPromise.push(getImageUsingBlob(dispatch, `${API_BDL}/locaux/${loc.attributes.LOC_ID}/photo/mini`));
           }
         });
-        console.info(`searchBilune loading images for ${imagesId.length} locals`);
+        logging.info(`searchBilune loading images for ${imagesId.length} locals`);
         if (imagesId.length > 0) {
           Promise.all(imagesPromise).then((imagesData) => {
             // handle image stocking
@@ -756,7 +757,7 @@ const searchBilune = query =>
               type: types.SET_IMAGE_BILUNE,
               payload: { images },
             });
-          }).catch(err => console.warn(`err loading image:${err}`));
+          }).catch(err => logging.warn(`err loading image:${err}`));
         }
       }
 
@@ -787,7 +788,7 @@ const searchBilune = query =>
         },
       });
     }
-    console.info(`don't search query is:${query}`);
+    logging.info(`don't search query is:${query}`);
     return dispatch({
       type: types.RESET_SEARCH_BILUNE,
       payload: {
@@ -803,13 +804,13 @@ const loadLocalImageById = (localObjId, locId) =>
     // image is not loaded
     try {
       const imagesPromise = await getImageUsingBlob(dispatch, `${API_BDL}/locaux/${locId}/photo/mini`);
-      console.info(`loadLocalImageById  for LOCAL:${locId} `);
+      logging.info(`loadLocalImageById  for LOCAL:${locId} `);
       images[localObjId] = imagesPromise;
       dispatch({
         type: types.SET_IMAGE_BILUNE,
         payload: { images },
       });
-    } catch (err) { console.warn(`err loading image:${err}`); }
+    } catch (err) { logging.warn(`err loading image:${err}`); }
   };
 const setBuildingId = ({ id }) => ({ type: types.SET_DEFAULT_BAT_ID, payload: { id } });
 const setLocalId = (locId, id) => ({ type: types.SET_DEFAULT_LOC_ID, payload: { locId, id } });

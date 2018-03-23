@@ -6,7 +6,8 @@ import { View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'reac
 import { HOME_SCREEN } from 'react-native-dotenv';
 import I18n from 'react-native-i18n';
 import * as ldsh from 'lodash';
-import { Card, InputFlex, CardSection, Footer, Spinner, Chromatic } from './common';
+import { Card, InputFlex, CardSection, Footer, Spinner, Chromatic, utile } from './common';
+import * as logging from './common/logging';
 import { authActions, searchActions, biluneActions } from './actions';
 import SearchList from './SearchList';
 import Slider from './Slider';
@@ -55,7 +56,11 @@ class Home extends Component {
   }
   componentWillMount() {
     // const { reset } = this.props.navigation.state.params;
-    // console.info(`>>>>>>>>>>>>>>>>>>>>>> Home resest is:${reset}`);
+    // logging.info(`>>>>>>>>>>>>>>>>>>>>>> Home resest is:${reset}`);
+  }
+  componentDidMount() {
+    const { screens } = utile.gaParams;
+    utile.trackScreenView(screens.home);
   }
   componentWillReceiveProps(nextProps) {
     const { secret, retry, screen } = nextProps.auth;
@@ -71,15 +76,15 @@ class Home extends Component {
 
   onFocus= () => {
     this.setState(() => ({ focused: true }));
-    console.log(`focus in :${this.state.focused}`);
+    logging.log(`focus in :${this.state.focused}`);
   }
   onBlur= () => {
     this.setState(() => ({ focused: false }));
-    console.log(`focus out :${this.state.focused}`);
+    logging.log(`focus out :${this.state.focused}`);
   }
   onCardTap = () => {
     const currentFocusStatus = this.state.focused;
-    console.log(`currentFocusStatus :${currentFocusStatus}`);
+    logging.log(`currentFocusStatus :${currentFocusStatus}`);
     if (Keyboard) {
       Keyboard.dismiss();
     }

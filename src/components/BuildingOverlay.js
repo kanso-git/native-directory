@@ -34,15 +34,6 @@ const options = [
 class BuildingOverlay extends Component {
   componentWillMount() {
   }
-
-  componentWillReceiveProps(nextProps) {
-    console.log('.................. componentWillReceiveProps ................');
-  }
-
-  componentWillUnmount() {
-
-  }
-
   render() {
     const floorData = this.props.building.floors.map(f => ({
       value: f.id,
@@ -55,7 +46,6 @@ class BuildingOverlay extends Component {
     const {
       abreviation, adresseLigne1, npa, localite,
     } = this.props.building;
-    console.log(floorData);
     return (
       <View style={{ padding: 2 }}>
 

@@ -13,6 +13,7 @@ import {
   Platform,
 } from 'react-native';
 import { isIphoneX } from 'react-native-iphone-x-helper';
+import * as logging from '../common/logging';
 
 const SHOW_SLIDE_UP = 'show';
 const HIDE_SLIDE_UP = 'hide';
@@ -34,7 +35,7 @@ export default class SlideUp extends Component {
     } else {
       this.maxBottom = heightOverlay * 0.29;
     }
-    console.log(`this.maxBottom:${this.maxBottom}`);
+    logging.log(`this.maxBottom:${this.maxBottom}`);
     this.state = { scrollY: new Animated.Value(this.maxBottom) };
   }
   componentWillMount() {
@@ -53,11 +54,11 @@ export default class SlideUp extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('.... SlideUp componentWillReceiveProps ....');
+    logging.log('.... SlideUp componentWillReceiveProps ....');
     this.handleStausChange(nextProps.slideUpStatus);
   }
  handleStausChange = (status) => {
-   console.info(`SlideUp handleStausChange  request to ${status}`);
+   logging.info(`SlideUp handleStausChange  request to ${status}`);
    switch (status) {
      case SHOW_SLIDE_UP:
        this.slideUp();

@@ -16,7 +16,7 @@ I18n.translations = {
 };
 
 getLanguages().then((languages) => {
- console.info(` languages is :${languages}`); // ['en-US', 'en']
+ // console.info(` languages is :${languages}`); // ['en-US', 'en']
 });
 
 const languageCode = I18n.locale.substr(0, 2);

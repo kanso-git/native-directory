@@ -10,7 +10,8 @@ import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { biluneActions } from './actions';
 import MapMarker from './MapMarker';
 import * as mapHelper from './common/mapHelper';
-
+import * as utile from './common/utile';
+import * as logging from './common/logging';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -75,12 +76,12 @@ class MapHomePage extends Component {
 
   // called every time you access this component right after componentWillMount
   componentDidMount() {
-    console.log('>>>>>>>>>> MapHomePage componentDidMount');
+    logging.log('>>>>>>>>>> MapHomePage componentDidMount');
     const id = mapHelper.getBuilidngId({ ...this.props });
     this.renderVisibleBuildings(id);
   }
   componentWillReceiveProps(nextProps) {
-    console.log('>>>>>>>>>> MapHomePage componentWillReceiveProps');
+    logging.log('>>>>>>>>>> MapHomePage componentWillReceiveProps');
     if (Actions.currentScene === 'home') {
       const myMap = this.map;
       if (myMap) {
@@ -101,7 +102,10 @@ class MapHomePage extends Component {
       myMap.animateToRegion(region, 0);
     }
   }
-
+  gaReportMarkerPress = () => {
+    const { categories, actions } = utile.gaParams;
+    utile.trackEvent(categories.usr, actions.hmtp);
+  }
   generateMarker= (bat, zoomId) => {
     if (bat.id === zoomId) {
       return (<MapMarker
@@ -123,6 +127,7 @@ class MapHomePage extends Component {
           longitude: mapHelper.toWebMercatorX(bat.enteries[0].x),
         }}
       title={` ${bat.abreviation}`}
+      onPress={() => setTimeout(() => this.gaReportMarkerPress())}
       description={`${bat.adresseLigne1}`}
     />);
   }
@@ -153,6 +158,8 @@ class MapHomePage extends Component {
           await this.renderBuildingFloor(buildingId);
           Actions.push('mapPage', { buildingId, localId: null });
         }
+        const { categories, actions } = utile.gaParams;
+        utile.trackEvent(categories.usr, actions.hmmx);
       }}
     >
       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>&#10063;</Text>

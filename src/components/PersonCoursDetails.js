@@ -3,10 +3,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
-import { Spinner, Chromatic } from './common';
+import { Spinner, Chromatic, utile } from './common';
 import PersonCoursList from './PersonCoursList';
 
 class PersonCoursDetails extends Component {
+  componentDidMount() {
+    const { screens } = utile.gaParams;
+    utile.trackScreenView(screens.cours);
+  }
   renderSpinner = () => (
     <View style={{ flex: 1 }}>
       <Chromatic />

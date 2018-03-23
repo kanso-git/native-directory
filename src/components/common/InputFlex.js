@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types,no-empty */
 import React from 'react';
 import { TextInput, View, StyleSheet } from 'react-native';
+import * as logging from './logging';
 
 const styles = StyleSheet.create({
   inputStyle: {
@@ -24,8 +25,8 @@ const styles = StyleSheet.create({
 const InputFlex = ({
   value,
   onChangeText,
-  onFocus = () => console.log('onFocus is off'),
-  onBlur = () => console.log('onBlur is off'),
+  onFocus = () => logging.log('onFocus is off'),
+  onBlur = () => logging.log('onBlur is off'),
   icon, placeholder, autoFocus, secureTextEntry, style,
 }) => {
   const { inputStyle, containerStyle } = styles;

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { View, ScrollView } from 'react-native';
 import { UNIT_SCREEN } from 'react-native-dotenv';
 import { authActions, searchActions } from './actions';
-import { Spinner, Chromatic } from './common';
+import { Spinner, Chromatic, utile } from './common';
 import Unit from './Unit';
 
 
@@ -14,7 +14,10 @@ class UnitDetails extends Component {
     const { secret } = this.props.auth;
     this.props.getUnitDetail(id, secret);
   }
-
+  componentDidMount() {
+    const { screens } = utile.gaParams;
+    utile.trackScreenView(screens.unit);
+  }
   componentWillReceiveProps(nextProps) {
     const { secret, retry, screen } = nextProps.auth;
     const { id } = nextProps.navigation.state.params.unitDetails;
@@ -26,6 +29,7 @@ class UnitDetails extends Component {
       this.props.resetRetry();
     }
   }
+
    renderSpinner = () => (
      <View style={{ flex: 1 }}>
        <Chromatic />

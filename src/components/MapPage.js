@@ -15,6 +15,7 @@ import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { Actions } from 'react-native-router-flux';
 import { biluneActions } from './actions';
 import { Spinner, SlideUp, utile } from './common';
+import * as logging from './common/logging';
 import CustomCallout from './CustomCallout';
 import * as mapHelper from './common/mapHelper';
 import MapPolygon from './MapPolygon';
@@ -133,11 +134,11 @@ class MapPage extends Component {
     /*
      the region for the selected Building is calculated
     */
-    console.log('.................. componentWillMount ................');
+    logging.log('.................. componentWillMount ................');
     const { params } = this.props.navigation.state;
     const initialState = mapHelper.extractParams(params, { ...this.props });
     this.setState(() => ({ ...initialState }));
-    console.info(`componentWillMount >>>>>>>>>>>> set id:${initialState.id}`);
+    logging.info(`componentWillMount >>>>>>>>>>>> set id:${initialState.id}`);
     this.onBuildingChange(-1, initialState.id);
     region = mapHelper.getRegionForSelectedBat({ ...this.props, id: initialState.id });
   }
@@ -148,14 +149,17 @@ class MapPage extends Component {
     when the user navigates to map after the locals get full loded
     the bilueState will be BDL_LOADED
     */
-    console.log('.................. componentDidMount ................');
+    logging.log('.................. componentDidMount ................');
     if (this.props.biluneState === 'BDL_LOADED') {
       // this.renderMapData();
       region = mapHelper.getRegionForSelectedBat({ ...this.props, ...this.state });
     }
     // iphone 8 -->667
     // iphone 7 plus -->736
-    console.log(`height:${height}`);
+    logging.log(`height:${height}`);
+
+    const { screens } = utile.gaParams;
+    utile.trackScreenView(screens.map);
   }
   // called each time component revives new states or props values
   componentWillReceiveProps(nextProps) {
@@ -165,7 +169,7 @@ class MapPage extends Component {
     are get loaded the componentWillReceiveProps will be called with
     BDL_LOADED as new state value
     */
-    console.log('.................. componentWillReceiveProps ................');
+    logging.log('.................. componentWillReceiveProps ................');
     if (nextProps.biluneState !== this.props.biluneState) {
       this.renderMapData('componentWillReceiveProps');
     }
@@ -199,7 +203,7 @@ onBuildingChange = (prevId, nextId) => {
  called on onLayout mapView method, to avoid carshing th app mainly on android
   */
 onLayoutMapReady = () => {
-  console.log(`>>>>>>>> onLayoutMapReady  id:${this.state.id}, localId:${this.state.localId} >>>>>`);
+  logging.log(`>>>>>>>> onLayoutMapReady  id:${this.state.id}, localId:${this.state.localId} >>>>>`);
   const myMap = this.map;
   if (myMap) {
     myMap.animateToRegion(region, 0);
@@ -221,7 +225,7 @@ onLongPress = (c) => {
   });
   if (targetPolygon) {
     const { BAT_ID, LOC_ID } = targetPolygon.attributes;
-    console.info(`onLongPress >>>>>>>>>>>>  set id:${BAT_ID}`);
+    logging.info(`onLongPress >>>>>>>>>>>>  set id:${BAT_ID}`);
     this.onBuildingChange(this.state.id, BAT_ID);
     this.setState(() => ({ localId: LOC_ID, id: BAT_ID }));
     this.handleOnLocalPress(targetPolygon.attributes.LOC_ID, coordinate);
@@ -231,14 +235,14 @@ onLongPress = (c) => {
   }
 }
 onMarkerPress = (floorId, BuildingId) => {
-  console.info(`onMarkerPress >>>>>>>>>>>>  set id:${BuildingId}`);
+  logging.info(`onMarkerPress >>>>>>>>>>>>  set id:${BuildingId}`);
   this.onBuildingChange(this.state.id, BuildingId);
   this.setState(() => ({
     localId: null, floorId, id: BuildingId,
   }));
 }
 onPolygonPress = (locId, floorIdStr, BuildingId) => {
-  console.info(`onPolygonPress >>>>>>>>>>>> set id:${BuildingId}`);
+  logging.info(`onPolygonPress >>>>>>>>>>>> set id:${BuildingId}`);
   this.onBuildingChange(this.state.id, BuildingId);
   this.setState(() => ({
     localId: locId, floorId: parseInt(floorIdStr, 10), id: BuildingId,
@@ -252,7 +256,7 @@ onPress = (c) => {
     localId: null,
   };
   if (action) {
-    console.info(`>>>>>>>>>> onMapPress action:${action}`);
+    logging.info(`>>>>>>>>>> onMapPress action:${action}`);
     if (action === 'press') {
       if (this.state.slideUpStatus === SHOW_SLIDE_UP) {
         unselectedState.slideUpStatus = HIDE_SLIDE_UP;
@@ -276,7 +280,7 @@ onPress = (c) => {
     if (targetPolygon) {
       const { BAT_ID } = targetPolygon.attributes;
       this.onBuildingChange(this.state.id, BAT_ID);
-      console.info(`onPress >>>>>>>>>>>>  set id:${BAT_ID}`);
+      logging.info(`onPress >>>>>>>>>>>>  set id:${BAT_ID}`);
       this.setState(() => ({
         id: BAT_ID,
         localId: null,
@@ -318,7 +322,7 @@ getMapLocals = dataLocals =>
 
 
 getCalloutInfo = (occupents, targetLocal) => {
-  console.log(`getCalloutInfo localId:${occupents}`);
+  logging.log(`getCalloutInfo localId:${occupents}`);
 
   let occupentsString = '';
   let extraLength = 0;
@@ -375,7 +379,7 @@ getCurrentPosition = () => {
       },
     );
   } catch (e) {
-    console.warn(e.message || '');
+    logging.warn(e.message || '');
   }
 }
 fitToInitialRegion = () => {
@@ -393,7 +397,7 @@ fitToRegion = () => {
   this.renderMapData('after floor change or image click');
 }
 handleFloorChange = (value, index, floor) => {
-  console.info(`handleFloorChange >>>>>>>>>>>>  set id:${floor[0].buildingId}`);
+  logging.info(`handleFloorChange >>>>>>>>>>>>  set id:${floor[0].buildingId}`);
   this.setState(() => ({
     id: floor[0].buildingId,
     floorId: value,
@@ -408,7 +412,7 @@ handleMapTypeChange = (value) => {
 }
 
 handleImageClick = () => {
-  console.log(`handleImageClick batId:${this.state.id},  floorId:${this.state.floorId}`);
+  logging.log(`handleImageClick batId:${this.state.id},  floorId:${this.state.floorId}`);
   this.fitToRegion();
 }
 
@@ -458,14 +462,14 @@ overlayContent = () => {
     }
 
     handleOnLocalPress= (clickedLocId, coordinates) => {
-      console.log(`handleOnLocalPress target :${clickedLocId}`);
+      logging.log(`handleOnLocalPress target :${clickedLocId}`);
       const targetLocal = this.props.locals
         .find(l => l.attributes.LOC_ID === clickedLocId);
       this.showLocalMarker(targetLocal, coordinates);
     }
 
     showLocalMarker = async (targetLocal, coordinates) => {
-      console.log(`showLocalMarker for targetLocal:${JSON.stringify(targetLocal, null, 3)}`);
+      logging.log(`showLocalMarker for targetLocal:${JSON.stringify(targetLocal, null, 3)}`);
       this.setState(() => ({ localMarker: null }));
       const list = await this.loadOccupent(targetLocal);
       const targetCoordinates = coordinates || mapHelper
@@ -500,17 +504,17 @@ overlayContent = () => {
   renderVisibleLocals = () => {
     data = mapHelper.getVisibleLocals({ ...this.props, ...this.state }, region);
     const allLocals = [...data.mainLocals, ...data.otherLocals];
-    console.log(`renderVisibleLocals allLocals length:${allLocals.length}`);
+    logging.log(`renderVisibleLocals allLocals length:${allLocals.length}`);
     if (allLocals.length > 0) {
       const filteredMaplocals = ldash.uniqWith(allLocals, ldash.isEqual);
       const maplocals = this.getMapLocals(filteredMaplocals);
-      console.log(`renderVisibleLocals maplocals length:${maplocals.length}`);
+      logging.log(`renderVisibleLocals maplocals length:${maplocals.length}`);
       const targetLocId = this.state.localId;
-      console.log(`renderVisibleLocals targetLocId:${targetLocId}`);
+      logging.log(`renderVisibleLocals targetLocId:${targetLocId}`);
       if (targetLocId != null) {
         const targetLocal = filteredMaplocals
           .find(l => l.attributes.LOC_ID === targetLocId);
-        console.log(`renderVisibleLocals targetLocal:${targetLocal}`);
+        logging.log(`renderVisibleLocals targetLocal:${targetLocal}`);
         if (targetLocal) {
           this.showLocalMarker(targetLocal);
         }
@@ -521,7 +525,7 @@ overlayContent = () => {
   renderMapData = (callerName) => {
     const zoomLevel = mapHelper.getZoomLevel(region);
     zoomLevel0 = zoomLevel;
-    console.log(`renderMapData  called  from  ${callerName} with zoomLevel:${zoomLevel}`);
+    logging.log(`renderMapData  called  from  ${callerName} with zoomLevel:${zoomLevel}`);
     if (zoomLevel > 17) {
       this.renderVisibleLocals();
     } else {

@@ -5,12 +5,12 @@
 /* eslint-disable consistent-return */
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
-import Communications from 'react-native-communications';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import Icon from 'react-native-fa-icons';
 import I18n from 'react-native-i18n';
-import { Card, CardSection } from './common';
+import { Card, CardSection, utile } from './common';
+import * as logging from './common/logging';
 import { pidhoActions } from './actions';
 
 const styles = StyleSheet.create({
@@ -105,7 +105,7 @@ class Person extends Component {
     const bipeId = this.props.person.id;
     const { courses } = this.props;
     if (courses && courses[bipeId]) {
-      console.log(` don't load the course list for bipeId${bipeId}`);
+      logging.log(` don't load the course list for bipeId${bipeId}`);
     } else {
       this.props.loadCoursesbyBipeId(bipeId);
     }
@@ -158,7 +158,7 @@ class Person extends Component {
 renderPersonlUrl = (url) => {
   if (url) {
     return (
-      <TouchableOpacity onPress={() => Communications.web(url)}>
+      <TouchableOpacity onPress={() => utile.web(url)}>
         <View style={[containerStyle, touchableContainer]}>
           <Icon name="external-link" style={[iconStyle, touchable]} allowFontScaling />
           <Text style={[textStyleElem, touchable]}>{url} </Text>
@@ -172,7 +172,7 @@ renderPhones = props => props.person.phones.map(phone => (
   <TouchableOpacity
     key={phone.external}
     onPress={
-    () => Communications.phonecall(phone.external, true)}
+    () => utile.phonecall(phone.external, true)}
   >
     <View style={[containerStyle, touchableContainer]}>
       <Icon name="phone" style={[iconStyle, touchable]} allowFontScaling />
@@ -182,7 +182,7 @@ renderPhones = props => props.person.phones.map(phone => (
 ));
 
 renderEmail = email => (
-  <TouchableOpacity onPress={() => Communications.email([email], null, null, ' ', ' ')}>
+  <TouchableOpacity onPress={() => utile.email([email])}>
     <View style={[containerStyle, touchableContainer]}>
       <Icon name="envelope" style={[iconStyle, touchable]} allowFontScaling />
       <Text style={[textStyleElem, touchable]}>{email} </Text>

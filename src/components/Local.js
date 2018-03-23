@@ -11,6 +11,7 @@ import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { Actions } from 'react-native-router-flux';
 import { biluneActions } from './actions';
 import { Card, CardSection, InputFlex, utile, Chromatic } from './common';
+import * as logging from './common/logging';
 import LocalReservationItem from './LocalReservationItem';
 
 const styles = StyleSheet.create({
@@ -155,14 +156,14 @@ ${npa} ${localite}`;
       .then((eventId) => {
         // handle success (receives event id) or dismissing the modal (receives false)
         if (eventId) {
-          // console.warn(eventId);
+          // logging.warn(eventId);
         } else {
-          // console.warn('dismissed');
+          // logging.warn('dismissed');
         }
       })
       .catch((error) => {
         // handle error such as when user rejected permissions
-        console.warn(error);
+        logging.warn(error);
       });
   };
 
@@ -170,7 +171,7 @@ ${npa} ${localite}`;
     this.props.showHideReservationDay(this.props.locId, dateDay);
   }
   onPressItem = (item) => {
-    console.log(JSON.stringify(item, null, 4));
+    logging.log(JSON.stringify(item, null, 4));
   };
   onSearch = (value) => {
     this.props.searchInLocalReservations(this.props.locId, value);

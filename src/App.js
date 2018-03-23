@@ -9,12 +9,14 @@ import { Actions } from 'react-native-router-flux';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-fa-icons';
+import { GoogleAnalyticsSettings } from 'react-native-google-analytics-bridge';
 import I18n from './I18n/I18n';
 import { authActions, biluneActions } from './components/actions';
 import reducers from './components/reducers';
 import * as utile from './components/common/utile';
 import Router from './Router';
 import * as types from './components/actions/Types';
+import * as logging from './components/common/logging';
 
 const styles = StyleSheet.create({
   full: {
@@ -95,8 +97,10 @@ class App extends Component {
     this.myStore.subscribe(() => {
       const state = this.myStore.getState();
       const { isConnected, error, service } = state.network;
-      console.info(`Network isConnected:${isConnected}, error:${error}, service:${service} `);
+      logging.info(`Network isConnected:${isConnected}, error:${error}, service:${service} `);
       if (!isConnected) {
+        const { screens } = utile.gaParams;
+        utile.trackScreenView(screens.network);
         Actions.reset('error');
         this.handleFirstConnectivityChange(false);
       }
@@ -106,18 +110,24 @@ class App extends Component {
       if (Platform.OS === 'android') {
         BackHandler.addEventListener('hardwareBackPress', () => {
           if (Actions.currentScene === 'home' || Actions.currentScene === 'networkError') {
-            console.info(`Exit APP  android backButtonListener currentScene:${Actions.currentScene}`);
+            logging.info(`Exit APP  android backButtonListener currentScene:${Actions.currentScene}`);
             BackHandler.exitApp();
             return true;
           }
-          console.info(`Should not Exit APP  currentScene:${Actions.currentScene}`);
+          logging.info(`Should not Exit APP  currentScene:${Actions.currentScene}`);
           Actions.pop();
           return true;
         });
       }
     } catch (e) {
-      console.warn(`error occured in App.js, the error is:${e}`);
+      logging.warn(`error occured in App.js, the error is:${e}`);
     }
+    const { categories, actions } = utile.gaParams;
+    utile.trackEvent(categories.app, actions.lapp);
+    // The GoogleAnalyticsSettings is static, and settings are applied across all trackers:
+    GoogleAnalyticsSettings.setDispatchInterval(30);
+    // Setting `dryRun` to `true` lets you test tracking without sending data to GA
+    // GoogleAnalyticsSettings.setDryRun(true);
   }
   componentWillUnmount() {
     if (Platform.OS === 'android') {
@@ -140,6 +150,8 @@ class App extends Component {
     if (connectionAvailable) {
       this.handleFirstConnectivityChange(true);
     } else {
+      const { screens } = utile.gaParams;
+      utile.trackScreenView(screens.network);
       Actions.reset('error');
       this.handleFirstConnectivityChange(false);
     }
@@ -151,7 +163,7 @@ class App extends Component {
       case 'online':
         if (Actions.currentScene === 'networkError') {
           if (reConfirmOfflineTimeOut) {
-            console.info(' connection is back clear the timeout ');
+            logging.info(' connection is back clear the timeout ');
             clearTimeout(reConfirmOfflineTimeOut);
           }
           this.myStore.dispatch({
@@ -174,12 +186,12 @@ class App extends Component {
 
   myStore = null;
   handleDone = () => {
-    console.info('Intro handleDone pressed!');
+    logging.info('Intro handleDone pressed!');
     AsyncStorage.setItem(APP_INTRO_KEY, APP_INTRO_HIDE);
     this.setState(() => ({ showAppIntro: APP_INTRO_HIDE }));
   }
   handleSkip = () => {
-    console.info('Intro handleSkip pressed!');
+    logging.info('Intro handleSkip pressed!');
     this.setState(() => ({ showAppIntro: APP_INTRO_HIDE }));
   }
   renderIntroItem = props => (
@@ -231,7 +243,7 @@ class App extends Component {
     if (this.myStore === null) {
       this.myStore = createStore(reducers, applyMiddleware(thunk));
     }
-    console.info(`showAppIntro :${this.state.showAppIntro}`);
+    logging.info(`showAppIntro :${this.state.showAppIntro}`);
     // AsyncStorage.removeItem(APP_INTRO_KEY);
     return this.state.showAppIntro === 'show' ? this.renderIntro() : this.renderMainApp(this.myStore);
   }

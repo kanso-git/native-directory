@@ -10,6 +10,8 @@ import { biluneActions } from './actions';
 import { sliderWidth, itemWidth } from './SliderEntryStyle';
 import SliderEntry from './SliderEntry';
 import styles from './indexStyle';
+import * as utile from './common/utile';
+import * as logging from './common/logging';
 
 class Slider extends Component {
     state={
@@ -17,7 +19,7 @@ class Slider extends Component {
     }
     componentWillMount() {
       /*
-      console.log(`Slider componentWillMount id:${this.props.id}`);
+      logging.log(`Slider componentWillMount id:${this.props.id}`);
       const buildingId = this.props.id;
       if (buildingId && buildingId !== null) {
         const bSelected = [];
@@ -36,7 +38,7 @@ class Slider extends Component {
             }
           });
           const newEntries = [...aSelected, ...bSelected];
-          console.log(`Slider componentWillMount newEntries:${newEntries.length}`);
+          logging.log(`Slider componentWillMount newEntries:${newEntries.length}`);
           this.setState(() => ({
             entries: newEntries,
           }));
@@ -52,21 +54,21 @@ class Slider extends Component {
     }
     shouldComponentUpdate() {
       if (Actions.currentScene === 'home') {
-        console.log('Slider shouldComponentUpdate is true');
+        logging.log('Slider shouldComponentUpdate is true');
         return true;
       }
-      console.log('Slider shouldComponentUpdate is fasle');
+      logging.log('Slider shouldComponentUpdate is fasle');
       return false;
     }
     // methods can then be called this way
     jumpToSlide= (buidlingId) => {
-      console.log(`>>>>>>>> jumpToSlide to buidlingId:${buidlingId}`);
+      logging.log(`>>>>>>>> jumpToSlide to buidlingId:${buidlingId}`);
       const refCarousel = this.carousel;
       if (buidlingId && refCarousel && buidlingId > 0) {
         const currentSlideIndex = refCarousel.currentIndex;
         const currentBuildingIndex = _.findIndex(this.props.entries, { id: buidlingId });
         if (currentBuildingIndex !== currentSlideIndex) {
-          console.info(`>>>>>>>> jumpToSlide  snapToItem index:${currentBuildingIndex}`);
+          logging.info(`>>>>>>>> jumpToSlide  snapToItem index:${currentBuildingIndex}`);
           refCarousel.snapToItem(currentBuildingIndex, true);
         }
       }
@@ -74,6 +76,8 @@ class Slider extends Component {
     handleSnapToItem = (index) => {
       const bat = this.state.entries[index];
       this.props.setBuildingId(bat);
+      const { categories, actions } = utile.gaParams;
+      utile.trackEvent(categories.usr, actions.slid);
     }
 
     layoutExample(number, title, type) {

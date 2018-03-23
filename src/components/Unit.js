@@ -6,7 +6,7 @@ import Icon from 'react-native-fa-icons';
 import Communications from 'react-native-communications';
 import { Actions } from 'react-native-router-flux';
 import I18n from 'react-native-i18n';
-import { Card, CardSection } from './common';
+import { Card, CardSection, utile } from './common';
 import SearchItem from './SearchItem';
 
 
@@ -72,7 +72,7 @@ const {
   addressStyle,
 } = styles;
 const renderEmail = email => (
-  <TouchableOpacity onPress={() => Communications.email([email], null, null, ' ', ' ')}>
+  <TouchableOpacity onPress={() => utile.email([email])}>
     <View style={[containerStyle, touchableContainer]}>
       <Icon name="envelope" style={[iconStyle, touchable]} allowFontScaling />
       <Text style={[textStyleElem, touchable]}>{email} </Text>
@@ -82,7 +82,7 @@ const renderEmail = email => (
 const renderPersonlUrl = (url) => {
   if (url) {
     return (
-      <TouchableOpacity onPress={() => Communications.web(url)}>
+      <TouchableOpacity onPress={() => utile.web(url)}>
         <View style={[containerStyle, touchableContainer]}>
           <Icon name="external-link" style={[iconStyle, touchable]} allowFontScaling />
           <Text style={[textStyleElem, touchable]}>{url} </Text>
@@ -95,7 +95,7 @@ const renderPersonlUrl = (url) => {
 const renderPhone = phone => (
   <TouchableOpacity
     key={phone.external}
-    onPress={() => Communications.phonecall(phone.external, true)}
+    onPress={() => utile.phonecall(phone.external, true)}
   >
     <View style={[containerStyle, touchableContainer]}>
       <Icon name="phone" style={[iconStyle, touchable]} allowFontScaling />
@@ -104,7 +104,7 @@ const renderPhone = phone => (
   </TouchableOpacity>
 );
 const renderFax = fax => (
-  <TouchableOpacity key={fax.external} onPress={() => Communications.phonecall(fax.external, true)}>
+  <TouchableOpacity key={fax.external} onPress={() => utile.phonecall(fax.external, true)}>
     <View style={[containerStyle, touchableContainer]}>
       <Icon name="fax" style={[iconStyle, touchable]} allowFontScaling />
       <Text style={[textStyleElem, touchable]}>{fax.external} </Text>

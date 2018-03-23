@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import Communications from 'react-native-communications';
 import Icon from 'react-native-fa-icons';
 import I18n from 'react-native-i18n';
-import { CardSection } from './common';
+import { CardSection, utile } from './common';
 
 const styles = StyleSheet.create({
   listContainer: {
@@ -74,7 +74,7 @@ const AppInfosPage = () => (
     </CardSection>
     <CardSection>
 
-      <TouchableOpacity onPress={() => Communications.email(['hotline.sitel@unine.ch'], null, null, ' ', ' ')}>
+      <TouchableOpacity onPress={() => utile.email(['hotline.sitel@unine.ch'])}>
         <Text style={styles.description}>{I18n.t('infos.more')} :</Text>
         <CardSection >
           <Icon style={{ paddingLeft: 5 }} name="envelope" allowFontScaling />

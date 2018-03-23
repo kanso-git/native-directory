@@ -6,6 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { biluneActions } from './actions';
 import styles from './SliderEntryStyle';
+import * as utile from './common/utile';
 
 class SliderEntry extends Component {
   componentDidMount() {
@@ -31,6 +32,8 @@ class SliderEntry extends Component {
         style={styles.slideInnerContainer}
         onPress={() => {
           this.props.setBuildingId({ id });
+          const { categories, actions } = utile.gaParams;
+          utile.trackEvent(categories.usr, actions.sltp);
           Actions.push('buildingDetails');
          }}
       >
