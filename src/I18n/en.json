@@ -6,12 +6,15 @@
         "month":"april",
 		"footerLine1": "UniNE Campus Version 2.3 - ",
         "footerLine2": "© 2015 - ",
-        "owner":"SITEL - Université de Neuchâtel"
+        "owner":"SITEL - Université de Neuchâtel",
+        "calendarPermissionTitle":"calender access",
+        "calendarPermissionMsg":"your app dosen't have permission to access the calender, please grante the access permission ot the calenader in order to save your events "
     },
     "search" : {
         "placeholder" : "Person, department, phone number...",
-        "placeholderBlding" : "Local code, aula, salle informatique ....",
-        "placeholderLocal": "Professeur, matière",
+        "placeholderBlding" : "Local code, aula, salle informatique ...",
+        "placeholderLocal": "Professor, course",
+        "placeholderCourse":"Local, course",
         "showAll" : "Show all...",
         "feedback":"We have found ",
         "result":"result",
@@ -60,7 +63,9 @@
     "building" :{ 
         "pageTitle" : "Building",
 		"floorNumber": "Number of floors",
-		"localTotalNumber": "Total of locals"
+        "localTotalNumber": "Total of locals",
+        "floors":"floor(s)",
+        "locals":"locals"
     },
     "mapPage" : {
         "pageTitle" : "Map",

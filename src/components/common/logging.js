@@ -1,6 +1,6 @@
 /* eslint no-console: ["error", { allow: ["info", "warn", "error", "log", "debug"] }] */
 const ENABLE_LOGGING = false;
-const ENABLE_GA_LOGGING = true;
+const ENABLE_GA_LOGGING = false;
 const debug = (m) => {
   if (ENABLE_LOGGING) console.debug(m);
 };
@@ -16,7 +16,7 @@ const logJson = (m, d) => {
 };
 
 const warn = (m) => {
-  if (ENABLE_LOGGING) console.warn(m);
+  console.warn(m);
 };
 
 const info = (m) => {

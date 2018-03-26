@@ -125,6 +125,7 @@ class Local extends Component {
 
   }
   onSaveEventInCalendar = (event) => {
+    
     const debutUTC = utile.momentStatic.utc(event.debutUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
     const finUTC = utile.momentStatic.utc(event.finUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
     const {
@@ -165,8 +166,10 @@ ${npa} ${localite}`;
         }
       })
       .catch((error) => {
+        if (error && error.code === 'permissionNotGranted') {
+          utile.alterUser(I18n.t('global.calendarPermissionTitle'), I18n.t('global.calendarPermissionMsg'));
+        }
         // handle error such as when user rejected permissions
-        logging.warn(error);
       });
   };
 

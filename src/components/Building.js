@@ -131,6 +131,11 @@ class Local extends Component {
        abreviation, adresseLigne1, localite, npa,
      } = this.props.currentBuilding;
 
+     let infoBuilding = '';
+     if (this.props.currentBuilding.floors) {
+       infoBuilding = `${this.props.currentBuilding.floors.length} ${I18n.t('building.floors')},  ${this.props.buildingLocalsNbr} ${I18n.t('building.locals')} `;
+     }
+
      return (
        <TouchableOpacity
          style={{
@@ -145,9 +150,12 @@ class Local extends Component {
                   Actions.push('mapPage', { buildingId: this.props.currentBuilding.id, localId: null });
                 }}
        >
-         <View style={[{ height: 24 }]}>
+
+         <View style={[{ height: 24, flexDirection: 'row' }]}>
            <Text style={[textStyle, touchable]}>{abreviation}</Text>
+           <Text style={[touchable, { paddingRight: 10, paddingTop: 4, textAlignVertical: 'bottom' }]}>{infoBuilding}</Text>
          </View>
+
          <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>
            <View style={addressStyle}>
              <Text style={[touchable]}>{`${adresseLigne1}
@@ -247,6 +255,8 @@ const setImagesForLocals = (buildings, currentBuildingId, images) => {
 const mapStateToProps = state => (
   {
     images: state.bilune.images,
+    buildingLocalsNbr: state.bilune.locals
+      .filter(l => l.attributes.BAT_ID === state.bilune.id).length,
     currentBuilding: setImagesForLocals(state.bilune.buildings, state.bilune.id, state.bilune.images),
     visibleFloors: state.bilune.buildings
       .find(b => b.id === state.bilune.id)

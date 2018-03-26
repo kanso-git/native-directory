@@ -43,15 +43,6 @@ class BuildingLocalItem extends Component {
              <Text style={{ fontSize: 13, paddingTop: 5 }}>{`${I18n.t('local.floor')}: ${item.attributes.ETG_DESIGNATION}`} </Text>
            </View>
          </View>
-         <View style={{
-           alignItems: 'flex-end',
-           justifyContent: 'flex-end',
-          }}
-         >
-           <Text style={{ fontSize: 10, paddingTop: -5, paddingRight: 2 }}>
-             { item.index + 1 }/{listLen}
-           </Text>
-         </View>
        </View>
      </CardSection>
    );

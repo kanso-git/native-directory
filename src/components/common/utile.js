@@ -2,6 +2,7 @@
 /* eslint global-require: "off" */
 /* eslint-disable consistent-return */
 import axios from 'axios';
+import { Alert } from 'react-native';
 import Communications from 'react-native-communications';
 import { GoogleAnalyticsTracker } from 'react-native-google-analytics-bridge';
 import * as logging from './logging';
@@ -107,6 +108,17 @@ const web = (url) => {
   Communications.web(url);
 };
 
+
+const alterUser = (title, msg) => {
+  Alert.alert(
+    title,
+    msg,
+    [
+      { text: 'OK', onPress: () => console.log('OK Pressed') },
+    ],
+    { cancelable: true },
+  );
+};
 export {
   noImageIcon,
   unineImgBig,
@@ -120,4 +132,5 @@ export {
   phonecall,
   email,
   web,
+  alterUser,
 };
