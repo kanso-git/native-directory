@@ -14,6 +14,7 @@ import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.vonovak.AddCalendarEventPackage;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
               new RandomBytesPackage(),
               new RNI18nPackage(),
               new MapsPackage(),
+              new GoogleAnalyticsBridgePackage(),
               new AddCalendarEventPackage()
       );
     }

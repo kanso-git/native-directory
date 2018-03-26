@@ -83,7 +83,7 @@
 		"scheduleFrom": "from",
         "scheduleTo": "to",
         "occupants": "occupants",
-        "salleplaces": "nb places",
+        "salleplaces": "places",
         "area": "area"
     },
     "infos" : {
@@ -92,8 +92,8 @@
         "intro": "The UniNE Campus application is based on:\n",
          "gLine1": "Information system of the premises of the University of Neuchâtel - BILUNE ©2008-",
          "gLine2": "The information database of staff and students - BIPE©2000-",
-         "gLine3": "Computer planning schedules - PIDHO©2010-",
-         "gLine4": "Computer planning of room reservations - PIRES©2014-",
+         "gLine3": "Computer planning schedules - PIDHO©2009-",
+         "gLine4": "Computer planning of room reservations - PIRES©2011-",
         "esri":"ESRI",
         "google":"Google Maps",
         "more":"For any information and comments"

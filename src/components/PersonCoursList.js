@@ -125,6 +125,8 @@ ${npa} ${localite}`;
     AddCalendarEvent.presentNewCalendarEventDialog(eventConfig)
       .then((eventId) => {
         // handle success (receives event id) or dismissing the modal (receives false)
+        const { categories, actions } = utile.gaParams;
+        utile.trackEvent(categories.usr, actions.accl);
         if (eventId) {
           // logging.warn(eventId);
         } else {

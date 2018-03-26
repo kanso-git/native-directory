@@ -192,6 +192,8 @@ class App extends Component {
   }
   handleSkip = () => {
     logging.info('Intro handleSkip pressed!');
+    const { categories, actions } = utile.gaParams;
+    utile.trackEvent(categories.usr, actions.skin);
     this.setState(() => ({ showAppIntro: APP_INTRO_HIDE }));
   }
   renderIntroItem = props => (

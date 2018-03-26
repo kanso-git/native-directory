@@ -233,6 +233,8 @@ onLongPress = (c) => {
     // check if the widget is opened
     this.setState(() => ({ localMarker: null, localId: null }));
   }
+  const { categories, actions } = utile.gaParams;
+  utile.trackEvent(categories.usr, actions.lplo);
 }
 onMarkerPress = (floorId, BuildingId) => {
   logging.info(`onMarkerPress >>>>>>>>>>>>  set id:${BuildingId}`);
@@ -361,6 +363,8 @@ getCurrentPosition = () => {
         };
         const myMap = this.map;
         if (myMap) {
+          const { categories, actions } = utile.gaParams;
+          utile.trackEvent(categories.usr, actions.mypo);
           myMap.animateToRegion(region, 0);
         }
       },
@@ -385,6 +389,8 @@ getCurrentPosition = () => {
 fitToInitialRegion = () => {
   const myMap = this.map;
   if (myMap) {
+    const { categories, actions } = utile.gaParams;
+    utile.trackEvent(categories.usr, actions.focu);
     myMap.animateToRegion(initialRegion, 0);
   }
 }
@@ -398,6 +404,8 @@ fitToRegion = () => {
 }
 handleFloorChange = (value, index, floor) => {
   logging.info(`handleFloorChange >>>>>>>>>>>>  set id:${floor[0].buildingId}`);
+  const { categories, actions } = utile.gaParams;
+  utile.trackEvent(categories.usr, actions.cflr);
   this.setState(() => ({
     id: floor[0].buildingId,
     floorId: value,
@@ -408,11 +416,15 @@ handleFloorChange = (value, index, floor) => {
 }
 
 handleMapTypeChange = (value) => {
+  const { categories, actions } = utile.gaParams;
+  utile.trackEvent(categories.usr, actions.cmtp);
   this.setState(() => ({ mapType: value }));
 }
 
 handleImageClick = () => {
   logging.log(`handleImageClick batId:${this.state.id},  floorId:${this.state.floorId}`);
+  const { categories, actions } = utile.gaParams;
+  utile.trackEvent(categories.usr, actions.foba);
   this.fitToRegion();
 }
 

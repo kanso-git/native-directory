@@ -155,6 +155,9 @@ ${npa} ${localite}`;
     AddCalendarEvent.presentNewCalendarEventDialog(eventConfig)
       .then((eventId) => {
         // handle success (receives event id) or dismissing the modal (receives false)
+        const { categories, actions } = utile.gaParams;
+        const action = event.typeoccupation === RESERVATION_PIDHO ? actions.accl : actions.aecl;
+        utile.trackEvent(categories.usr, action);
         if (eventId) {
           // logging.warn(eventId);
         } else {
@@ -195,6 +198,10 @@ ${npa} ${localite}`;
      const {
        adresseLigne1, localite, npa,
      } = this.props.currentBuilding;
+     let salleplaces = '';
+     if (this.props.localWithReservations.salleplaces) {
+       salleplaces = `${this.props.localWithReservations.salleplaces} ${I18n.t('local.salleplaces')}`;
+     }
 
      const { LOC_TYPE_DESIGNATION, LOC_CODE, ETG_DESIGNATION } =
     this.props.localWithReservations.attributes;
@@ -212,8 +219,9 @@ alignItems: 'flex-start',
           Actions.push('mapPage', { buildingId: this.props.currentBuilding.id, localId: this.props.locId });
           }}
        >
-         <View style={[{ height: 24 }]}>
+         <View style={[{ height: 24, flexDirection: 'row' }]}>
            <Text style={[textStyle, touchable]}>{LOC_TYPE_DESIGNATION}  {LOC_CODE}</Text>
+           <Text style={[touchable, { paddingRight: 10, paddingTop: 4, textAlignVertical: 'bottom' }]}>{salleplaces}</Text>
          </View>
          <View style={[{ marginBottom: 5, height: 40 }, touchableContainer]}>
            <View style={addressStyle}>
@@ -227,14 +235,6 @@ ${npa} ${localite}`}
      );
    }
 
-   renderLocalInfos = local => (
-     <View style={styles.info} >
-       { local.salleplaces &&
-       <Text style={{ fontSize: 13, color: '#007aff' }}>{I18n.t('local.salleplaces')} : {local.salleplaces}</Text> }
-       <Text style={{ fontSize: 13, color: '#007aff' }}>{I18n.t('local.area')} : {Math.round(local.attributes.SHAPE_Area)} &#13217;</Text>
-
-     </View>
-   )
    render() {
      const localObjectId = this.props.localWithReservations.attributes.OBJECTID;
      const { onScroll = () => {} } = this.props;
@@ -264,7 +264,6 @@ ${npa} ${localite}`}
                                            height: (viewportHeight * 0.25),
              }}
              />
-             { this.renderLocalInfos(this.props.localWithReservations) }
            </View>
           )}
 

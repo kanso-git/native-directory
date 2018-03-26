@@ -94,7 +94,7 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
 
     defaultConfig {
@@ -159,13 +159,13 @@ dependencies {
     compile project(':react-native-splash-screen')
     compile project(':react-native-randombytes')
     compile project(':react-native-i18n')
-    compile project(':react-native-maps')
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:appcompat-v7:26+'
     compile 'com.facebook.react:react-native:+'
+
     // From node_modules
-    compile 'com.google.android.gms:play-services-maps:11.8.0'
-    compile 'com.google.android.gms:play-services:11.8.0'
+    compile 'com.google.android.gms:play-services-maps:12.0.0'
+    compile 'com.google.android.gms:play-services:12.0.0'
     compile 'com.android.support:multidex:1.0.0'
 }
 

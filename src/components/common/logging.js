@@ -1,5 +1,6 @@
 /* eslint no-console: ["error", { allow: ["info", "warn", "error", "log", "debug"] }] */
 const ENABLE_LOGGING = false;
+const ENABLE_GA_LOGGING = true;
 const debug = (m) => {
   if (ENABLE_LOGGING) console.debug(m);
 };
@@ -21,6 +22,9 @@ const warn = (m) => {
 const info = (m) => {
   if (ENABLE_LOGGING) console.info(m);
 };
+const logGA = (m) => {
+  if (ENABLE_GA_LOGGING) console.info(m);
+};
 const error = (m) => {
   console.error(m);
 };
@@ -32,4 +36,5 @@ export {
   info,
   warn,
   error,
+  logGA,
 };
