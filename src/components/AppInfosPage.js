@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import Communications from 'react-native-communications';
 import Icon from 'react-native-fa-icons';
 import I18n from 'react-native-i18n';
 import { CardSection, utile } from './common';
@@ -25,6 +24,7 @@ const styles = StyleSheet.create({
     paddingTop: -10,
     fontSize: 13,
     fontWeight: 'bold',
+    color: '#007aff',
   },
 });
 
@@ -46,26 +46,21 @@ const AppInfosPage = () => (
 
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
-        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine1')}{I18n.t('global.currentYear')}</Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine1')}{I18n.t('global.currentYear')} {I18n.t('infos.esri')} - {I18n.t('infos.general')}</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
-        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine2')}{I18n.t('global.currentYear')}</Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine2')}{I18n.t('global.currentYear')} - {I18n.t('infos.general')}</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
-        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine3')}{I18n.t('global.currentYear')}</Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine3')}{I18n.t('global.currentYear')} - {I18n.t('infos.general')}</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
-        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine4')}{I18n.t('global.currentYear')}</Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine4')}{I18n.t('global.currentYear')} - {I18n.t('infos.general')}</Text>
       </View>
 
-    </CardSection>
-    <CardSection>
-      <Text style={styles.description}>
-        {I18n.t('infos.esri')}
-      </Text>
     </CardSection>
     <CardSection>
       <Text style={styles.description}>

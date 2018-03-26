@@ -99,8 +99,8 @@
         "gLine2": "La base de données d’information du personnel et étudiants - BIPE©2000-",
         "gLine3": "La planification informatique des horaires - PIDHO©2009-",
         "gLine4": "La planification informatique des réservations des locaux - PIRES©2011-",
-        "esri": "ESRI",
-        "google": "Google Maps",
+        "esri" : "basé sur les technologies ©ESRI ",
+        "google": "Google Maps ©Google",
         "more": "Pour toute information et commentaires"
     },
 	"bookingItem" : {
