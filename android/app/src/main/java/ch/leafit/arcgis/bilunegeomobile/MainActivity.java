@@ -1,4 +1,4 @@
-package ch.unine.directory;
+package ch.leafit.arcgis.bilunegeomobile;
 
 import android.os.Bundle;
 

@@ -129,7 +129,7 @@
   "intro":{
     "btn":{
      "skip":"Skip",
-     "done":"Done",
+     "done":"Launch the App",
      "next":"Next"
     },
     "search":{
@@ -142,7 +142,7 @@
     },
     "map":{
       "title":"Map",
-      "text":"Locate a collaborator, a building, an office, aula, classroom, computer room"
+      "text":"Locate a collaborator, a building, an office, aula, classroom, computer room \n (long press on local to see its type, the occupants ...) "
     }
   }
 }

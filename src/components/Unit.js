@@ -3,7 +3,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import Icon from 'react-native-fa-icons';
-import Communications from 'react-native-communications';
 import { Actions } from 'react-native-router-flux';
 import I18n from 'react-native-i18n';
 import { Card, CardSection, utile } from './common';

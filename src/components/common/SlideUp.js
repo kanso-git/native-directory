@@ -31,9 +31,9 @@ export default class SlideUp extends Component {
     if (isIphoneX()) {
       this.maxBottom = heightOverlay * 0.25;
     } else if (Platform.OS === 'ios') {
-      this.maxBottom = heightOverlay * 0.27;
+      this.maxBottom = 180;
     } else {
-      this.maxBottom = heightOverlay * 0.29;
+      this.maxBottom = 185;
     }
     logging.log(`this.maxBottom:${this.maxBottom}`);
     this.state = { scrollY: new Animated.Value(this.maxBottom) };

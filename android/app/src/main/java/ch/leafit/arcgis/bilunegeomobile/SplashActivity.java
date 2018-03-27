@@ -1,4 +1,4 @@
-package ch.unine.directory;
+package ch.leafit.arcgis.bilunegeomobile;
 
 /**
  * Created by abdallahkanso on 12.01.18.

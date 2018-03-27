@@ -142,7 +142,7 @@
         },
         "map":{
           "title":"Carte",
-          "text":"Localiser un/une collaborateur/trice, un bâtiment, un bureau, aula, salle d'enseignement, salle informatique "
+          "text":"Localiser un/une collaborateur/trice, un bâtiment, un bureau, aula, salle d'enseignement, salle informatique \n (clique long sur un local pour afficher son type, les occupents ...) "
         }
       }
 }

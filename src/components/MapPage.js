@@ -82,9 +82,7 @@ const styles = StyleSheet.create({
     ...ifIphoneX({
       paddingTop: height * 0.6,
     }, {
-      paddingTop: Platform.OS === 'ios' ?
-        (height > 700 ? height * 0.6 : height * 0.58) :
-        (height >= 640 ? height * 0.53 : height * 0.50),
+      paddingTop: Platform.OS === 'ios' ? (height - 280) : (height - 300),
     }),
     alignItems: 'center',
     justifyContent: 'flex-end',

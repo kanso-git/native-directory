@@ -95,13 +95,13 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
-        applicationId "ch.unine.directory"
+        applicationId "ch.leafit.arcgis.bilunegeomobile"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 220003
+        versionCode 20180400
         versionName "2.3.0"
         multiDexEnabled true
         ndk {
