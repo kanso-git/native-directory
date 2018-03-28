@@ -16,7 +16,7 @@
         "placeholderLocal": "Professor, course",
         "placeholderCourse":"Local, course",
         "showAll" : "Show all...",
-        "feedback":"We have found",
+        "feedback":"We have found ",
         "result":"result",
         "results":"results"
     },
@@ -62,6 +62,7 @@
     },
     "building" :{ 
         "pageTitle" : "Building",
+        "pageListTitle": "Buildings",
 		"floorNumber": "Number of floors",
         "localTotalNumber": "Total of locals",
         "floors":"floor(s)",

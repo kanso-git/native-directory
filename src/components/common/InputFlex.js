@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types,no-empty */
 import React from 'react';
-import { TextInput, View, StyleSheet } from 'react-native';
+import { TextInput, View, StyleSheet, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-fa-icons';
 import * as logging from './logging';
 
 const styles = StyleSheet.create({
@@ -20,11 +21,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  clearBtn: {
+    fontSize: 25,
+  },
 });
-
+// times-circle
 const InputFlex = ({
   value,
   onChangeText,
+  onClearText,
+  spinner,
   onFocus = () => logging.log('onFocus is off'),
   onBlur = () => logging.log('onBlur is off'),
   icon, placeholder, autoFocus, secureTextEntry, style,
@@ -43,6 +49,12 @@ const InputFlex = ({
         onBlur={onBlur}
         style={[inputStyle, style]}
       />
+      {((value.length > 0 && !spinner) && onClearText) &&
+        <TouchableOpacity onPress={() => onClearText()}>
+          <Icon name="times-circle" style={styles.clearBtn} />
+        </TouchableOpacity>
+      }
+
     </View>
   );
 };

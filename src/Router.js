@@ -8,6 +8,7 @@ import Home from './components/Home';
 import MemberDetails from './components/MemberDetails';
 import UnitDetails from './components/UnitDetails';
 import BuildingDetails from './components/BuildingDetails';
+import BuildingList from './components/BuildingList';
 import LocalDetails from './components/LocalDetails';
 import PersonCoursDetails from './components/PersonCoursDetails';
 import MapPage from './components/MapPage';
@@ -145,6 +146,24 @@ const RouterComponent = () => (
               />
             </TouchableOpacity>
           }
+        />
+
+        <Scene
+          key="buildingList"
+          backTitle=" "
+          component={BuildingList}
+          title={I18n.t('building.pageListTitle')}
+          titleStyle={styles.titleStyle}
+          backButtonTintColor="white"
+          navigationBarStyle={styles.navStyle}
+          renderRightButton={
+            <TouchableOpacity onPress={() => backToHome()}>
+              <Image
+                style={styles.leftImgStyle}
+                source={{ uri: base64Icon }}
+              />
+            </TouchableOpacity>
+        }
         />
 
         <Scene

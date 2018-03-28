@@ -2,9 +2,10 @@
 /* eslint-disable consistent-return */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
 import { HOME_SCREEN } from 'react-native-dotenv';
 import I18n from 'react-native-i18n';
+import { Actions } from 'react-native-router-flux';
 import * as ldsh from 'lodash';
 import { Card, InputFlex, CardSection, Footer, Spinner, Chromatic, utile } from './common';
 import * as logging from './common/logging';
@@ -12,6 +13,7 @@ import { authActions, searchActions, biluneActions } from './actions';
 import SearchList from './SearchList';
 import Slider from './Slider';
 import MapHomePage from './MapHomePage';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -100,6 +102,9 @@ class Home extends Component {
       this.props.searchBilune(value);
     }
   }
+  onClearText = () => {
+    this.onSearch('');
+  }
   showBdlLoading = () => (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -131,7 +136,8 @@ class Home extends Component {
   }
   renderSectionJsx = text => (
     <View>
-      <Text style={{
+      <TouchableOpacity onPress={() => Actions.push('buildingList')}>
+        <Text style={{
          fontSize: 18,
          padding: 5,
          backgroundColor: '#E5EFF5',
@@ -139,10 +145,12 @@ class Home extends Component {
          shadowOffset: { width: 0, height: 2 },
          shadowOpacity: 0.5,
          elevation: 2,
+         color: '#007aff',
        }}
-      >
-        {text}
-      </Text>
+        >
+          {text}
+        </Text>
+      </TouchableOpacity>
       <Chromatic height={2} />
     </View>
   )
@@ -221,6 +229,8 @@ class Home extends Component {
               onChangeText={this.onSearch}
               onBlur={this.onBlur}
               onFocus={this.onFocus}
+              onClearText={this.onClearText}
+              spinner={this.props.spinner}
             />
           </CardSection>
           {this.renderResultMessage()}

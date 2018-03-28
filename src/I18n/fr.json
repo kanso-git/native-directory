@@ -14,7 +14,7 @@
     "search" : {
         "placeholder" : "Personne, département, n° de tél...",
         "placeholderBlding" : "Local code, aula, salle informatique ....",
-        "placeholderLocal": "Professeur, matière",
+        "placeholderLocal": "Professeur/e, matière",
         "placeholderCourse":"Salle, matière ",
         "showAll" : "Charger tout...",
         "feedback":"Nous avons trouvé ",
@@ -63,6 +63,7 @@
     },
     "building" :{ 
         "pageTitle" : "Bâtiment",
+        "pageListTitle": "Bâtiments",
 		"floorNumber": "Nombre d'étages",
         "localTotalNumber": "Total de locaux",
         "floors":"étage(s)",
@@ -142,7 +143,7 @@
         },
         "map":{
           "title":"Carte",
-          "text":"Localiser un/une collaborateur/trice, un bâtiment, un bureau, aula, salle d'enseignement, salle informatique \n (clique long sur un local pour afficher son type, les occupents ...) "
+          "text":"Localiser un/une collaborateur/trice, un bâtiment, un bureau, aula, salle d'enseignement, salle informatique \n (clic long sur un local pour afficher son type, les occupants ...) "
         }
       }
 }
