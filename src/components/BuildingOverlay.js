@@ -40,7 +40,7 @@ class BuildingOverlay extends Component {
       label: f.designation,
       buildingId: this.props.building.id,
     }));
-    const floorId = this.props.floorId ? this.props.floorId : this.props.building.etageIdParDefaut;
+    const floorId = this.props.selectedFloor ? this.props.selectedFloor : this.props.building.etageIdParDefaut;
     const floorObject = this.props.building.floors.find(f => f.id === parseInt(floorId, 10));
     const { image } = this.props.building;
     const {

@@ -114,6 +114,8 @@ const styles = StyleSheet.create({
 class MapPage extends Component {
   constructor(props) {
     super(props);
+    const { params } = this.props.navigation.state;
+    const initialState = mapHelper.extractParams(params, { ...this.props });
     this.state = {
       maplocals: [],
       localMarker: null,
@@ -124,6 +126,7 @@ class MapPage extends Component {
       mapType: 'standard',
       floors: [],
       slideUpStatus: HIDE_SLIDE_UP,
+      ...initialState,
     };
   }
 
@@ -133,12 +136,8 @@ class MapPage extends Component {
      the region for the selected Building is calculated
     */
     logging.log('.................. componentWillMount ................');
-    const { params } = this.props.navigation.state;
-    const initialState = mapHelper.extractParams(params, { ...this.props });
-    this.setState(() => ({ ...initialState }));
-    logging.info(`componentWillMount >>>>>>>>>>>> set id:${initialState.id}`);
-    this.onBuildingChange(-1, initialState.id);
-    region = mapHelper.getRegionForSelectedBat({ ...this.props, id: initialState.id });
+    this.onBuildingChange(-1, this.state.id);
+    region = mapHelper.getRegionForSelectedBat({ ...this.props, id: this.state.id });
   }
 
   // called every time you access this component right after componentWillMount
@@ -222,10 +221,10 @@ onLongPress = (c) => {
     return false;
   });
   if (targetPolygon) {
-    const { BAT_ID, LOC_ID } = targetPolygon.attributes;
+    const { BAT_ID, LOC_ID, ETG_ID } = targetPolygon.attributes;
     logging.info(`onLongPress >>>>>>>>>>>>  set id:${BAT_ID}`);
     this.onBuildingChange(this.state.id, BAT_ID);
-    this.setState(() => ({ localId: LOC_ID, id: BAT_ID }));
+    this.setState(() => ({ localId: LOC_ID, id: BAT_ID, floorId: parseInt(ETG_ID, 10) }));
     this.handleOnLocalPress(targetPolygon.attributes.LOC_ID, coordinate);
   } else {
     // check if the widget is opened

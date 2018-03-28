@@ -295,7 +295,7 @@ const extractParams = (params, bilune) => {
   if (localId && localId != null) {
     myLocal = bilune.locals.find(l => l.attributes.LOC_ID === localId);
     myLocalId = localId;
-    myFloorId = myLocal.attributes.ETG_ID;
+    myFloorId = parseInt(myLocal.attributes.ETG_ID, 10);
   }
   if (myBuildingId == null) {
     myBuildingId = bilune.buildings[0].id;
@@ -303,6 +303,7 @@ const extractParams = (params, bilune) => {
   return {
     id: myBuildingId,
     localId: myLocalId,
+    floorId: myFloorId,
   };
 };
 
