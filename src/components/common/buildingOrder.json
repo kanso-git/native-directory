@@ -1,99 +1,99 @@
 [
     {
         "code": "14",
-        "abreviation": "PM26",
+        "abreviation": "Alma mater",
         "displayOrder":1
     },
     {
         "code": "18",
-        "abreviation": "Br2",
+        "abreviation": "Faculté des sciences économiques",
         "displayOrder":2
     },
     {
         "code": "19",
-        "abreviation": "Br1",
+        "abreviation": "Faculté de droit",
         "displayOrder":3
     },
     {
         "code": "26",
-        "abreviation": "LA",
+        "abreviation": "Faculté des lettres et sciences humaines",
         "displayOrder":4
       },
       {
         "code": "30A",
-        "abreviation": "UM_A",
+        "abreviation": "Faculté des sciences unimail A",
         "displayOrder":5
       },
       {
         "code": "30B",
-        "abreviation": "UM_B",
+        "abreviation": "Faculté des sciences unimail B",
         "displayOrder":6
       },
       {
         "code": "30C",
-        "abreviation": "UM_C",
+        "abreviation": "Faculté des sciences unimail C",
         "displayOrder":7
       },
       {
         "code": "30D",
-        "abreviation": "UM_D",
+        "abreviation": "Faculté des sciences unimail D",
         "displayOrder":8
       },
       {
         "code": "30E",
-        "abreviation": "UM_E",
+        "abreviation": "Faculté des sciences unimail E",
         "displayOrder":9
       },
       {
         "code": "30F",
-        "abreviation": "UM_F",
+        "abreviation": "Faculté des sciences unimail F",
         "displayOrder":10
       },
       {
         "code": "30T",
-        "abreviation": "UM_T",
+        "abreviation": "Faculté des sciences unimail T",
         "displayOrder":11
       },
       {
         "code": "29",
-        "abreviation": "UM_G",
+        "abreviation": "Faculté des sciences unimail G",
         "displayOrder":12
       },
       {
         "code": "10",
-        "abreviation": "HOP41",
+        "abreviation": "Rectorat",
         "displayOrder":13
       },
       {
         "code": "01",
-        "abreviation": "SNic4",
+        "abreviation": "Institut d'ethnologie (FLSH)",
         "displayOrder":14
       },
 
       {
         "code": "08",
-        "abreviation": "DuPey4",
+        "abreviation": "Faculté des lettres et sciences humaines",
         "displayOrder":15
       },
       {
         "code": "09",
-        "abreviation": "HOP27",
+        "abreviation": "Institut de sociologie (FLSH)",
         "displayOrder":16
       },
 
       {
         "code": "15",
-        "abreviation": "HOP106",
+        "abreviation": "Domaine central",
         "displayOrder":17
       },
       {
         "code": "16",
-        "abreviation": "HOP61",
+        "abreviation": "Institut de langue et civilisation françaises (FLSH)",
         "displayOrder":18
       },
       {
         "code": "17",
-        "abreviation": "L77",
+        "abreviation": "Université du 3ème âge",
         "displayOrder":19
       },
       {
@@ -103,27 +103,27 @@
       },
       {
         "code": "07",
-        "abreviation": "DuPey1",
+        "abreviation": "Centre international d'étude du sport",
         "displayOrder":21
       },
     {
       "code": "02",
-      "abreviation": "Boine20",
+      "abreviation": "Crèche universitaire",
       "displayOrder":22
     },
     {
         "code": "23",
-        "abreviation": "MAL10",
+        "abreviation": "Bibliothèque (FLSH)",
         "displayOrder":23
       },
       {
         "code": "24",
-        "abreviation": "PAM7",
+        "abreviation": "Faculté des lettres et sciences humaines",
         "displayOrder":24
       },
       {
         "code": "25",
-        "abreviation": "PAM11",
+        "abreviation": "Université de Neuchâtel",
         "displayOrder":25
       },
     {

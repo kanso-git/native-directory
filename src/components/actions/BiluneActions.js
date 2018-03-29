@@ -58,16 +58,21 @@ const getBdlBuildingListAxios = async (dispatch) => {
   try {
     res = await axios.get(queries.bdlBuildings(), { headers });
     const sortedBuil = require('../common/buildingOrder.json');
-
-    const dataWithSortFlag = res.data.map((b) => {
-      const order = sortedBuil.find(s => s.code === b.code);
-      let sliderOrder = -1;
-      if (order) {
-        sliderOrder = order.displayOrder;
-      }
-      return { ...b, sliderOrder };
-    });
-    return dataWithSortFlag.sort((a, b) => a.sliderOrder - b.sliderOrder);
+    let finalResult = res.data;
+    if (res.data && res.data.length > 0) {
+      const dataWithSortFlag = res.data.map((b) => {
+        const order = sortedBuil.find(s => s.code === b.code);
+        let abrev = b.abreviation;
+        let sliderOrder = -1;
+        if (order) {
+          sliderOrder = order.displayOrder;
+          abrev = order.abreviation;
+        }
+        return { ...b, sliderOrder, abreviation: abrev };
+      });
+      finalResult = dataWithSortFlag.sort((a, b) => a.sliderOrder - b.sliderOrder);
+    }
+    return finalResult;
   } catch (e) {
     logging.warn(`error occured getBdlBuildingFloorsAxios ${e}`);
     const isConnected = await utile.isConnected();

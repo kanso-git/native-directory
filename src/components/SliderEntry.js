@@ -22,7 +22,7 @@ class SliderEntry extends Component {
         style={[styles.title, even ? styles.titleEven : {}]}
         numberOfLines={2}
       >
-        { abreviation.toUpperCase() }
+        { abreviation }
       </Text>
     ) : false;
 
