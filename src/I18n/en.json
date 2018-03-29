@@ -95,6 +95,8 @@
     "infos" : {
         "pageTitle" : "Infos",
         "general":"developed by SITEL (UniNE)",
+        "generalIntro": "developed by SITEL (UniNE)",
+        "onWOrd" :"on",
         "intro": "The UniNE Campus application is based on:\n",
          "gLine1": "Information system of the premises of the University of Neuchâtel - BILUNE ©2008-",
          "gLine2": "The information database of staff and students - BIPE©2000-",
@@ -143,7 +145,7 @@
     },
     "map":{
       "title":"Map",
-      "text":"Locate a collaborator, a building, an office, aula, classroom, computer room \n (long press on local to see its type, the occupants ...) "
+      "text":"Locate a collaborator, a building, an office, aula, classroom, computer room \n (long press on local to see its type, the occupants, etc. "
     }
   }
 }

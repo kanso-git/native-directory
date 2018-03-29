@@ -1,0 +1,134 @@
+[
+    {
+        "code": "14",
+        "abreviation": "PM26",
+        "displayOrder":1
+    },
+    {
+        "code": "18",
+        "abreviation": "Br2",
+        "displayOrder":2
+    },
+    {
+        "code": "19",
+        "abreviation": "Br1",
+        "displayOrder":3
+    },
+    {
+        "code": "26",
+        "abreviation": "LA",
+        "displayOrder":4
+      },
+      {
+        "code": "30A",
+        "abreviation": "UM_A",
+        "displayOrder":5
+      },
+      {
+        "code": "30B",
+        "abreviation": "UM_B",
+        "displayOrder":6
+      },
+      {
+        "code": "30C",
+        "abreviation": "UM_C",
+        "displayOrder":7
+      },
+      {
+        "code": "30D",
+        "abreviation": "UM_D",
+        "displayOrder":8
+      },
+      {
+        "code": "30E",
+        "abreviation": "UM_E",
+        "displayOrder":9
+      },
+      {
+        "code": "30F",
+        "abreviation": "UM_F",
+        "displayOrder":10
+      },
+      {
+        "code": "30T",
+        "abreviation": "UM_T",
+        "displayOrder":11
+      },
+      {
+        "code": "29",
+        "abreviation": "UM_G",
+        "displayOrder":12
+      },
+      {
+        "code": "10",
+        "abreviation": "HOP41",
+        "displayOrder":13
+      },
+      {
+        "code": "01",
+        "abreviation": "SNic4",
+        "displayOrder":14
+      },
+
+      {
+        "code": "08",
+        "abreviation": "DuPey4",
+        "displayOrder":15
+      },
+      {
+        "code": "09",
+        "abreviation": "HOP27",
+        "displayOrder":16
+      },
+
+      {
+        "code": "15",
+        "abreviation": "HOP106",
+        "displayOrder":17
+      },
+      {
+        "code": "16",
+        "abreviation": "HOP61",
+        "displayOrder":18
+      },
+      {
+        "code": "17",
+        "abreviation": "L77",
+        "displayOrder":19
+      },
+      {
+        "code": "31",
+        "abreviation": "Latenium",
+        "displayOrder":20
+      },
+      {
+        "code": "07",
+        "abreviation": "DuPey1",
+        "displayOrder":21
+      },
+    {
+      "code": "02",
+      "abreviation": "Boine20",
+      "displayOrder":22
+    },
+    {
+        "code": "23",
+        "abreviation": "MAL10",
+        "displayOrder":23
+      },
+      {
+        "code": "24",
+        "abreviation": "PAM7",
+        "displayOrder":24
+      },
+      {
+        "code": "25",
+        "abreviation": "PAM11",
+        "displayOrder":25
+      },
+    {
+      "code": "06",
+      "abreviation": "L5a",
+      "displayOrder":26
+    }
+  ]

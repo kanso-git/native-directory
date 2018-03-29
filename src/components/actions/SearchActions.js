@@ -47,7 +47,10 @@ const getUnitByIdAxios = async (id, secret) => {
     unit = await axios.get(`${API_ENDPOINT}/units/${id}?cacheBuster=${(new Date()).getTime()}`, {
       headers,
     });
-    unitMembers = await axios.get(`${API_ENDPOINT}/units/${id}/members?includeSubUnits=false&cacheBuster=${(new Date()).getTime()}`, {
+
+    const includeSubUnits = unit.data.personsInSubOUs === true;
+
+    unitMembers = await axios.get(`${API_ENDPOINT}/units/${id}/members?includeSubUnits=${includeSubUnits}&cacheBuster=${(new Date()).getTime()}`, {
       headers,
     });
     return {

@@ -110,15 +110,18 @@ const renderFax = fax => (
     </View>
   </TouchableOpacity>
 );
-const renderAddress = addressLines => (
-  <View style={[containerStyle, { marginBottom: 15, height: 45 }]}>
-    <View style={iconWrapper}>
-      <Icon name="map-marker" style={iconStyle} allowFontScaling />
+
+const renderAddress = (building, addressLines) => (
+  <TouchableOpacity onPress={() => Actions.push('mapPage', { buildingCode: building.code })}>
+    <View style={[containerStyle, { marginBottom: 15, height: 45 }]}>
+      <View style={iconWrapper}>
+        <Icon name="map-marker" style={[iconStyle, touchable]} allowFontScaling />
+      </View>
+      <View style={addressStyle}>
+        { addressLines.map(line => <Text style={[touchable]} key={line}> {line}</Text>)}
+      </View>
     </View>
-    <View style={addressStyle}>
-      { addressLines.map(line => <Text key={line}> {line}</Text>)}
-    </View>
-  </View>
+  </TouchableOpacity>
 );
 
 const onPressItem = (item) => {
@@ -143,6 +146,24 @@ const Unit = (props) => {
     addressLines,
   } = props.unit.unit;
 
+  /*
+    "addressLines": [
+        "Rue Emile-Argand 11",
+        "2000 Neuchâtel"
+    ]
+  */
+  let building = null;
+  if (addressLines && addressLines.length > 0) {
+    building = props.buildings.find((b) => {
+      const bAdresseLigne1 = b.adresseLigne1;
+      const bAdresseLigne2 = `${b.npa} ${b.localite}`;
+      if (bAdresseLigne1.toLowerCase() === addressLines[0].toLowerCase() &&
+      bAdresseLigne2.toLowerCase() === addressLines[1].toLowerCase()) {
+        return true;
+      }
+      return false;
+    });
+  }
   return (
     <Card>
       <CardSection>
@@ -157,7 +178,7 @@ const Unit = (props) => {
         { url && renderPersonlUrl(url)}
         { phone && renderPhone(phone)}
         { fax && renderFax(fax)}
-        { (addressLines && addressLines.length > 0) && renderAddress(addressLines)}
+        { (addressLines && addressLines.length > 0) && renderAddress(building, addressLines)}
       </CardSection>
       <CardSection>
         <View style={[containerStyle, { height: 35 }]}>

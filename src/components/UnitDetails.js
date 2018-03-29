@@ -42,7 +42,7 @@ class UnitDetails extends Component {
      <View>
        <Chromatic />
        <ScrollView>
-         <Unit unit={this.props.unit} unitMembers={this.props.unit.unitMembers} />
+         <Unit unit={this.props.unit} buildings={this.props.buildings} unitMembers={this.props.unit.unitMembers} />
        </ScrollView>
      </View> : <View />);
    render() {
@@ -56,6 +56,7 @@ const mapStateToProps = state => (
     spinner: state.directory.spinner,
     auth: state.auth,
     unitDetails: state.unitDetails,
+    buildings: state.bilune.buildings,
   });
 
 export default connect(mapStateToProps, { ...authActions, ...searchActions })(UnitDetails);

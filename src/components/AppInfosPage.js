@@ -46,7 +46,7 @@ const AppInfosPage = () => (
 
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
-        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine1')}{I18n.t('global.currentYear')} {I18n.t('infos.esri')} - {I18n.t('infos.general')}</Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine1')}{I18n.t('global.currentYear')} - {I18n.t('infos.generalIntro')}. BILUNE {I18n.t('infos.onWOrd')} {I18n.t('infos.esri')} </Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>

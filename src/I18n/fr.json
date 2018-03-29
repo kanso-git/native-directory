@@ -28,7 +28,7 @@
         "email" : "E-mail",
         "phone" : "Téléphone",
         "website" : "Site web",
-        "myCours" : "Voir Mes Cours",
+        "myCours" : "Voir les cours de la personne",
         "vcard" : {
             "label1" : "Enregistrer le contact sur mon téléphone",
             "label2" : "Télécharger VCard"
@@ -95,6 +95,8 @@
     "infos" : {
         "pageTitle" : "Crédits",
         "general": "développée par le SITEL (UniNE)",
+        "generalIntro": "développé par le SITEL (UniNE)",
+        "onWOrd" :"est",
         "intro": "L’application UniNE Campus est basée sur:\n",
         "gLine1": "Système d’information des locaux de l’université de Neuchâtel - BILUNE ©2008-",
         "gLine2": "La base de données d’information du personnel et étudiants - BIPE©2000-",
@@ -143,7 +145,7 @@
         },
         "map":{
           "title":"Carte",
-          "text":"Localiser un/une collaborateur/trice, un bâtiment, un bureau, aula, salle d'enseignement, salle informatique \n (clic long sur un local pour afficher son type, les occupants ...) "
+          "text":"Localiser un/une collaborateur/trice, un bâtiment, un bureau, aula, salle d'enseignement, salle informatique \n (clic long sur un local pour afficher son type, les occupants, etc.) "
         }
       }
 }
