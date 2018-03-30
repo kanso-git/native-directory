@@ -124,7 +124,7 @@ class BuildingList extends Component {
           <Text style={[touchable, { paddingRight: 10, paddingTop: 4, textAlignVertical: 'bottom' }]}>{infoBuilding}</Text>
         </View>
 
-        <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>
+        <View style={[{ marginBottom: 5, height: 40 }, touchableContainer]}>
           <View style={addressStyle}>
             <Text style={[touchable]}>{`${adresseLigne1}
 ${npa} ${localite}`}
