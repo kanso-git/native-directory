@@ -55,7 +55,7 @@ const getUnitByIdAxios = async (id, secret) => {
     });
     return {
       unit: unit.data,
-      unitMembers: unitMembers.data.map((item, index) => ({ ...item, key: item.id, index })),
+      unitMembers: unitMembers.data.map((item, index) => ({ ...item, key: `unitMembers_key_${item.id}`, index })),
     };
   } catch (e) {
     throw e;

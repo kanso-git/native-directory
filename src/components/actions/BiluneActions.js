@@ -108,12 +108,16 @@ const getBdlBuildingFloorsAxios = async (dispatch, floorBuildingId) => {
     });
   }
 };
-
-const getBiluneLocalsWithSpatialDataAxios = async (dispatch) => {
+const filterLocalsForVisibleBuildings = (local, buildings) => {
+  const localBuildingId = local.attributes.BAT_ID;
+  const exist = buildings.find(b => b.id === localBuildingId);
+  return exist;
+};
+const getBiluneLocalsWithSpatialDataAxios = async (dispatch, buildings) => {
   try {
     const locals = await axios.get(queries.locals('BAT_ID>0'));
     logging.info(`found ${locals.data.features.length} locals`);
-    return locals.data.features;
+    return locals.data.features.filter(l => filterLocalsForVisibleBuildings(l, buildings));
   } catch (e) {
     logging.warn(`error getBiluneLocalsWithSpatialDataAxios ${e}`);
     const isConnected = await utile.isConnected();
@@ -221,7 +225,7 @@ const loadSpatialData = () =>
         }).catch(err => logging.warn(`err loading image:${err}`));
       }
       // const locals = await getBiluneLocalsOneByOneAxios(bdlBuildings);
-      const locals = await getBiluneLocalsWithSpatialDataAxios(dispatch);
+      const locals = await getBiluneLocalsWithSpatialDataAxios(dispatch, bdlBuildings);
 
       dispatch({
         type: types.SET_BILUNE_DATA,
@@ -287,7 +291,7 @@ const formatedBuildingDataForList = (myBuilding) => {
       ...myBuilding,
       totalLocalsLen,
       locals: locals.map((item, index) => ({
-        ...item, type: LOCAL, key: item.attributes.LOC_ID, index,
+        ...item, type: LOCAL, key: `local_key_${item.attributes.LOC_ID}`, index,
       })),
     };
   } else {
@@ -359,7 +363,7 @@ const formatedLocalReservationDataForList = (myLocal) => {
     return {
       ...myLocal,
       days: formattedDaysSorted.map((item, index) => ({
-        ...item, type: RESERVATION, key: index, index,
+        ...item, type: RESERVATION, key: `day_key_${index}`, index,
       })),
     };
   }
@@ -780,7 +784,7 @@ const searchBilune = query =>
         search[LOCAL] = locals.map((l, index) => ({
           ...l,
           type: LOCAL,
-          key: l.attributes.LOC_ID,
+          key: `local_key_${l.attributes.LOC_ID}`,
           building: filterBuildingById(dataBuildings, l.attributes.BAT_ID),
           subIndex: index,
 
@@ -791,7 +795,7 @@ const searchBilune = query =>
 
       if (query.length > 2 && buildings.length > 0) {
         search[BUILDING] = buildings.map((b, index) => ({
-          ...b, type: BUILDING, key: b.id, subIndex: index,
+          ...b, type: BUILDING, key: `building_key_${b.id}`, subIndex: index,
         }));
       } else {
         search[BUILDING] = [];

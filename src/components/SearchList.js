@@ -51,7 +51,6 @@ class SearchList extends Component {
     />
   );
   render() {
-    debugger;
     return (
       <FlatList
         keyboardShouldPersistTaps="always"
