@@ -8,7 +8,9 @@ This is the Unine directory, built using react-native
 
 2 - Unit test using jest
 
-3 - check out why image is not visible sometimes mainly onCalloutPress an idea to make image as state and to set it each time we access the page 
+3 - Check building name to be always the same
+
+4 - The building name in the building.js needs to be re-aligned (same as slider why not? )
 
 # Here are 10 fundamental React-Native commands you might find helpful
 
