@@ -1,6 +1,6 @@
 # native-directory
 
-This is the Unine directory, built using react-native
+This is the Unine Campus, built using react-native
 
 # TODO's
 
