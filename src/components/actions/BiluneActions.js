@@ -707,7 +707,7 @@ const searchBilune = query =>
         type: types.RESET_SEARCH_BILUNE,
       });
 
-      if (query.trim().length > 2) { // only start search when query >2
+      if (query.trim().length > 1) { // only start search when query >2
         const q = query.toLowerCase();
         if (q === 'unine') { // special case load all the building when unine is entered
           buildings = dataBuildings;
@@ -793,7 +793,7 @@ const searchBilune = query =>
         search[LOCAL] = [];
       }
 
-      if (query.length > 2 && buildings.length > 0) {
+      if (query.length > 1 && buildings.length > 0) {
         search[BUILDING] = buildings.map((b, index) => ({
           ...b, type: BUILDING, key: `building_key_${b.id}`, subIndex: index,
         }));

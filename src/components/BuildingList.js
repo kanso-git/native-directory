@@ -11,11 +11,16 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 
 
 const styles = StyleSheet.create({
+  textShadow: {
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 1, height: 2 },
+    textShadowRadius: 10,
+  },
   textStyle: {
     color: '#000',
     paddingRight: 5,
     paddingLeft: 5,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '700',
     lineHeight: 23,
     flex: 11,
@@ -90,6 +95,7 @@ const {
   touchable,
   touchableContainer,
   addressStyle,
+  textShadow,
 } = styles;
 
 class BuildingList extends Component {
@@ -120,13 +126,13 @@ class BuildingList extends Component {
       >
 
         <View style={[{ height: 24, flexDirection: 'row' }]}>
-          <Text style={[textStyle, touchable]}>{abreviation}</Text>
+          <Text style={[textStyle, touchable, textShadow]}>{abreviation}</Text>
           <Text style={[touchable, { paddingRight: 10, paddingTop: 4, textAlignVertical: 'bottom' }]}>{infoBuilding}</Text>
         </View>
 
         <View style={[{ marginBottom: 5, height: 40 }, touchableContainer]}>
           <View style={addressStyle}>
-            <Text style={[touchable]}>{`${adresseLigne1}
+            <Text style={[touchable, textShadow]}>{`${adresseLigne1}
 ${npa} ${localite}`}
             </Text>
           </View>

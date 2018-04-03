@@ -39,7 +39,7 @@ class SearchItem extends Component {
              source={{ uri: image || utile.noImageIcon }}
            />
            <View style={{ flexDirection: 'column', paddingLeft: 5 }}>
-             <Text style={{ fontSize: 16 }}>{`${item.attributes.LOC_CODE}, ${item.building.abreviation}, (${item.attributes.LOC_TYPE_DESIGNATION})`} </Text>
+             <Text style={{ fontSize: 16 }}>{`${item.attributes.LOC_CODE}, (${item.attributes.LOC_TYPE_DESIGNATION})`} </Text>
              <Text style={{ fontSize: 13, paddingTop: 5 }}>{`${item.attributes.ETG_DESIGNATION.replace('Rez-de-chaussée', 'Rez')}, ${item.building.adresseLigne1}`} </Text>
              <Text style={{ fontSize: 13, paddingTop: 2 }}>{`${item.building.npa} ${item.building.localite}`} </Text>
            </View>

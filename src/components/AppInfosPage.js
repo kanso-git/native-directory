@@ -32,35 +32,37 @@ const AppInfosPage = () => (
   <ScrollView style={{ flex: 1 }}>
     <CardSection>
       <Text style={styles.item}>
-        {I18n.t('global.title')}
+        {I18n.t('global.footerLine1')}{I18n.t('global.month')} {I18n.t('global.currentYear')}
       </Text>
     </CardSection>
     <CardSection style={{ flexDirection: 'column' }}>
-      <Text style={styles.description} >
-        {I18n.t('global.footerLine1')}{I18n.t('global.month')} {I18n.t('global.currentYear')} {I18n.t('infos.general')}
-      </Text>
-
       <Text style={styles.description} >
         {I18n.t('infos.intro')}
       </Text>
 
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
-        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine1')}{I18n.t('global.currentYear')} - {I18n.t('infos.generalIntro')}. BILUNE {I18n.t('infos.onWOrd')} {I18n.t('infos.esri')} </Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine1')}{I18n.t('global.currentYear')}</Text>
       </View>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={{ flexDirection: 'row', marginTop: 5 }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
-        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine2')}{I18n.t('global.currentYear')} - {I18n.t('infos.general')}</Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine2')}{I18n.t('global.currentYear')}</Text>
       </View>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={{ flexDirection: 'row', marginTop: 5 }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
-        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine3')}{I18n.t('global.currentYear')} - {I18n.t('infos.general')}</Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine3')}{I18n.t('global.currentYear')}</Text>
       </View>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={{ flexDirection: 'row', marginTop: 5 }}>
         <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
-        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine4')}{I18n.t('global.currentYear')} - {I18n.t('infos.general')}</Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine4')}{I18n.t('global.currentYear')}</Text>
       </View>
-
+      <View style={{ flexDirection: 'row', marginTop: 5 }}>
+        <Text style={{ paddingLeft: 10 }} >{'\u2022'}</Text>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.gLine5')}{I18n.t('global.currentYear')}</Text>
+      </View>
+      <View style={{ flexDirection: 'row', marginTop: 10 }}>
+        <Text style={{ flex: 1, paddingLeft: 5 }}>{ I18n.t('infos.general')}</Text>
+      </View>
     </CardSection>
     <CardSection>
       <Text style={styles.description}>

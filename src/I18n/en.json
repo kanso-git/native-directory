@@ -93,18 +93,16 @@
         "area": "area"
     },
     "infos" : {
-        "pageTitle" : "Infos",
-        "general":"developed by SITEL (UniNE)",
-        "generalIntro": "developed by SITEL (UniNE)",
-        "onWOrd" :"on",
-        "intro": "The UniNE Campus application is based on:\n",
-         "gLine1": "Information system of the premises of the University of Neuchâtel - BILUNE ©2008-",
-         "gLine2": "The information database of staff and students - BIPE©2000-",
-         "gLine3": "Computer planning schedules - PIDHO©2009-",
-         "gLine4": "Computer planning of room reservations - PIRES©2011-",
-         "esri" :"based on ©ESRI ",
-        "google":"Google Maps ©Google",
-        "more":"For any information and comments"
+        "pageTitle" : "Legal Notice",
+        "intro": "The UniNE Campus application is based on :\n",
+        "gLine1": "The information system of the premises of the University of Neuchâtel – BILUNE © 2008-",
+        "gLine2": "The information database of staff and students – BIPE © 2000-",
+        "gLine3": "The directory of the University of Neuchâtel – ANNUAIRE © 2005-",
+        "gLine4": "Computer planning schedules - PIDHO©2009-",
+        "gLine5": "Computer planning of room reservations - PIRES©2011-",
+        "general" : "UniNE Campus, BILUNE, BIPE, ANNUAIRE, PIDHO, PIRES : design and development done by SITEL – UniNE",
+        "google": "Google Maps © Google",
+        "more": "For all information and comments"
     },
 	"bookingItem" : {
 		"from":"From",

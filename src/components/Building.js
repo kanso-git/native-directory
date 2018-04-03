@@ -10,12 +10,25 @@ import { biluneActions } from './actions';
 import { Card, CardSection, InputFlex, Chromatic } from './common';
 import BuildingLocalItem from './BuildingLocalItem';
 
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 const styles = StyleSheet.create({
+  infoBuildingStyle: {
+    paddingRight: 5,
+    height: 10,
+    alignItems: 'flex-end',
+    width: viewportWidth,
+    paddingBottom: 5,
+  },
+  textShadow: {
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 1, height: 2 },
+    textShadowRadius: 10,
+  },
   textStyle: {
     color: '#000',
     paddingRight: 5,
     paddingLeft: 5,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '700',
     lineHeight: 23,
     flex: 11,
@@ -57,7 +70,7 @@ const styles = StyleSheet.create({
   },
   addressStyle: {
     paddingLeft: 5,
-    paddingBottom: 10,
+    paddingBottom: 5,
   },
   stickySection: {
     backgroundColor: 'rgba(52, 52, 52, 0.5)',
@@ -84,12 +97,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 });
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+
 const {
   textStyle,
   touchable,
   touchableContainer,
   addressStyle,
+  infoBuildingStyle,
+  textShadow,
 } = styles;
 
 
@@ -151,16 +166,18 @@ class Local extends Component {
                 }}
        >
 
-         <View style={[{ height: 24, flexDirection: 'row' }]}>
-           <Text style={[textStyle, touchable]}>{abreviation}</Text>
-           <Text style={[touchable, { paddingRight: 10, paddingTop: 4, textAlignVertical: 'bottom' }]}>{infoBuilding}</Text>
+         <View style={[{ height: 25, flexDirection: 'row' }]}>
+           <Text style={[textStyle, touchable, textShadow]}>{abreviation}</Text>
          </View>
 
-         <View style={[{ marginBottom: 5, height: 30 }, touchableContainer]}>
+         <View style={[{ marginBottom: 5, height: 45 }, touchableContainer]}>
            <View style={addressStyle}>
-             <Text style={[touchable]}>{`${adresseLigne1}
+             <Text style={[touchable, textShadow]}>{`${adresseLigne1}
 ${npa} ${localite}`}
              </Text>
+           </View>
+           <View style={infoBuildingStyle}>
+             <Text style={[touchable, textShadow]}>{infoBuilding}</Text>
            </View>
          </View>
        </TouchableOpacity>
@@ -173,8 +190,8 @@ ${npa} ${localite}`}
        <ParallaxScrollView
          onScroll={onScroll}
          headerBackgroundColor="transparent"
-         stickyHeaderHeight={80}
-         parallaxHeaderHeight={(viewportHeight * 0.25) + 80}
+         stickyHeaderHeight={90}
+         parallaxHeaderHeight={(viewportHeight * 0.25) + 90}
          backgroundSpeed={10}
          keyboardShouldPersistTaps="always"
          keyboardDismissMode="on-drag"
@@ -182,7 +199,7 @@ ${npa} ${localite}`}
            <View key="background">
              <Chromatic />
              <Image
-               style={{ width: viewportWidth, height: (viewportHeight * 0.25) + 80, backgroundColor: '#034d7c' }}
+               style={{ width: viewportWidth, height: (viewportHeight * 0.25) + 90, backgroundColor: '#034d7c' }}
                source={{ uri: this.props.currentBuilding.image }}
              />
              <View style={{

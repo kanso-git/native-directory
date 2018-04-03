@@ -6,57 +6,57 @@
     },
     {
         "code": "18",
-        "abreviation": "Faculté des sciences économiques",
+        "abreviation": "Faculté des sciences économiques (FSE)",
         "displayOrder":2
     },
     {
         "code": "19",
-        "abreviation": "Faculté de droit",
+        "abreviation": "Faculté de droit (FD)",
         "displayOrder":3
     },
     {
         "code": "26",
-        "abreviation": "Faculté des lettres et sciences humaines",
+        "abreviation": "Faculté des lettres et sciences humaines (FLSH)",
         "displayOrder":4
       },
       {
         "code": "30A",
-        "abreviation": "Faculté des sciences unimail A",
+        "abreviation": "Faculté des sciences (FS) unimail A",
         "displayOrder":5
       },
       {
         "code": "30B",
-        "abreviation": "Faculté des sciences unimail B",
+        "abreviation": "Faculté des sciences (FS) unimail B",
         "displayOrder":6
       },
       {
         "code": "30C",
-        "abreviation": "Faculté des sciences unimail C",
+        "abreviation": "Faculté des sciences (FS) unimail C",
         "displayOrder":7
       },
       {
         "code": "30D",
-        "abreviation": "Faculté des sciences unimail D",
+        "abreviation": "Faculté des sciences (FS) unimail D",
         "displayOrder":8
       },
       {
         "code": "30E",
-        "abreviation": "Faculté des sciences unimail E",
+        "abreviation": "Faculté des sciences (FS) unimail E",
         "displayOrder":9
       },
       {
         "code": "30F",
-        "abreviation": "Faculté des sciences unimail F",
+        "abreviation": "Faculté des sciences (FS) unimail F",
         "displayOrder":10
       },
       {
         "code": "30T",
-        "abreviation": "Faculté des sciences unimail T",
+        "abreviation": "Faculté des sciences (FS) unimail T",
         "displayOrder":11
       },
       {
         "code": "29",
-        "abreviation": "Faculté des sciences unimail G",
+        "abreviation": "Faculté des sciences (FS) unimail G",
         "displayOrder":12
       },
       {
@@ -72,7 +72,7 @@
 
       {
         "code": "08",
-        "abreviation": "Faculté des lettres et sciences humaines",
+        "abreviation": "Faculté des lettres et sciences humaines (FLSH)",
         "displayOrder":15
       },
       {
@@ -88,7 +88,7 @@
       },
       {
         "code": "16",
-        "abreviation": "Institut de langue et civilisation françaises (FLSH)",
+        "abreviation": "Institut de langue et civilisation françaises (ILCF - FLSH)",
         "displayOrder":18
       },
       {
@@ -103,7 +103,7 @@
       },
       {
         "code": "07",
-        "abreviation": "Centre international d'étude du sport",
+        "abreviation": "Centre international d'étude du sport (CIES)",
         "displayOrder":21
       },
     {
@@ -118,7 +118,7 @@
       },
       {
         "code": "24",
-        "abreviation": "Faculté des lettres et sciences humaines",
+        "abreviation": "Faculté des lettres et sciences humaines (FLSH)",
         "displayOrder":24
       },
       {
