@@ -27,7 +27,7 @@ const formatedDataForList = (profCourse) => {
     const formattedDays = [];
     let num = 0;
     const missingDays = [];
-    while (num < 6) {
+    while (num < (utile.NBR_OF_DAYS + 1)) {
       const date = moment().add(num, 'd').format('YYYY-MM-DD');
       const missingDayIndex = _.findIndex(profCourse.days, o => o.date === date);
       if (missingDayIndex === -1) {
@@ -44,7 +44,8 @@ const formatedDataForList = (profCourse) => {
       }
       num += 1;
     }
-    const alldays = [...profCourse.days, ...missingDays];
+    // const alldays = [...profCourse.days, ...missingDays];
+    const alldays = profCourse.days;
 
     alldays.forEach((d) => {
       const section = d.date;
@@ -181,7 +182,7 @@ const loadCoursesbyBipeId = bipeId =>
     const moment = utile.momentStatic;
     const now = moment();
     const startDate = now.format('YYYY-MM-DD');
-    const endDate = now.add(7, 'd').format('YYYY-MM-DD');
+    const endDate = now.add(utile.NBR_OF_DAYS, 'd').format('YYYY-MM-DD');
     const { courses } = getState().pidho;
     try {
       const profCourseList = await courseListAxios(bipeId, startDate, endDate);

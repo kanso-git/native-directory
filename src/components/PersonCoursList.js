@@ -153,7 +153,7 @@ ${npa} ${localite}`;
   }
   formatCalenderDate = () => {
     const moment = utile.momentStatic;
-    return `${I18n.t('local.scheduleFrom')} ${moment().format('DD MMM')} ${I18n.t('local.scheduleTo')}  ${moment().add(7, 'd').format('DD MMM')}`;
+    return `${I18n.t('local.scheduleFrom')} ${moment().format('DD MMM')} ${I18n.t('local.scheduleTo')}  ${moment().add(utile.NBR_OF_DAYS, 'd').format('DD MMM')}`;
   }
   renderPhones = phones => phones.map(phone => (
     <TouchableOpacity

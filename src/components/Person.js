@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
+
 import Icon from 'react-native-fa-icons';
 import I18n from 'react-native-i18n';
 import { Card, CardSection, utile } from './common';
@@ -32,6 +33,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     lineHeight: 21,
+    flex: 11,
+    height: 20,
+    width: 100,
+  },
+  urlStyle: {
+    color: '#000',
+    paddingRight: 5,
+    paddingLeft: 5,
     flex: 11,
     height: 20,
     width: 100,
@@ -97,6 +106,7 @@ const {
   touchable,
   touchableContainer,
   addressStyle,
+  urlStyle,
 } = styles;
 
 
@@ -161,7 +171,7 @@ renderPersonlUrl = (url) => {
       <TouchableOpacity onPress={() => utile.web(url)}>
         <View style={[containerStyle, touchableContainer]}>
           <Icon name="external-link" style={[iconStyle, touchable]} allowFontScaling />
-          <Text style={[textStyleElem, touchable]}>{url} </Text>
+          <Text adjustsFontSizeToFit style={[urlStyle, touchable]}>{url} </Text>
         </View>
       </TouchableOpacity>
     );
@@ -236,6 +246,25 @@ renderPositionElem = (position) => {
     </View>
   );
 };
+
+renderName = (firstName, lastName, url) => (
+  <View style={[containerStyle, { height: 35 }]}>
+    <Icon name="user-circle-o" style={[iconStyle, { fontSize: 22 }, url ? touchable : '']} allowFontScaling />
+    <Text style={[textStyle, url ? touchable : '']}>{firstName} {lastName}</Text>
+  </View>
+)
+renderNameWithUrl = (firstName, lastName, url) => {
+  if (url) {
+    return (
+      <TouchableOpacity onPress={() => utile.web(url)}>
+        {this.renderName(firstName, lastName, url)}
+      </TouchableOpacity>
+    );
+  }
+  return this.renderName(firstName, lastName, null);
+}
+
+
 renderFunctions = props => props.person.positions.map((position, index) => (
 
   <CardSection key={index} style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -282,10 +311,7 @@ render() {
   return (
     <Card>
       <CardSection style={{ flexDirection: 'column', justifyContent: 'space-between' }} >
-        <View style={[containerStyle, { height: 35 }]}>
-          <Icon name="user-circle-o" style={[iconStyle, { fontSize: 22 }]} allowFontScaling />
-          <Text style={textStyle}>{firstName} {lastName}</Text>
-        </View>
+        {this.renderNameWithUrl(firstName, lastName, url)}
         { (courses && courses[id] && Array.isArray(courses[id]) && courses[id].length > 0) &&
           <TouchableOpacity onPress={() => Actions.replace('personCoursDetails', { person: this.props.person })}>
             <View style={[containerStyle, { height: 35 }]}>
@@ -302,7 +328,6 @@ render() {
         </View>
         { email && this.renderEmail(email)}
         { this.props.person.phones && this.renderPhones(this.props)}
-        { url && this.renderPersonlUrl(url)}
       </CardSection>
       { this.props.person.positions && this.renderFunctions(this.props)}
     </Card>

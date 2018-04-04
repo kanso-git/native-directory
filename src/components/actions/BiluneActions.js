@@ -302,6 +302,7 @@ const formatedBuildingDataForList = (myBuilding) => {
 const reservationListAxios = async (lId, sD, eD) => {
   const url = queries.reservationsByLocalId(lId, sD, eD);
   logging.info(`url reservationListAxios ${url}`);
+
   const res = await axios.get(url);
   return res.data;
 };
@@ -315,10 +316,15 @@ const formatedLocalReservationDataForList = (myLocal) => {
     const formattedDays = [];
     let num = 0;
     const missingDays = [];
-    while (num < 6) {
+    while (num < (utile.NBR_OF_DAYS + 1)) {
       const date = moment().add(num, 'd').format('YYYY-MM-DD');
-      const missingDayIndex = _.findIndex(myLocal.days, o => o.date === date);
-      if (missingDayIndex === -1) {
+      let missingDayIndex = null;
+      if (_.isArray(myLocal.days)) {
+        missingDayIndex = myLocal.days.find(d => d.date.toString() === date.toString());
+      } else {
+        missingDayIndex = myLocal.days.date.toString() === date.toString() ? true : null;
+      }
+      if (!missingDayIndex) {
         missingDays.push({
           date,
           occupation: {
@@ -332,7 +338,12 @@ const formatedLocalReservationDataForList = (myLocal) => {
       }
       num += 1;
     }
-    const alldays = [...myLocal.days, ...missingDays];
+    let alldays = null;
+    if (_.isArray(myLocal.days)) {
+      alldays = [...myLocal.days, ...missingDays];
+    } else {
+      alldays = [myLocal.days, ...missingDays];
+    }
 
     alldays.forEach((d) => {
       const section = d.date;
@@ -466,7 +477,7 @@ const loadAllLocalData = localId =>
     const moment = utile.momentStatic;
     const now = moment();
     const startDate = now.format('YYYY-MM-DD');
-    const endDate = now.add(7, 'd').format('YYYY-MM-DD');
+    const endDate = now.add(utile.NBR_OF_DAYS, 'd').format('YYYY-MM-DD');
     const { reservations } = getState().bilune;
 
     try {

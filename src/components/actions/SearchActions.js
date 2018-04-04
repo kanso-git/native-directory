@@ -25,7 +25,7 @@ const searchAxios = async (query, secret) => {
     throw e;
   }
 };
-const filterFunction = (data) => {
+const filterDuplicateFunction = (data) => {
   const { positions } = data;
   if (positions && positions.length > 1) {
     const fn0 = positions[0].positionName;
@@ -50,7 +50,7 @@ const getPersonByIdAxios = async (id, secret) => {
       headers,
     });
 
-    return filterFunction(res.data);
+    return filterDuplicateFunction(res.data);
   } catch (e) {
     throw e;
   }

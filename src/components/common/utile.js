@@ -119,6 +119,9 @@ const alterUser = (title, msg) => {
     { cancelable: true },
   );
 };
+
+const NBR_OF_DAYS = 6;
+
 export {
   noImageIcon,
   unineImgBig,
@@ -133,4 +136,5 @@ export {
   email,
   web,
   alterUser,
+  NBR_OF_DAYS,
 };
