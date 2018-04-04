@@ -7,6 +7,9 @@ import { API_ENDPOINT,
   UNIT_SCREEN } from 'react-native-dotenv';
 import * as types from './Types';
 
+// manuel logic to remove the second position when match
+const POSITION_NAME0 = 'Assistant/e doctorant/e';
+const POSITION_NAME1 = 'Doctorant/e';
 
 const searchAxios = async (query, secret) => {
   let res;
@@ -22,6 +25,21 @@ const searchAxios = async (query, secret) => {
     throw e;
   }
 };
+const filterFunction = (data) => {
+  const { positions } = data;
+  if (positions && positions.length > 1) {
+    const fn0 = positions[0].positionName;
+    const fn1 = positions[1].positionName;
+    if (fn0.toLowerCase() === POSITION_NAME0.toLowerCase() &&
+    fn1.toLowerCase() === POSITION_NAME1.toLowerCase()
+    ) {
+      const newPositions = positions
+        .filter(p => !(p.positionName.toLowerCase() === POSITION_NAME1.toLowerCase()));
+      return { ...data, positions: newPositions };
+    }
+  }
+  return data;
+};
 const getPersonByIdAxios = async (id, secret) => {
   let res;
   const headers = {};
@@ -31,7 +49,8 @@ const getPersonByIdAxios = async (id, secret) => {
     res = await axios.get(`${API_ENDPOINT}/persons/${id}?cacheBuster=${(new Date()).getTime()}`, {
       headers,
     });
-    return res.data;
+
+    return filterFunction(res.data);
   } catch (e) {
     throw e;
   }
