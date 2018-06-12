@@ -59,6 +59,7 @@ buck-out/
 deploy/
 android/gradle.properties
 android/app/*.keystore
+android/keystores/*
 android/app/*.apk
 android/*.apk
 android/app/build/outputs/apk/*.apk

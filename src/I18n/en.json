@@ -77,7 +77,8 @@
         "default": "Default",
         "satellite": "Satellite",
         "hybrid": "Hybrid",
-        "floor" : "Floor"
+        "floor" : "Floor",
+        "mapLegend":"Map legend"
     },
     "local" : {
         "pageTitle" : "Local",

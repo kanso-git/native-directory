@@ -6,7 +6,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Alert, StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, Platform } from 'react-native';
+import { Alert, StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, Platform, ScrollView } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Callout, Marker } from 'react-native-maps';
 import * as ldash from 'lodash';
 import Icon from 'react-native-fa-icons';
@@ -21,6 +21,7 @@ import * as mapHelper from './common/mapHelper';
 import MapPolygon from './MapPolygon';
 import MapMarker from './MapMarker';
 import BuildingOverlay from './BuildingOverlay';
+import Legend from './MapLegend';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -101,6 +102,20 @@ const styles = StyleSheet.create({
     paddingBottom: 13,
     alignItems: 'center',
     justifyContent: 'space-around',
+  },
+  mapLegend: {
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? 60 : 20,
+    left: 8,
+    backgroundColor: 'rgba(255,255,255,0.6)',
+    padding: 6,
+    borderRadius: 10,
+    width: 180,
+    paddingTop: 13,
+    paddingBottom: 13,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    
   },
   lineStyle: {
     borderWidth: 0.2,
@@ -312,6 +327,7 @@ getMapLocals = dataLocals =>
       <MapPolygon
         fillColor={mapHelper.colorByLocType(f.attributes.LOC_TYPE_ID)}
         key={f.attributes.OBJECTID}
+        localType={f.attributes.LOC_TYPE_ID}
         coordinates={[...aLatLng]}
         onPress={() => this.onPolygonPress(LOC_ID, ETG_ID, BAT_ID)}
       />
@@ -633,6 +649,17 @@ overlayContent = () => {
 
   )
 
+
+  renderMapLegend = () => (
+    <View style={styles.mapLegend}>
+    <ScrollView >
+      <Legend locals={this.state.maplocals}/>
+    </ScrollView>
+    </View>
+
+  )
+
+
   renderMap = () => (
     <View style={styles.container}>
       <MapView
@@ -656,6 +683,7 @@ overlayContent = () => {
         {this.state.mapMarkers}
         {this.state.localMarker}
       </MapView>
+      { this.state.slideUpStatus === SHOW_SLIDE_UP && this.renderMapLegend() }
       { this.renderMapTypeSelectors() }
       { this.props.biluneState !== 'BDL_LOADED' || this.state.showSpinner && this.renderSpinner()}
       <View style={styles.overlay}>

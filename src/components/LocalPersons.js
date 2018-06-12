@@ -85,7 +85,7 @@ class LocalPersons extends Component {
           <Icon name="building" style={[iconStyle, touchable]} allowFontScaling />
         </View>
         <View style={[addressStyle, { paddingLeft: 5 }]}>
-          <Text style={[touchable]}>{I18n.t('person.position.location.office')}: {location.attributes.LOC_TYPE_DESIGNATION} - {location.attributes.LOC_CODE} </Text>
+          <Text style={[touchable]}>{I18n.t('person.position.location.office')}: {location.attributes.LOC_CODE} </Text>
           <Text style={[touchable]}>{I18n.t('person.position.location.floor')}: {location.attributes.ETG_DESIGNATION} </Text>
         </View>
       </View>

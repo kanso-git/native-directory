@@ -103,19 +103,19 @@
 },
 {
     "id": 18,
-    "designation": "Sanitaires MM",
+    "designation": "Sanitaires",
     "color": "#994C00",
     "sortOrder": 18
 },
 {
     "id": 19,
-    "designation": "Sanitaires Mmes",
+    "designation": "Sanitaires",
     "color": "#994C00",
     "sortOrder": 19
 },
 {
     "id": 20,
-    "designation": "Sanitaires PMR",
+    "designation": "Sanitaires",
     "color": "#994C00",
     "sortOrder": 20
 },

@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     lineHeight: 21,
     flex: 11,
-    height: 20,
+    maxHeight: 40,
     width: 100,
   },
   urlStyle: {
@@ -239,7 +239,7 @@ renderPositionElem = (position) => {
         <Icon name={iconName} style={iconStyle} allowFontScaling />
         <Text style={titleStyleElem}>{title}</Text>
       </View>
-      <View style={[containerStyle, { marginBottom: 15 }]}>
+      <View style={[containerStyle, { marginBottom: 15, height:40 }]}>
         <Text style={iconStyle} />
         <Text style={textStyleElem}>{value} </Text>
       </View>

@@ -78,7 +78,8 @@
         "default": "Plan",
         "satellite": "Satellite",
         "hybrid": "Hybrid",
-        "floor" : "Étage"
+        "floor" : "Étage",
+        "mapLegend":"Légende de carte"
     },
     "local" : {
         "pageTitle" : "Local",
