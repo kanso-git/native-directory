@@ -113,7 +113,8 @@
 		"for":"Réservée pour",
 		"remark":"Remarque",
         "free":"Libre",
-        "salle":"Salle"
+        "salle":"Salle",
+        "building": "Faculté"
 	},
     "section" : {
         "personUnit": "Personnes et Structures Organisationnelles",

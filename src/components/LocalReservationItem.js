@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { Text, Image, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-fa-icons';
 import Dash from 'react-native-dash';
-import { RESERVATION, RESERVATION_PIRES, RESERVATION_PIDHO, RESERVATION_EMPTY } from 'react-native-dotenv';
+import { RESERVATION, RESERVATION_PIRES, RESERVATION_PIDHO, RESERVATION_EMPTY, RESERVATION_PIDEX } from 'react-native-dotenv';
 
 import I18n from 'react-native-i18n';
 
@@ -34,6 +34,29 @@ class LocalReservationItem extends Component {
      return moment(date, 'YYYY-MM-DD').format('dddd, LL');
    };
 
+   renderOccupationIcon = (item) =>{
+
+    if(item.typeoccupation === RESERVATION_PIDEX ){
+      return (
+        <Image
+        style={{ width: 22, height: 20, marginLeft: 3, marginTop:5 , marginBottom:1}}
+        source={{
+     uri: utile.examIcon,
+    }}
+      />
+      )
+    }
+    return (<Icon
+    name={item.typeoccupation === RESERVATION_PIDHO ? 'graduation-cap' : 'dot-circle-o'}
+    style={{
+ fontSize: 20,
+ color: '#034d7c',
+ paddingLeft: item.typeoccupation === RESERVATION_PIDHO ? 1 : 4,
+ paddingTop: item.typeoccupation === RESERVATION_PIDHO ? 2 : 2,
+ paddingBottom: 1,
+}}
+  />)
+   }
    renderDashed = (isEmpty, item) => (
      <View>
        <Dash
@@ -49,16 +72,7 @@ class LocalReservationItem extends Component {
     }}
        />
        <TouchableOpacity onPress={() => !isEmpty && this.props.saveEventInCalendar(item)}>
-         <Icon
-           name={item.typeoccupation === RESERVATION_PIDHO ? 'graduation-cap' : 'dot-circle-o'}
-           style={{
-        fontSize: 20,
-        color: '#034d7c',
-        paddingLeft: item.typeoccupation === RESERVATION_PIDHO ? 1 : 4,
-        paddingTop: item.typeoccupation === RESERVATION_PIDHO ? 2 : 2,
-        paddingBottom: 1,
-     }}
-         />
+        { this.renderOccupationIcon(item)}
        </TouchableOpacity>
 
        <Dash
@@ -97,6 +111,17 @@ class LocalReservationItem extends Component {
              <Text style={{ fontSize: 18, fontWeight: 'bold', paddingBottom: 1 }}>{`${I18n.t('bookingItem.from')} ${item.heure.split('-')[0]} ${I18n.t('bookingItem.to')} ${item.heure.split('-')[1]}`}  </Text>
              <Text style={{ fontSize: 13, paddingTop: 2, marginRight: 35 }}>{I18n.t('bookingItem.course')}: {`${item.matiere}`} </Text>
              <Text style={{ fontSize: 13, paddingTop: 5, marginRight: 35 }}>{I18n.t('bookingItem.prof')}: {`${Array.isArray(item.prof) ? item.prof.join(', ') : item.prof}`} </Text>
+           </View>
+         );
+         case RESERVATION_PIDEX:
+         return (
+           <View style={{
+ flexDirection: 'column', paddingLeft: 5, marginRight: 25, justifyContent: 'center',
+}}
+           >
+             <Text style={{ fontSize: 18, fontWeight: 'bold', paddingBottom: 1 }}>{`${I18n.t('bookingItem.from')} ${item.heure.split('-')[0]} ${I18n.t('bookingItem.to')} ${item.heure.split('-')[1]}`}  </Text>
+             <Text style={{ fontSize: 13, paddingTop: 2, marginRight: 35 }}>{`${item.matiere}`} </Text>
+             <Text style={{ fontSize: 13, paddingTop: 5, marginRight: 35 }}>{I18n.t('bookingItem.building')}: {`${Array.isArray(item.prof) ? item.prof.join(', ') : item.prof}`} </Text>
            </View>
          );
        case RESERVATION_EMPTY:

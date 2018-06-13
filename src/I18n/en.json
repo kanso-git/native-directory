@@ -113,7 +113,8 @@
 		"for":"Booked for",
 		"remark":"Note",
         "free":"Free",
-        "salle":"Local"
+        "salle":"Local",
+        "building": "Faculty"
 	},
     "section" : {
         "personUnit": "Persons and organizational units",

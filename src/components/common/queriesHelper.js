@@ -1,6 +1,6 @@
 import { API_BILUNE, API_BDL,
   API_PLANIF_PIDHO_V1_URL,
-  API_PLANIF_OCCUPATIONS_URL } from 'react-native-dotenv';
+  API_V2_PLANIF_OCCUPATIONS_URL } from 'react-native-dotenv';
 
 const buildingPrefix = `${API_BILUNE}/0/query?`;
 const localPrefix = `${API_BILUNE}/2/query?`;
@@ -60,7 +60,8 @@ const localsByBuildingIdAndFloorId = (bId, fId) => {
 const reservationsByLocalId = (locId, startDate, endDate) => {
   // date format YYYY-mm-dd e.g 2018-02-13
   const url = `?salleid=${locId}&debut=${startDate}&fin=${endDate}`;
-  return API_PLANIF_OCCUPATIONS_URL + url;
+  console.log(url);
+  return API_V2_PLANIF_OCCUPATIONS_URL + url;
 };
 
 const hasCoursesByBipeId = (bipeId, startDate, endDate) => {
