@@ -113,12 +113,11 @@ const {
 class Person extends Component {
   componentDidMount() {
     const bipeId = this.props.person.id;
-    const { courses } = this.props;
-    if (courses && courses[bipeId]) {
-      logging.log(` don't load the course list for bipeId${bipeId}`);
-    } else {
-      this.props.loadCoursesbyBipeId(bipeId);
-    }
+    this.loadCourseByBipeId(bipeId);
+  }
+
+  loadCourseByBipeId = (bipeId)=>{
+    this.props.loadCoursesbyBipeId(bipeId);
   }
   formatPositions = (person) => {
     if (!person.positions) {

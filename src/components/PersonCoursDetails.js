@@ -5,11 +5,23 @@ import { connect } from 'react-redux';
 import { View } from 'react-native';
 import { Spinner, Chromatic, utile } from './common';
 import PersonCoursList from './PersonCoursList';
+import { pidhoActions } from './actions';
+import * as logging from './common/logging';
 
 class PersonCoursDetails extends Component {
   componentDidMount() {
     const { screens } = utile.gaParams;
     utile.trackScreenView(screens.cours);
+    const {id} = this.props.navigation.state.params.person;
+    this.loadCourseByBipeId(id);
+  }
+  loadCourseByBipeId = (bipeId)=>{
+    const { courses } = this.props;
+    if (courses && courses[bipeId]) {
+      logging.log(` don't load the course list for bipeId${bipeId}`);
+    } else {
+      this.props.loadCoursesbyBipeId(bipeId);
+    }
   }
   renderSpinner = () => (
     <View style={{ flex: 1 }}>
@@ -37,4 +49,4 @@ const mapStateToProps = state => (
     courses: state.pidho.courses,
   });
 
-export default connect(mapStateToProps)(PersonCoursDetails);
+export default connect(mapStateToProps, { ...pidhoActions })(PersonCoursDetails);

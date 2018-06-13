@@ -60,7 +60,7 @@ const localsByBuildingIdAndFloorId = (bId, fId) => {
 const reservationsByLocalId = (locId, startDate, endDate) => {
   // date format YYYY-mm-dd e.g 2018-02-13
   const url = `?salleid=${locId}&debut=${startDate}&fin=${endDate}`;
-  console.log(url);
+  console.log(`reservationsByLocalId url:${API_V2_PLANIF_OCCUPATIONS_URL + url}`);
   return API_V2_PLANIF_OCCUPATIONS_URL + url;
 };
 
@@ -73,6 +73,11 @@ const hasCoursesByBipeId = (bipeId, startDate, endDate) => {
 const coursesListByBipeId = (bipeId, startDate, endDate) => {
   // date format YYYY-mm-dd e.g 2018-02-13
   const url = `/${bipeId}/${startDate}/${endDate}/horaire`;
+  /*
+   // was used only for testing 
+  if(bipeId === 3110 ){
+     url = '/3110/2018-05-13/2018-11-20/horaire';
+  }*/
   return API_PLANIF_PIDHO_V1_URL + url;
 };
 
