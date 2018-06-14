@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-fa-icons';
 import I18n from 'react-native-i18n';
 
@@ -39,7 +39,12 @@ const getLegend = () => {
 const Legend = (props) =>{
     return (
         <View>
+        <View style={{flex:1, flexDirection:'row', justifyContent:'space-between'}}>
          <Text style={{color: '#007aff', fontSize:18, paddingBottom:5}}> {I18n.t('mapPage.mapLegend')} </Text>
+         <TouchableOpacity onPress={props.closeLegend}>
+          <Icon style={{color: '#007aff', fontSize: 18}} name="window-close" />
+          </TouchableOpacity>
+         </View>
          {getLegend()}
         </View>
     )

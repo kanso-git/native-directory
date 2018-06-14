@@ -79,7 +79,7 @@
         "satellite": "Satellite",
         "hybrid": "Hybrid",
         "floor" : "Étage",
-        "mapLegend":"Légende de carte"
+        "mapLegend":"Légende"
     },
     "local" : {
         "pageTitle" : "Local",

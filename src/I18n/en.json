@@ -78,7 +78,7 @@
         "satellite": "Satellite",
         "hybrid": "Hybrid",
         "floor" : "Floor",
-        "mapLegend":"Map legend"
+        "mapLegend":"Legend"
     },
     "local" : {
         "pageTitle" : "Local",

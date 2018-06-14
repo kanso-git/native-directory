@@ -141,6 +141,7 @@ class MapPage extends Component {
       mapType: 'standard',
       floors: [],
       slideUpStatus: HIDE_SLIDE_UP,
+      showMapLegend:false,
       ...initialState,
     };
   }
@@ -247,6 +248,9 @@ onLongPress = (c) => {
   }
   const { categories, actions } = utile.gaParams;
   utile.trackEvent(categories.usr, actions.lplo);
+
+   // hide the map legend each time we click
+   this.setState(()=>({showMapLegend: false}));
 }
 onMarkerPress = (floorId, BuildingId) => {
   logging.info(`onMarkerPress >>>>>>>>>>>>  set id:${BuildingId}`);
@@ -313,6 +317,8 @@ onPress = (c) => {
     }
     this.setState(() => (unselectedState));
   }
+  // hide the map legend each time we click
+  this.setState(()=>({showMapLegend: false}));
 }
 
 // helper method to return an array of local polygon
@@ -620,11 +626,11 @@ overlayContent = () => {
     <View style={styles.mapType} >
       <TouchableOpacity
         onPress={() => {
-          if (this.state.slideUpStatus === HIDE_SLIDE_UP) {
-            this.setState(() => ({ slideUpStatus: SHOW_SLIDE_UP }));
-          } else {
-            this.setState(() => ({ slideUpStatus: HIDE_SLIDE_UP }));
-          }
+            if (this.state.slideUpStatus === HIDE_SLIDE_UP) {
+              this.setState((prevState) => ({ slideUpStatus: SHOW_SLIDE_UP, showMapLegend: !prevState.showMapLegend}));
+            } else {
+              this.setState((prevState) => ({ slideUpStatus: HIDE_SLIDE_UP , showMapLegend: !prevState.showMapLegend}));
+            }
           }
         }
       >
@@ -649,11 +655,17 @@ overlayContent = () => {
 
   )
 
-
+  handleCloseLegend =() =>{
+    this.setState(()=>(
+      {
+        showMapLegend: false
+      }
+    ))
+  }
   renderMapLegend = () => (
     <View style={styles.mapLegend}>
     <ScrollView >
-      <Legend locals={this.state.maplocals}/>
+      <Legend locals={this.state.maplocals} closeLegend={this.handleCloseLegend}/>
     </ScrollView>
     </View>
 
@@ -683,7 +695,7 @@ overlayContent = () => {
         {this.state.mapMarkers}
         {this.state.localMarker}
       </MapView>
-      { this.state.slideUpStatus === SHOW_SLIDE_UP && this.renderMapLegend() }
+      { this.state.showMapLegend  && this.renderMapLegend() }
       { this.renderMapTypeSelectors() }
       { this.props.biluneState !== 'BDL_LOADED' || this.state.showSpinner && this.renderSpinner()}
       <View style={styles.overlay}>
